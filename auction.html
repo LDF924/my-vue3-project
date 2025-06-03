@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线拍卖平台</title>
+    <link rel="stylesheet" href="public/style.css">
+    <style>
+        body { background: #f6f8fa; font-family: 'Microsoft YaHei', Arial, sans-serif; }
+        .auction-container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); padding: 32px; }
+        .auction-title { font-size: 2rem; font-weight: bold; margin-bottom: 16px; }
+        .auction-info { margin-bottom: 24px; }
+        .auction-info span { display: inline-block; margin-right: 24px; font-size: 1.1rem; }
+        .auction-bid { display: flex; align-items: center; margin-bottom: 24px; }
+        .auction-bid input { width: 120px; margin-right: 12px; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .auction-bid button { background: #009966; color: #fff; border: none; border-radius: 6px; padding: 8px 24px; font-size: 1rem; cursor: pointer; }
+        .auction-bid button:disabled { background: #ccc; }
+        .auction-history { background: #f9fafb; border-radius: 8px; padding: 16px; max-height: 180px; overflow-y: auto; margin-bottom: 24px; }
+        .auction-history-title { font-weight: bold; margin-bottom: 8px; }
+        .auction-history-list { list-style: none; padding: 0; margin: 0; }
+        .auction-history-list li { padding: 4px 0; border-bottom: 1px solid #eee; font-size: 0.98rem; }
+        .auction-history-list li:last-child { border-bottom: none; }
+        .auction-tips { color: #ff9800; font-size: 0.98rem; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <div class="auction-container">
+        <div class="auction-title">在线拍卖平台</div>
+        <div class="auction-info">
+            <span>起拍量：<b id="start-amount">5000斤</b></span>
+            <span>加价幅度：<b id="bid-step">0.1元/斤</b></span>
+            <span>当前价格：<b id="current-price">0.1</b> 元/斤</span>
+        </div>
+        <div class="auction-tips">实时价格更新，交易保障服务</div>
+        <div class="auction-bid">
+            <input type="number" id="bid-input" min="0.1" step="0.1" placeholder="输入您的出价(元/斤)">
+            <button id="bid-btn">出价</button>
+        </div>
+        <div class="auction-history">
+            <div class="auction-history-title">竞拍历史</div>
+            <ul class="auction-history-list" id="history-list">
+                <!-- 竞拍历史项 -->
+            </ul>
+        </div>
+        <div class="auction-tips">所有交易均受平台保障，确保公平公正。</div>
+    </div>
+    <script>
+        // 模拟实时价格和竞拍历史
+        let currentPrice = 0.1;
+        let bidStep = 0.1;
+        let history = [
+            { user: '用户A', price: 0.1, time: '09:00:01' }
+        ];
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            list.innerHTML = '';
+            history.slice().reverse().forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.time} - ${item.user} 出价 ${item.price.toFixed(2)} 元/斤`;
+                list.appendChild(li);
+            });
+        }
+        function updatePrice() {
+            document.getElementById('current-price').textContent = currentPrice.toFixed(2);
+        }
+        document.getElementById('bid-btn').onclick = function() {
+            const input = document.getElementById('bid-input');
+            let bid = parseFloat(input.value);
+            if (isNaN(bid) || bid < currentPrice + bidStep) {
+                alert(`出价需高于当前价格 ${(currentPrice + bidStep).toFixed(2)} 元/斤`);
+                return;
+            }
+            const now = new Date();
+            const time = now.toTimeString().slice(0,8);
+            history.push({ user: '您', price: bid, time });
+            currentPrice = bid;
+            renderHistory();
+            updatePrice();
+            input.value = '';
+        };
+        // 模拟实时价格更新（每30秒自动加价）
+        setInterval(() => {
+            currentPrice += bidStep;
+            const now = new Date();
+            const time = now.toTimeString().slice(0,8);
+            history.push({ user: '自动加价', price: currentPrice, time });
+            renderHistory();
+            updatePrice();
+        }, 30000);
+        renderHistory();
+        updatePrice();
+    </script>
+</body>
+</html> 

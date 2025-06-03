@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>农技知识库 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- 引入知识库模块 -->
+  <script type="module">
+    import { initKnowledge, showKnowledgeDetail, hideKnowledgeModal, submitComment } from './js/knowledge.js';
+    
+    // 将函数暴露到全局作用域
+    window.showKnowledgeDetail = showKnowledgeDetail;
+    window.hideKnowledgeModal = hideKnowledgeModal;
+    window.submitComment = submitComment;
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      initKnowledge();
+    });
+  </script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          transform: translateY(-0.25rem);
+        }
+      }
+      .btn-primary {
+        background-color: theme('colors.primary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+      }
+      .btn-secondary {
+        background-color: theme('colors.secondary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          background-color: color-mix(in srgb, theme('colors.secondary') 90%, transparent);
+        }
+      }
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏占位 -->
+  <div class="h-16"></div>
+
+  <!-- 主要内容区域 -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- 顶部搜索和筛选区域 -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+        <!-- 搜索框 -->
+        <div class="flex-1 relative">
+          <input type="text" id="searchInput" placeholder="搜索农技知识..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+        <!-- 分类筛选 -->
+        <div class="flex space-x-2">
+          <button class="btn-primary active" data-category="all">全部</button>
+          <button class="btn-primary opacity-60 hover:opacity-100" data-category="planting">种植技术</button>
+          <button class="btn-primary opacity-60 hover:opacity-100" data-category="disease">病虫害防治</button>
+          <button class="btn-primary opacity-60 hover:opacity-100" data-category="fertilizer">施肥管理</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 知识内容展示区域 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="knowledgeList">
+      <!-- 知识卡片将通过JavaScript动态加载 -->
+    </div>
+
+    <!-- 加载更多按钮 -->
+    <div class="text-center mt-8">
+      <button id="loadMoreBtn" class="btn-secondary">
+        <i class="fa fa-spinner fa-spin mr-2 hidden"></i>
+        加载更多
+      </button>
+    </div>
+  </main>
+
+  <!-- 知识详情模态框 -->
+  <div id="knowledgeModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] hidden">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-hidden">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold text-dark" id="modalTitle"></h3>
+          <button onclick="hideKnowledgeModal()" class="text-gray-500 hover:text-dark transition-colors">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="overflow-y-auto max-h-[60vh] prose prose-sm md:prose-base lg:prose-lg" id="modalContent">
+          <!-- 详情内容将通过JavaScript动态加载 -->
+        </div>
+        <!-- 评论区域 -->
+        <div class="mt-6 pt-6 border-t">
+          <h4 class="text-lg font-semibold mb-4">评论交流</h4>
+          <!-- 评论输入框 -->
+          <div class="flex space-x-4 mb-6">
+            <div class="flex-1">
+              <textarea id="commentInput" rows="3" placeholder="分享你的想法..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"></textarea>
+            </div>
+            <button onclick="submitComment()" class="btn-primary self-end">
+              发表评论
+            </button>
+          </div>
+          <!-- 评论列表 -->
+          <div id="commentsList" class="space-y-4">
+            <!-- 评论将通过JavaScript动态加载 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>

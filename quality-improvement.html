@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品质提升技术 - 智慧农业平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+        }
+        .text-primary { color: var(--primary); }
+        .bg-primary { background-color: var(--primary); }
+        .border-primary { border-color: var(--primary); }
+        .hover\:bg-primary\/90:hover { background-color: rgba(16, 185, 129, 0.9); }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .service-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary) 0%, #34d399 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <i class="fas fa-seedling text-2xl text-primary mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">智慧农业</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-gray-600 hover:text-primary transition-colors">首页</a>
+                    <a href="market.html" class="text-gray-600 hover:text-primary transition-colors">农产品市场</a>
+                    <a href="knowledge.html" class="text-gray-600 hover:text-primary transition-colors">农业知识</a>
+                    <a href="community.html" class="text-gray-600 hover:text-primary transition-colors">农业社区</a>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                        登录/注册
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <div class="bg-gradient-to-br from-yellow-400 to-orange-500 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-full mb-6">
+                    <i class="fa fa-chart-line text-4xl text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-4">品质提升技术</h1>
+                <p class="text-xl text-white/90 max-w-2xl mx-auto">
+                    专业的农产品品质提升解决方案，涵盖保花保果、疏果技术、着色增甜、抗逆技术等全方位服务
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- 服务概览 -->
+        <div class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">服务概览</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    我们提供全面的品质提升技术服务，帮助农户提高农产品品质，增加经济效益
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-flower text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">保花保果</h3>
+                    <p class="text-sm text-gray-600">专业的保花保果技术指导</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cut text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">疏果技术</h3>
+                    <p class="text-sm text-gray-600">科学的疏果管理方案</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-palette text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">着色增甜</h3>
+                    <p class="text-sm text-gray-600">提升果实外观和口感</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">抗逆技术</h3>
+                    <p class="text-sm text-gray-600">增强作物抗逆能力</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细服务 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <!-- 保花保果技术 -->
+            <div class="service-card rounded-xl p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-flower text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">保花保果技术</h3>
+                        <p class="text-sm text-gray-600">提高坐果率，减少落花落果</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">花期营养管理指导</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">保花保果药剂配方</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">环境条件优化建议</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">现场技术指导服务</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-primary">¥300</span>
+                        <span class="text-gray-500">/亩/次</span>
+                    </div>
+                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                        立即咨询
+                    </button>
+                </div>
+            </div>
+
+            <!-- 疏果技术 -->
+            <div class="service-card rounded-xl p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-cut text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">疏果技术</h3>
+                        <p class="text-sm text-gray-600">科学疏果，提升果实品质</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">疏果时期确定</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">疏果标准制定</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">疏果技术培训</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">效果跟踪评估</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-primary">¥250</span>
+                        <span class="text-gray-500">/亩/次</span>
+                    </div>
+                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                        立即咨询
+                    </button>
+                </div>
+            </div>
+
+            <!-- 着色增甜技术 -->
+            <div class="service-card rounded-xl p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-palette text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">着色增甜技术</h3>
+                        <p class="text-sm text-gray-600">改善果实外观和口感</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">着色促进剂使用</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">糖分积累管理</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">光照条件优化</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">采收时机指导</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-primary">¥400</span>
+                        <span class="text-gray-500">/亩/次</span>
+                    </div>
+                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                        立即咨询
+                    </button>
+                </div>
+            </div>
+
+            <!-- 抗逆技术 -->
+            <div class="service-card rounded-xl p-6 card-hover">
+                <div class="flex items-center mb-4">
+                    <div class="feature-icon w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-shield-alt text-xl text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">抗逆技术</h3>
+                        <p class="text-sm text-gray-600">增强作物抗逆能力</p>
+                    </div>
+                </div>
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">抗旱抗涝技术</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">抗寒抗热措施</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">抗病虫害管理</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span class="text-gray-700">应急处理方案</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-2xl font-bold text-primary">¥500</span>
+                        <span class="text-gray-500">/亩/次</span>
+                    </div>
+                    <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                        立即咨询
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务流程 -->
+        <div class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">服务流程</h2>
+                <p class="text-gray-600">专业的服务流程，确保技术服务质量</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">1</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">需求分析</h3>
+                    <p class="text-sm text-gray-600">了解农户具体需求和现状</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">2</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">方案制定</h3>
+                    <p class="text-sm text-gray-600">制定个性化技术方案</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">3</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">技术实施</h3>
+                    <p class="text-sm text-gray-600">现场指导技术实施</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold text-primary">4</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">效果跟踪</h3>
+                    <p class="text-sm text-gray-600">跟踪效果并优化方案</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成功案例 -->
+        <div class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">成功案例</h2>
+                <p class="text-gray-600">真实案例展示我们的技术实力</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-md">
+                    <div class="text-center mb-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-apple-alt text-2xl text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">苹果品质提升</h3>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>坐果率提升：</span>
+                            <span class="font-semibold text-primary">+25%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>糖度提升：</span>
+                            <span class="font-semibold text-primary">+2.5°Brix</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>着色率提升：</span>
+                            <span class="font-semibold text-primary">+30%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>收益增加：</span>
+                            <span class="font-semibold text-primary">+40%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-md">
+                    <div class="text-center mb-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-lemon text-2xl text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">柑橘品质提升</h3>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>保果率提升：</span>
+                            <span class="font-semibold text-primary">+35%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>果实大小：</span>
+                            <span class="font-semibold text-primary">+20%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>维C含量：</span>
+                            <span class="font-semibold text-primary">+15%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>收益增加：</span>
+                            <span class="font-semibold text-primary">+45%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-md">
+                    <div class="text-center mb-4">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-grape-cluster text-2xl text-white"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-900">葡萄品质提升</h3>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>串重提升：</span>
+                            <span class="font-semibold text-primary">+30%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>糖酸比：</span>
+                            <span class="font-semibold text-primary">优化25%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>着色均匀度：</span>
+                            <span class="font-semibold text-primary">+40%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>收益增加：</span>
+                            <span class="font-semibold text-primary">+50%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 联系我们 -->
+        <div class="bg-gradient-to-br from-primary to-primary-dark rounded-xl p-8 text-center text-white">
+            <h2 class="text-3xl font-bold mb-4">立即开始品质提升之旅</h2>
+            <p class="text-xl mb-6 opacity-90">专业的技术团队为您提供一对一服务</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-phone mr-2"></i>
+                    电话咨询：400-123-4567
+                </button>
+                <button class="bg-white/20 text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors">
+                    <i class="fas fa-comments mr-2"></i>
+                    在线咨询
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-seedling text-2xl text-primary mr-2"></i>
+                        <span class="text-xl font-bold">智慧农业</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        专业的农业技术服务平台，致力于提供最优质的农业解决方案。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">服务项目</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">保花保果技术</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">疏果技术</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">着色增甜</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">抗逆技术</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">联系方式</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fas fa-phone mr-2"></i>400-123-4567</li>
+                        <li><i class="fas fa-envelope mr-2"></i>service@smartfarm.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>北京市朝阳区农业科技园</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">关注我们</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-qq text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 智慧农业平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

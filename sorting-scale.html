@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分拣秤数据</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-50">
+  <main class="pt-20">
+    <section class="bg-white section-padding">
+      <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold text-center mb-8">分拣秤数据对接界面</h1>
+        <!-- Placeholder content for sorting scale data -->
+        <div class="text-center text-gray-600">
+          <p>此页面用于展示分拣秤的实时数据。</p>
+          <p>功能正在建设中，敬请期待！</p>
+        </div>
+        <div class="text-center mt-8">
+          <a href="index.html" class="text-primary hover:underline"><i class="fa fa-arrow-left mr-2"></i>返回首页</a>
+        </div>
+      </div>
+    </section>
+    <section class="bg-white section-padding mt-8">
+      <div class="container mx-auto px-4">
+        <h2 class="text-xl font-bold mb-4">实时分拣数据</h2>
+        <div id="real-time-data" class="bg-gray-100 p-4 rounded">
+          <!-- Real-time data will be displayed here by JavaScript -->
+          <p class="text-gray-500">等待接收实时数据...</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white section-padding mt-8">
+      <div class="container mx-auto px-4">
+        <h2 class="text-xl font-bold mb-4">历史分拣数据查询</h2>
+        <div class="flex flex-col md:flex-row md:items-center mb-4">
+          <label for="device-id" class="mr-2 mb-2 md:mb-0">设备ID:</label>
+          <input type="text" id="device-id" class="border rounded px-2 py-1 mr-4">
+
+          <label for="start-date" class="mr-2 mb-2 md:mb-0">开始日期:</label>
+          <input type="date" id="start-date" class="border rounded px-2 py-1 mr-4">
+
+          <label for="end-date" class="mr-2 mb-2 md:mb-0">结束日期:</label>
+          <input type="date" id="end-date" class="border rounded px-2 py-1 mr-4">
+
+          <button id="fetch-history-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+            查询历史数据
+          </button>
+        </div>
+        <div id="history-data" class="bg-gray-100 p-4 rounded">
+          <!-- Historical data will be displayed here by JavaScript -->
+          <p class="text-gray-500">请选择条件并查询历史数据。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Placeholder JavaScript for data fetching and display
+    document.addEventListener('DOMContentLoaded', () => {
+      const realTimeDataEl = document.getElementById('real-time-data');
+      const historyDataEl = document.getElementById('history-data');
+      const deviceIdInput = document.getElementById('device-id');
+      const startDateInput = document.getElementById('start-date');
+      const endDateInput = document.getElementById('end-date');
+      const fetchHistoryBtn = document.getElementById('fetch-history-btn');
+
+      // --- Simulate Real-time Data ---
+      // In a real application, you would use WebSocket or
+      // periodic API calls here to get real-time data.
+      let realTimeCounter = 0;
+      setInterval(() => {
+        realTimeCounter++;
+        const dummyData = {
+          weight: (Math.random() * 10 + 1).toFixed(2), // Simulate weight
+          product: `Product-${realTimeCounter}`,
+          timestamp: new Date().toLocaleTimeString(),
+          status: realTimeCounter % 5 === 0 ? 'Error' : 'OK'
+        };
+        realTimeDataEl.innerHTML = `
+          <p><strong>时间:</strong> ${dummyData.timestamp}</p>
+          <p><strong>产品:</strong> ${dummyData.product}</p>
+          <p><strong>重量:</strong> ${dummyData.weight} kg</p>
+          <p><strong>状态:</strong> ${dummyData.status}</p>
+        `;
+      }, 3000); // Update every 3 seconds
+
+      // --- Simulate Historical Data Fetch ---
+      fetchHistoryBtn.addEventListener('click', () => {
+        const deviceId = deviceIdInput.value;
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+
+        if (!startDate || !endDate) {
+          historyDataEl.innerHTML = '<p class="text-red-500">请选择开始和结束日期。</p>';
+          return;
+        }
+
+        historyDataEl.innerHTML = '<p class="text-gray-500">正在查询历史数据...</p>';
+
+        // In a real application, you would make an API call here
+        // using fetch() or XMLHttpRequest, passing deviceId, startDate, and endDate.
+        // Example: fetch(`/api/history?deviceId=${deviceId}&startDate=${startDate}&endDate=${endDate}`)
+
+        // Simulate an API call delay
+        setTimeout(() => {
+          // Simulate historical data (replace with actual API response handling)
+          const historyData = [
+            { timestamp: '10:00:00', product: 'Product-A', weight: '2.50', status: 'OK' },
+            { timestamp: '10:01:30', product: 'Product-B', weight: '1.80', status: 'OK' },
+            { timestamp: '10:03:15', product: 'Product-A', weight: '2.60', status: 'OK' },
+            { timestamp: '10:04:50', product: 'Product-C', weight: '5.10', status: 'Error' },
+          ];
+
+          if (historyData.length === 0) {
+            historyDataEl.innerHTML = '<p class="text-gray-500">未找到匹配的历史数据。</p>';
+          } else {
+            let historyHtml = '<table class="min-w-full bg-white">';
+            historyHtml += '<thead><tr><th class="py-2 px-4 border-b">时间</th><th class="py-2 px-4 border-b">产品</th><th class="py-2 px-4 border-b">重量 (kg)</th><th class="py-2 px-4 border-b">状态</th></tr></thead>';
+            historyHtml += '<tbody>';
+            historyData.forEach(item => {
+              historyHtml += `<tr><td class="py-2 px-4 border-b">${item.timestamp}</td><td class="py-2 px-4 border-b">${item.product}</td><td class="py-2 px-4 border-b">${item.weight}</td><td class="py-2 px-4 border-b">${item.status}</td></tr>`;
+            });
+            historyHtml += '</tbody></table>';
+            historyDataEl.innerHTML = historyHtml;
+          }
+        }, 1000); // Simulate 1 second delay
+      });
+
+      // You would add more JavaScript here for handling
+      // user input, connecting to your backend API,
+      // processing responses, and updating the DOM.
+    });
+  </script>
+</body>
+</html> 

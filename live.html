@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>武鸣沃柑直播间</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 引入用户认证模块 -->
+  <script src="js/auth.js"></script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-primary:hover {
+        background-color: #0c4128;
+        transform: translateY(-1px);
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+        <span class="text-xl font-bold text-primary">武鸣沃柑直播间</span>
+      </div>
+      
+      <!-- 用户信息 -->
+      <div class="flex items-center space-x-4">
+        <span class="text-sm text-gray-600">在线人数：<span id="onlineCount" class="font-semibold">856</span></span>
+        <div id="userInfo" class="flex items-center space-x-2">
+          <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
+          <span class="text-sm font-medium">王技师</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要内容区 -->
+  <main class="pt-20 pb-10">
+    <div class="container mx-auto px-4">
+      <!-- 直播标题区 -->
+      <div class="mb-6">
+        <h1 class="text-2xl font-bold mb-2">沃柑春季管理要点</h1>
+        <p class="text-gray-600">春季施肥、修剪、病虫害防治等关键技术要点</p>
+      </div>
+
+      <!-- 直播内容区 -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- 左侧直播画面 -->
+        <div class="lg:col-span-3">
+          <div class="bg-black rounded-lg overflow-hidden aspect-video mb-4">
+            <!-- 直播画面占位 -->
+            <div class="w-full h-full flex items-center justify-center text-white">
+              <span>直播画面加载中...</span>
+            </div>
+          </div>
+          
+          <!-- 直播控制栏 -->
+          <div class="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm">
+            <div class="flex items-center space-x-4">
+              <button class="btn-primary">
+                <i class="fas fa-video"></i>
+                <span>视频质量</span>
+              </button>
+              <button class="btn-primary">
+                <i class="fas fa-volume-up"></i>
+                <span>音量</span>
+              </button>
+            </div>
+            <div class="flex items-center space-x-4">
+              <button class="btn-primary">
+                <i class="fas fa-share"></i>
+                <span>分享</span>
+              </button>
+              <button class="btn-primary bg-red-600 hover:bg-red-700">
+                <i class="fas fa-heart"></i>
+                <span>关注</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧聊天区 -->
+        <div class="bg-white rounded-lg shadow-sm p-4 h-[600px] flex flex-col">
+          <div class="flex-1 overflow-y-auto mb-4">
+            <!-- 聊天消息列表 -->
+            <div class="space-y-4" id="chatMessages">
+              <!-- 示例消息 -->
+              <div class="flex items-start space-x-2">
+                <img src="https://picsum.photos/24/24" alt="用户头像" class="w-6 h-6 rounded-full">
+                <div>
+                  <span class="text-sm font-medium text-primary">用户1</span>
+                  <p class="text-sm text-gray-600">请问春季施肥用什么肥料比较好？</p>
+                </div>
+              </div>
+              <div class="flex items-start space-x-2">
+                <img src="https://picsum.photos/24/24" alt="用户头像" class="w-6 h-6 rounded-full">
+                <div>
+                  <span class="text-sm font-medium text-primary">王技师</span>
+                  <p class="text-sm text-gray-600">建议使用含氮量较高的复合肥，可以促进春梢生长。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 发送消息区域 -->
+          <div class="border-t pt-4">
+            <div class="flex space-x-2">
+              <input type="text" class="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="发送消息...">
+              <button class="btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                <span>发送</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 这里添加直播相关的JavaScript代码
+    document.addEventListener('DOMContentLoaded', () => {
+      // 初始化直播功能
+      // 连接WebSocket
+      // 处理聊天功能
+      // 等等...
+    });
+  </script>
+</body>
+</html>

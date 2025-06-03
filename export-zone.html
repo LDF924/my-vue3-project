@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出口专区服务</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f6f8fb; margin: 0; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px; }
+        h1 { color: #059669; }
+        .service-list { margin: 24px 0; }
+        .service-list li { margin-bottom: 12px; font-size: 16px; }
+        .feature-box { background: #f0fdf4; border-radius: 8px; padding: 16px; margin: 24px 0; color: #059669; font-size: 18px; }
+        .apply-form { margin-top: 32px; }
+        .apply-form label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .apply-form input, .apply-form textarea, .apply-form select { width: 100%; padding: 8px; margin-bottom: 16px; border: 1px solid #cbd5e1; border-radius: 4px; }
+        .apply-form button { background: #059669; color: #fff; border: none; padding: 12px 32px; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        .apply-form button:hover { background: #047857; }
+        .success-message { color: #38a169; font-size: 18px; margin-top: 16px; }
+        .bilingual { margin: 16px 0; padding: 12px; background: #e0f2fe; border-radius: 6px; color: #2563eb; }
+        .pay-section { margin: 16px 0; padding: 12px; background: #fef9c3; border-radius: 6px; color: #b45309; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>出口专区服务</h1>
+        <p>集成报关、物流、认证等服务，支持中英文双语和跨境支付，助力农产品高效出海。</p>
+        <ul class="service-list">
+            <li>✅ 报关物流一站式服务</li>
+            <li>✅ 中英文双语界面（Bilingual: 中文/English）</li>
+            <li>✅ PayPal 跨境支付</li>
+            <li>✅ 全流程数字化管理</li>
+        </ul>
+        <div class="feature-box">
+            <div class="text-xs text-gray-600 mb-1">服务特色：</div>
+            <div class="text-sm font-medium text-primary">全流程数字化管理，信息透明，进度可视化，支持多角色协同。</div>
+        </div>
+        <div class="bilingual">
+            <strong>中英文双语界面：</strong><br>
+            This page supports both Chinese and English. Please select your preferred language at the top right (功能演示)。
+        </div>
+        <div class="pay-section">
+            <strong>PayPal 跨境支付：</strong><br>
+            支持通过 PayPal 进行安全便捷的国际支付。<br>
+            <button style="background:#ffc439;color:#111;padding:8px 24px;border:none;border-radius:4px;font-size:16px;cursor:pointer;margin-top:8px;">Pay with PayPal</button>
+        </div>
+        <!-- International Trade Rules Knowledge Base Section -->
+        <div class="feature-box" style="background: #e0f2fe; color: #2563eb;">
+            <strong>国际贸易规则知识库：</strong><br>
+            提供最新的国际贸易规则、政策解读、案例分析等，助力企业了解和遵守国际贸易法律法规。
+        </div>
+        <form class="apply-form" id="exportZoneApplyForm">
+            <h2>出口专区服务申请</h2>
+            <label for="company">公司名称</label>
+            <input type="text" id="company" name="company" required>
+            <label for="contact">联系人</label>
+            <input type="text" id="contact" name="contact" required>
+            <label for="phone">联系电话</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="service">所需服务</label>
+            <select id="service" name="service" required>
+                <option value="">请选择</option>
+                <option value="报关物流">报关物流</option>
+                <option value="认证服务">认证服务</option>
+                <option value="跨境支付">跨境支付</option>
+                <option value="全流程管理">全流程管理</option>
+            </select>
+            <label for="note">备注</label>
+            <textarea id="note" name="note" rows="3"></textarea>
+            <button type="submit">提交申请</button>
+            <div class="success-message" id="successMsg" style="display:none;">申请已提交，我们会尽快与您联系！</div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('exportZoneApplyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('successMsg').style.display = 'block';
+            this.reset();
+        });
+    </script>
+</body>
+</html> 

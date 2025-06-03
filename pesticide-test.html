@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>农药残留检测服务中心</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', 'sans-serif'; }
+  </style>
+</head>
+<body class="bg-neutral min-h-screen font-inter">
+  <!-- 顶部横幅 -->
+  <header class="bg-white shadow p-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i class="fa fa-leaf text-green-600 text-2xl mr-2"></i>
+      <span class="text-xl font-bold text-primary">农药残留检测服务中心</span>
+    </div>
+    <a href="index.html" class="text-orange-600 hover:underline flex items-center"><i class="fa fa-arrow-left mr-2"></i>返回首页</a>
+  </header>
+  <main class="max-w-5xl mx-auto p-4 mt-8">
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center"><i class="fa fa-flask mr-3"></i>检测服务申请</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 检测申请 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h3 class="font-semibold text-orange-600 mb-4 text-lg flex items-center"><i class="fa fa-edit mr-2"></i>检测申请</h3>
+          <form class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">作物类型</label>
+              <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white">
+                <option>沃柑</option>
+                <option>砂糖橘</option>
+                <option>其他柑橘</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">采样地点</label>
+              <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white" placeholder="请输入采样地点">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">样品数量</label>
+              <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white" min="1" placeholder="请输入数量">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">期望检测日期</label>
+              <input type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 bg-white">
+            </div>
+            <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md font-semibold shadow hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+              <i class="fa fa-paper-plane mr-2"></i>提交申请
+            </button>
+          </form>
+        </div>
+        <!-- 检测说明 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h3 class="font-semibold text-green-600 mb-4 text-lg flex items-center"><i class="fa fa-info-circle mr-2"></i>检测说明</h3>
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-lg border border-orange-100">
+              <h4 class="font-medium text-gray-900 mb-2 flex items-center"><i class="fa fa-list-ul mr-2 text-orange-400"></i>检测项目</h4>
+              <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+                <li>有机磷类农药残留</li>
+                <li>氨基甲酸酯类农药残留</li>
+                <li>菊酯类农药残留</li>
+                <li>其他常见农药残留</li>
+              </ul>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-green-100">
+              <h4 class="font-medium text-gray-900 mb-2 flex items-center"><i class="fa fa-clipboard-check mr-2 text-green-400"></i>服务说明</h4>
+              <div class="space-y-2 text-sm text-gray-600">
+                <p>检测周期：<span class="font-semibold text-orange-600">2-3个工作日</span></p>
+                <p>检测费用：<span class="font-semibold text-green-600">500元/样</span></p>
+                <p>报告形式：纸质版 + 电子版</p>
+                <p>注意事项：请确保样品新鲜完整，避免污染</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- 页脚 -->
+  <footer class="bg-white text-gray-500 py-8 mt-12 border-t">
+    <div class="container mx-auto px-4 text-center">
+      <p>© 2024 农药残留检测服务中心. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html> 

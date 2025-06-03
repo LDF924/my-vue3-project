@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>碳汇交易 - 武鸣沃柑产业平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+  </style>
+</head>
+<body class="bg-gray-50 text-dark">
+  <!-- 顶部导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center"><i class="fa fa-home mr-2"></i>首页</a>
+        <a href="dashboard.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center"><i class="fa fa-chart-bar mr-2"></i>数据看板</a>
+        <a href="farm-management.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center"><i class="fa fa-calendar mr-2"></i>农事管理</a>
+        <a href="trace.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center"><i class="fa fa-qrcode mr-2"></i>产品溯源</a>
+        <a href="finance.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center"><i class="fa fa-money-bill mr-2"></i>金融服务</a>
+        <a href="carbon-trade.html" class="text-primary font-medium transition-colors flex items-center"><i class="fa fa-leaf mr-2"></i>碳汇交易</a>
+      </nav>
+      <button class="md:hidden text-dark" id="menuBtn"><i class="fa fa-bars text-xl"></i></button>
+    </div>
+  </header>
+  <main class="pt-24 pb-12">
+    <!-- 碳汇交易大板块 -->
+    <section class="max-w-6xl mx-auto px-4">
+      <div class="bg-white rounded-xl shadow-md p-8 mb-8 card-hover">
+        <h1 class="text-3xl font-bold mb-4 flex items-center"><i class="fa fa-leaf text-green-500 mr-3"></i>碳汇交易</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h2 class="text-xl font-semibold text-green-800 mb-3">林业碳汇项目</h2>
+            <p class="text-gray-700 mb-4">规模化果园可申请林业碳汇项目，通过碳汇交易获得额外收益。</p>
+            <div class="bg-green-50 rounded-lg p-4 mb-4">
+              <h3 class="font-medium text-gray-900 mb-2">项目优势</h3>
+              <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+                <li>每亩年收益约50-100元</li>
+                <li>提升果园生态价值</li>
+                <li>增加额外收入来源</li>
+                <li>助力绿色低碳发展</li>
+              </ul>
+            </div>
+            <button id="applyBtn" class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center mb-2"><i class="fa fa-file-signature mr-2"></i>申请项目</button>
+            <div id="applyForm" class="hidden mt-4 bg-white border border-green-200 rounded-lg p-4">
+              <h4 class="font-semibold mb-2">碳汇项目申请表</h4>
+              <form id="carbonApplyForm" class="space-y-3">
+                <input type="text" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="果园名称" required>
+                <input type="number" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="面积（亩）" required>
+                <input type="number" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="树龄（年）" required>
+                <input type="text" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="联系人" required>
+                <input type="tel" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="联系电话" required>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">提交申请</button>
+              </form>
+              <div id="applySuccess" class="hidden text-green-600 mt-2">申请已提交！我们会尽快与您联系。</div>
+            </div>
+          </div>
+          <div>
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h3 class="font-medium text-gray-900 mb-3 flex items-center"><i class="fa fa-calculator text-blue-500 mr-2"></i>碳汇收益计算器</h3>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">果园面积（亩）</label>
+                  <input id="areaInput" type="number" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="请输入果园面积">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">树龄（年）</label>
+                  <input id="ageInput" type="number" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" placeholder="请输入树龄">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">树种</label>
+                  <select id="typeInput" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                    <option value="沃柑">沃柑</option>
+                    <option value="砂糖橘">砂糖橘</option>
+                    <option value="脐橙">脐橙</option>
+                    <option value="其他柑橘类">其他柑橘类</option>
+                  </select>
+                </div>
+                <button id="calcBtn" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">计算预期收益</button>
+                <div id="calcResult" class="hidden mt-2 text-blue-600 font-semibold"></div>
+              </div>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4">
+              <h3 class="font-medium text-gray-900 mb-2 flex items-center"><i class="fa fa-route text-blue-500 mr-2"></i>碳汇交易流程</h3>
+              <ol class="list-decimal list-inside space-y-1 text-sm text-gray-700">
+                <li>项目申请：提交果园信息，评估碳汇潜力</li>
+                <li>碳汇核算：专业机构核算与认证</li>
+                <li>交易对接：平台对接买家，达成交易</li>
+                <li>收益分配：交易完成后，收益发放到账户</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 案例展示 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white border border-gray-200 rounded-lg p-6 card-hover">
+          <h3 class="font-semibold text-gray-900 mb-4 flex items-center"><i class="fa fa-lightbulb text-yellow-500 mr-2"></i>碳汇项目案例</h3>
+          <div class="space-y-4">
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-medium text-gray-900 mb-2">武鸣区沃柑示范园</h4>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <div><span class="text-gray-600">面积：</span><span class="text-gray-900">500亩</span></div>
+                <div><span class="text-gray-600">树龄：</span><span class="text-gray-900">8年</span></div>
+                <div><span class="text-gray-600">年碳汇量：</span><span class="text-gray-900">约50吨</span></div>
+                <div><span class="text-gray-600">年收益：</span><span class="text-green-600 font-medium">约4万元</span></div>
+              </div>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-4">
+              <h4 class="font-medium text-gray-900 mb-2">隆安县柑橘合作社</h4>
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <div><span class="text-gray-600">面积：</span><span class="text-gray-900">300亩</span></div>
+                <div><span class="text-gray-600">树龄：</span><span class="text-gray-900">5年</span></div>
+                <div><span class="text-gray-600">年碳汇量：</span><span class="text-gray-900">约25吨</span></div>
+                <div><span class="text-gray-600">年收益：</span><span class="text-green-600 font-medium">约2万元</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-lg p-6 card-hover">
+          <h3 class="font-semibold text-gray-900 mb-4 flex items-center"><i class="fa fa-question-circle text-blue-500 mr-2"></i>常见问题</h3>
+          <ul class="list-disc list-inside space-y-2 text-gray-700 text-sm">
+            <li>碳汇交易需要什么条件？答：需有规模化果园、合法土地手续、管理规范。</li>
+            <li>收益如何分配？答：交易完成后，平台按协议发放收益。</li>
+            <li>如何核算碳汇量？答：由第三方专业机构评估与认证。</li>
+            <li>项目周期多久？答：一般为1-3年，具体视果园情况。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // 申请表单交互
+    document.getElementById('applyBtn').onclick = function() {
+      document.getElementById('applyForm').classList.toggle('hidden');
+    };
+    document.getElementById('carbonApplyForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('applySuccess').classList.remove('hidden');
+      setTimeout(function(){
+        document.getElementById('applyForm').classList.add('hidden');
+        document.getElementById('applySuccess').classList.add('hidden');
+        document.getElementById('carbonApplyForm').reset();
+      }, 2000);
+    };
+    // 收益计算器交互
+    document.getElementById('calcBtn').onclick = function() {
+      var area = parseFloat(document.getElementById('areaInput').value) || 0;
+      var age = parseFloat(document.getElementById('ageInput').value) || 0;
+      var type = document.getElementById('typeInput').value;
+      var base = 60; // 默认每亩收益
+      if(type === '沃柑') base = 80;
+      if(type === '砂糖橘') base = 70;
+      if(type === '脐橙') base = 65;
+      var result = area > 0 && age > 0 ? (area * base * (1 + age/20)).toFixed(2) : 0;
+      var text = area > 0 && age > 0 ? `预期年收益约 <span class='text-green-600'>${result}</span> 元` : '请输入有效的面积和树龄';
+      var el = document.getElementById('calcResult');
+      el.innerHTML = text;
+      el.classList.remove('hidden');
+    };
+  </script>
+</body>
+</html> 

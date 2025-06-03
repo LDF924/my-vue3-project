@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惠农政策智能匹配</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            width: 120px; /* Adjust as needed */
+        }
+
+        input[type="text"] {
+            width: 200px; /* Adjust as needed */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <h1>惠农政策智能匹配</h1>
+    <p>这里是惠农政策智能匹配页面的内容。</p>
+
+    <form id="policyForm">
+        <h2>输入您的信息</h2>
+        <div>
+            <label for="location">所在地区：</label>
+            <input type="text" id="location" name="location">
+        </div>
+        <div>
+            <label for="agricultureType">农业类型：</label>
+            <input type="text" id="agricultureType" name="agricultureType">
+        </div>
+        <div>
+            <label for="scale">经营规模：</label>
+            <input type="text" id="scale" name="scale">
+        </div>
+        <button type="submit">匹配政策</button>
+    </form>
+
+    <!-- Add more content and functionality here later -->
+
+    <script>
+        document.getElementById('policyForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const location = document.getElementById('location').value;
+            const agricultureType = document.getElementById('agricultureType').value;
+            const scale = document.getElementById('scale').value;
+
+            console.log('用户输入的信息:');
+            console.log('所在地区:', location);
+            console.log('农业类型:', agricultureType);
+            console.log('经营规模:', scale);
+
+            // Here you would add logic to match policies based on the input
+        });
+    </script>
+</body>
+</html> 

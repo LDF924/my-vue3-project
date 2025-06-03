@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>采购商俱乐部</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-neutral min-h-screen">
+  <header class="bg-white shadow p-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <img src="https://picsum.photos/40/40" alt="logo" class="w-10 h-10 rounded-full">
+      <span class="text-xl font-bold text-orange-600">武鸣沃柑产业平台</span>
+    </div>
+    <a href="index.html" class="text-orange-600 hover:underline flex items-center"><i class="fa fa-arrow-left mr-2"></i>返回首页</a>
+  </header>
+  <main class="max-w-5xl mx-auto p-4 mt-8">
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center"><i class="fa fa-handshake mr-3"></i>采购商俱乐部</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 品鉴会活动 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+              <i class="fa fa-glass-cheers text-orange-600 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-orange-600">线下品鉴会</h4>
+          </div>
+          <p class="text-gray-700 mb-4">参加"武鸣沃柑采购商大会"，与种植基地直接对接，获取优质货源</p>
+          <div class="bg-white rounded-lg p-4 mb-4">
+            <h5 class="font-medium text-gray-900 mb-2">活动亮点</h5>
+            <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+              <li>产地考察，实地了解种植环境</li>
+              <li>专家指导，把握品质标准</li>
+              <li>现场签约，获取优先供货权</li>
+              <li>交流互动，拓展行业人脉</li>
+            </ul>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="text-orange-600 font-bold">参会费：500元/人</div>
+            <button class="bg-orange-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-700 transition-colors">
+              立即报名
+            </button>
+          </div>
+        </div>
+        <!-- 采购商评级 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+              <i class="fa fa-award text-yellow-500 text-xl"></i>
+            </div>
+            <h4 class="font-semibold text-yellow-600">采购商评级体系</h4>
+          </div>
+          <p class="text-gray-700 mb-4">加入采购商评级体系，提升您的采购优先级，享受更多专属权益</p>
+          <div class="space-y-4 mb-4">
+            <div class="bg-white rounded-lg p-3 border-l-4 border-red-500">
+              <div class="flex items-center">
+                <span class="text-red-500 font-bold mr-2">AAA级</span>
+                <span class="text-sm text-gray-600">年采购量≥100吨</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">优先供货权、专属客服、价格优惠10%</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border-l-4 border-orange-500">
+              <div class="flex items-center">
+                <span class="text-orange-500 font-bold mr-2">AA级</span>
+                <span class="text-sm text-gray-600">年采购量50-100吨</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">优先供货权、价格优惠5%</p>
+            </div>
+            <div class="bg-white rounded-lg p-3 border-l-4 border-yellow-500">
+              <div class="flex items-center">
+                <span class="text-yellow-500 font-bold mr-2">A级</span>
+                <span class="text-sm text-gray-600">年采购量20-50吨</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">价格优惠3%</p>
+            </div>
+          </div>
+          <button class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+            申请评级
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- 头部介绍卡片 -->
+    <div class="bg-gradient-to-br from-orange-400 to-yellow-300 rounded-xl shadow-lg p-8 text-white card-hover mt-8">
+      <div class="flex items-center mb-6">
+        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mr-8">
+          <i class="fa fa-handshake text-5xl"></i>
+        </div>
+        <div>
+          <h1 class="text-4xl font-bold mb-2">采购商俱乐部</h1>
+          <p class="text-white/90">专属采购商的高端交流与服务平台，链接优质资源，享受专属权益</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div class="flex items-center text-sm"><i class="fa fa-check-circle text-white mr-2"></i>采购对接</div>
+        <div class="flex items-center text-sm"><i class="fa fa-check-circle text-white mr-2"></i>专属活动</div>
+        <div class="flex items-center text-sm"><i class="fa fa-check-circle text-white mr-2"></i>评级权益</div>
+        <div class="flex items-center text-sm"><i class="fa fa-check-circle text-white mr-2"></i>采购圈交流</div>
+      </div>
+    </div>
+    <!-- 服务导航 -->
+    <div class="flex flex-wrap justify-center gap-3 mb-8 mt-8">
+      <button class="buyers-nav-btn bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-700" data-tab="all">全部服务</button>
+      <button class="buyers-nav-btn bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-600 hover:text-white border" data-tab="docking">采购对接</button>
+      <button class="buyers-nav-btn bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-600 hover:text-white border" data-tab="activity">专属活动</button>
+      <button class="buyers-nav-btn bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-600 hover:text-white border" data-tab="rating">评级权益</button>
+      <button class="buyers-nav-btn bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-600 hover:text-white border" data-tab="community">采购圈交流</button>
+      <button class="buyers-nav-btn bg-white text-gray-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:bg-orange-600 hover:text-white border" data-tab="finance">采购金融</button>
+    </div>
+    <!-- 数据展示区 -->
+    <div class="bg-gradient-to-r from-orange-400 to-yellow-300 rounded-xl p-6 mb-8 text-white">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-bold">👥 俱乐部数据看板</h3>
+        <span class="text-sm bg-white/20 px-3 py-1 rounded-full">实时更新</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white/10 rounded-lg p-4 text-center">
+          <div class="text-2xl mb-2">🧑‍💼</div>
+          <div class="text-sm font-medium">采购商会员</div>
+          <div class="text-xs text-white/80" id="buyersCount">--</div>
+        </div>
+        <div class="bg-white/10 rounded-lg p-4 text-center">
+          <div class="text-2xl mb-2">📦</div>
+          <div class="text-sm font-medium">年度采购量</div>
+          <div class="text-xs text-white/80" id="annualPurchase">--</div>
+        </div>
+        <div class="bg-white/10 rounded-lg p-4 text-center">
+          <div class="text-2xl mb-2">🎉</div>
+          <div class="text-sm font-medium">专属活动数</div>
+          <div class="text-xs text-white/80" id="activityCount">--</div>
+        </div>
+        <div class="bg-white/10 rounded-lg p-4 text-center">
+          <div class="text-2xl mb-2">🏅</div>
+          <div class="text-sm font-medium">会员等级分布</div>
+          <div class="text-xs text-white/80" id="levelDist">--</div>
+        </div>
+      </div>
+    </div>
+    <!-- 服务功能网格 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="buyers-service-grid">
+      <!-- 采购对接卡片 -->
+      <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden card-hover border border-gray-100 flex flex-col">
+        <div class="bg-gradient-to-br from-orange-400 to-yellow-300 h-32 flex items-center justify-center">
+          <i class="fa fa-link text-5xl text-white"></i>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold mb-2">采购对接</h3>
+          <p class="text-gray-600 text-sm mb-3">发布采购需求，精准对接优质供应商</p>
+          <button class="bg-orange-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-700 transition-colors mt-auto" onclick="openDockingModal()">发布采购需求</button>
+        </div>
+      </div>
+      <!-- 专属活动报名卡片 -->
+      <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden card-hover border border-gray-100 flex flex-col">
+        <div class="bg-gradient-to-br from-yellow-300 to-orange-400 h-32 flex items-center justify-center">
+          <i class="fa fa-calendar-check text-5xl text-white"></i>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold mb-2">专属活动报名</h3>
+          <p class="text-gray-600 text-sm mb-3">参与线上线下俱乐部活动，拓展人脉资源</p>
+          <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors mt-auto" onclick="openActivityModal()">报名活动</button>
+        </div>
+      </div>
+      <!-- 采购评级申请卡片 -->
+      <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden card-hover border border-gray-100 flex flex-col">
+        <div class="bg-gradient-to-br from-yellow-400 to-orange-400 h-32 flex items-center justify-center">
+          <i class="fa fa-award text-5xl text-white"></i>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold mb-2">采购评级申请</h3>
+          <p class="text-gray-600 text-sm mb-3">申请采购评级，享受专属权益和优先供货</p>
+          <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors mt-auto" onclick="openRatingModal()">申请评级</button>
+        </div>
+      </div>
+      <!-- 采购圈交流卡片 -->
+      <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden card-hover border border-gray-100 flex flex-col">
+        <div class="bg-gradient-to-br from-orange-400 to-pink-400 h-32 flex items-center justify-center">
+          <i class="fa fa-comments text-5xl text-white"></i>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold mb-2">采购圈交流</h3>
+          <p class="text-gray-600 text-sm mb-3">专属社区，发帖、评论、点赞、私信互动</p>
+          <button class="bg-orange-400 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-500 transition-colors mt-auto" onclick="openCommunityModal()">进入交流圈</button>
+        </div>
+      </div>
+      <!-- 采购金融服务卡片 -->
+      <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden card-hover border border-gray-100 flex flex-col">
+        <div class="bg-gradient-to-br from-pink-400 to-orange-400 h-32 flex items-center justify-center">
+          <i class="fa fa-money-bill-wave text-5xl text-white"></i>
+        </div>
+        <div class="p-4 flex-1 flex flex-col">
+          <h3 class="font-semibold mb-2">采购金融服务</h3>
+          <p class="text-gray-600 text-sm mb-3">采购分期、授信、金融产品推荐</p>
+          <button class="bg-pink-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-pink-600 transition-colors mt-auto" onclick="openFinanceModal()">了解金融服务</button>
+        </div>
+      </div>
+    </div>
+    <!-- 采购商风采/案例展示 -->
+    <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <h3 class="text-xl font-bold text-center mb-8 text-orange-600">采购商风采 & 合作案例</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gradient-to-br from-orange-100 to-yellow-100 rounded-lg p-6 text-center">
+          <img src="https://picsum.photos/seed/buyer1/80" class="mx-auto rounded-full mb-3" alt="采购商1">
+          <h4 class="font-semibold mb-2">广西果业集团</h4>
+          <p class="text-gray-600 text-sm mb-2">连续三年俱乐部AAA级采购商</p>
+          <span class="inline-block bg-orange-600 text-white text-xs px-3 py-1 rounded-full">年度采购量：120吨</span>
+        </div>
+        <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-lg p-6 text-center">
+          <img src="https://picsum.photos/seed/buyer2/80" class="mx-auto rounded-full mb-3" alt="采购商2">
+          <h4 class="font-semibold mb-2">南宁鲜果电商</h4>
+          <p class="text-gray-600 text-sm mb-2">2023年度优秀采购案例</p>
+          <span class="inline-block bg-yellow-500 text-white text-xs px-3 py-1 rounded-full">专属活动参与：5次</span>
+        </div>
+        <div class="bg-gradient-to-br from-orange-100 to-pink-100 rounded-lg p-6 text-center">
+          <img src="https://picsum.photos/seed/buyer3/80" class="mx-auto rounded-full mb-3" alt="采购商3">
+          <h4 class="font-semibold mb-2">沃柑优选商贸</h4>
+          <p class="text-gray-600 text-sm mb-2">认证采购商，活跃于采购圈</p>
+          <span class="inline-block bg-orange-400 text-white text-xs px-3 py-1 rounded-full">认证标识</span>
+        </div>
+      </div>
+    </div>
+    <!-- 采购统计 -->
+    <div class="mt-12 bg-white rounded-xl p-8 shadow-md">
+      <h3 class="text-xl font-bold text-center mb-8 text-orange-600">俱乐部采购统计</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-orange-600 mb-2" id="statTotalPurchase">--</div>
+          <div class="text-gray-600">累计采购量(吨)</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-yellow-600 mb-2" id="statMembers">--</div>
+          <div class="text-gray-600">注册会员</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-pink-500 mb-2" id="statActive">--</div>
+          <div class="text-gray-600">活跃采购商</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-yellow-500 mb-2" id="statEvents">--</div>
+          <div class="text-gray-600">年度活动</div>
+        </div>
+      </div>
+    </div>
+    <!-- 采购商俱乐部功能弹窗区 -->
+    <div id="buyers-modal-root"></div>
+  </main>
+</body>
+</html> 

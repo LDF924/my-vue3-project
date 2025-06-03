@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社会化服务支持 - 智慧农业平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .service-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-green-600">智慧农业</h1>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="index.html" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">首页</a>
+                        <a href="#" class="text-green-600 px-3 py-2 text-sm font-medium border-b-2 border-green-600">社会化服务</a>
+                        <a href="knowledge.html" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">知识库</a>
+                        <a href="community.html" class="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">社区</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition-colors">
+                        联系客服
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面头部 -->
+    <div class="gradient-bg text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-bold mb-4">社会化服务支持</h1>
+            <p class="text-xl opacity-90 mb-8">专业的农业社会化服务，为您提供全程托管、农机作业、技术指导等一站式解决方案</p>
+            <div class="flex justify-center space-x-8 text-sm">
+                <div class="flex items-center">
+                    <i class="fa fa-check-circle mr-2"></i>
+                    <span>全程托管服务</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fa fa-check-circle mr-2"></i>
+                    <span>农机作业服务</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fa fa-check-circle mr-2"></i>
+                    <span>科技特派员帮扶</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务概览 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">服务概览</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">我们提供专业的农业社会化服务，帮助农户降低生产成本，提高生产效率，实现农业现代化</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <!-- 全程托管服务 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                <div class="service-card h-48 flex items-center justify-center">
+                    <i class="fa fa-seedling text-6xl text-white"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-3">全程托管服务</h3>
+                    <p class="text-gray-600 mb-4">从种植到收获的全程专业托管，让您省心省力</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>土地整理与准备</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>种子采购与播种</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>田间管理与维护</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>收获与销售对接</li>
+                    </ul>
+                    <div class="mt-6">
+                        <span class="text-2xl font-bold text-pink-600">¥3,500</span>
+                        <span class="text-gray-500">/亩/年</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 农机作业服务 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 h-48 flex items-center justify-center">
+                    <i class="fa fa-tractor text-6xl text-white"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-3">农机作业服务</h3>
+                    <p class="text-gray-600 mb-4">专业农机设备，高效作业服务</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>耕地翻土作业</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>播种施肥作业</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>植保喷洒作业</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>收割脱粒作业</li>
+                    </ul>
+                    <div class="mt-6">
+                        <span class="text-2xl font-bold text-blue-600">¥150</span>
+                        <span class="text-gray-500">/亩/次</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 科技特派员帮扶 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                <div class="bg-gradient-to-br from-green-400 to-green-600 h-48 flex items-center justify-center">
+                    <i class="fa fa-user-tie text-6xl text-white"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-3">科技特派员帮扶</h3>
+                    <p class="text-gray-600 mb-4">专业技术人员定点指导，提供技术支持</p>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>技术培训指导</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>病虫害防治</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>新品种推广</li>
+                        <li class="flex items-center"><i class="fa fa-check text-green-500 mr-2"></i>产销对接服务</li>
+                    </ul>
+                    <div class="mt-6">
+                        <span class="text-2xl font-bold text-green-600">¥800</span>
+                        <span class="text-gray-500">/月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务流程 -->
+    <div class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">服务流程</h2>
+                <p class="text-gray-600">简单四步，享受专业农业社会化服务</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-phone text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">1. 咨询需求</h3>
+                    <p class="text-gray-600 text-sm">联系我们，详细了解您的农业服务需求</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-clipboard-check text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">2. 方案制定</h3>
+                    <p class="text-gray-600 text-sm">根据您的需求制定个性化服务方案</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-handshake text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">3. 签约服务</h3>
+                    <p class="text-gray-600 text-sm">签署服务协议，明确服务内容和标准</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-cogs text-2xl text-white"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">4. 执行服务</h3>
+                    <p class="text-gray-600 text-sm">专业团队执行服务，全程跟踪服务质量</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 服务优势 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">服务优势</h2>
+            <p class="text-gray-600">专业、高效、可靠的农业社会化服务</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-users text-2xl text-pink-600"></i>
+                </div>
+                <h3 class="font-bold mb-2">专业团队</h3>
+                <p class="text-gray-600 text-sm">拥有丰富经验的农业专家和技术人员</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-tools text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="font-bold mb-2">先进设备</h3>
+                <p class="text-gray-600 text-sm">配备现代化农机设备，提高作业效率</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-shield-alt text-2xl text-green-600"></i>
+                </div>
+                <h3 class="font-bold mb-2">质量保障</h3>
+                <p class="text-gray-600 text-sm">严格的质量控制体系，确保服务质量</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-clock text-2xl text-yellow-600"></i>
+                </div>
+                <h3 class="font-bold mb-2">及时响应</h3>
+                <p class="text-gray-600 text-sm">24小时客服支持，及时响应您的需求</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功案例 -->
+    <div class="bg-gray-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">成功案例</h2>
+                <p class="text-gray-600">看看我们为客户创造的价值</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">张农户</h4>
+                            <p class="text-gray-500 text-sm">山东省济南市</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"通过全程托管服务，我的100亩玉米地产量提高了15%，节省了大量人工成本，非常满意！"</p>
+                    <div class="flex items-center text-yellow-500">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">李合作社</h4>
+                            <p class="text-gray-500 text-sm">河南省郑州市</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"农机作业服务非常专业，设备先进，作业质量高，大大提高了我们的工作效率。"</p>
+                    <div class="flex items-center text-yellow-500">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="客户头像" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">王种植户</h4>
+                            <p class="text-gray-500 text-sm">江苏省南京市</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">"科技特派员的技术指导非常到位，帮助我们解决了很多种植难题，收益明显提升。"</p>
+                    <div class="flex items-center text-yellow-500">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 联系我们 -->
+    <div class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">联系我们</h2>
+                <p class="text-gray-600">立即咨询，获取专业的农业社会化服务</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-6">联系方式</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fa fa-phone text-pink-600 mr-4"></i>
+                            <span>400-123-4567</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-envelope text-pink-600 mr-4"></i>
+                            <span>service@smartfarm.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-map-marker-alt text-pink-600 mr-4"></i>
+                            <span>北京市朝阳区农业科技园区</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa fa-clock text-pink-600 mr-4"></i>
+                            <span>服务时间：周一至周日 8:00-20:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold mb-6">在线咨询</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="您的姓名" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="联系电话" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                                <option>请选择服务类型</option>
+                                <option>全程托管服务</option>
+                                <option>农机作业服务</option>
+                                <option>科技特派员帮扶</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea placeholder="详细需求描述" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-pink-600 text-white py-3 rounded-lg hover:bg-pink-700 transition-colors">
+                            提交咨询
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">智慧农业平台</h3>
+                    <p class="text-gray-400 text-sm">专业的农业社会化服务平台，为农户提供全方位的技术支持和服务保障。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">服务项目</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>全程托管服务</li>
+                        <li>农机作业服务</li>
+                        <li>科技特派员帮扶</li>
+                        <li>技术培训指导</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">联系我们</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>电话：400-123-4567</li>
+                        <li>邮箱：service@smartfarm.com</li>
+                        <li>地址：北京市朝阳区农业科技园区</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">关注我们</h4>
+                    <div class="flex space-x-4">
+                        <i class="fab fa-weixin text-2xl text-gray-400 hover:text-white cursor-pointer"></i>
+                        <i class="fab fa-weibo text-2xl text-gray-400 hover:text-white cursor-pointer"></i>
+                        <i class="fab fa-qq text-2xl text-gray-400 hover:text-white cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 智慧农业平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 表单提交处理
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('咨询信息已提交，我们会尽快与您联系！');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

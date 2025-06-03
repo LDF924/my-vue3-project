@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政府项目在线申报</title>
+    <link rel="stylesheet" href="style.css"> <!-- Assuming you have a style.css file -->
+</head>
+<body>
+    <header>
+        <h1>政府项目在线申报</h1>
+    </header>
+
+    <main>
+        <section class="application-form">
+            <h2>申报表格</h2>
+            <p>请填写以下信息以提交您的项目申报。</p>
+            
+            <form action="/submit-application" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="projectName">项目名称:</label>
+                    <input type="text" id="projectName" name="projectName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="applicantName">申报单位/个人:</label>
+                    <input type="text" id="applicantName" name="applicantName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactInfo">联系方式:</label>
+                    <input type="text" id="contactInfo" name="contactInfo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectDescription">项目描述:</label>
+                    <textarea id="projectDescription" name="projectDescription" rows="6" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectBudget">项目预算 (RMB):</label>
+                    <input type="number" id="projectBudget" name="projectBudget" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">开始日期:</label>
+                    <input type="date" id="startDate" name="startDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">结束日期:</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="projectFiles">上传相关文件:</label>
+                    <input type="file" id="projectFiles" name="projectFiles" multiple>
+                </div>
+
+                <!-- Add more form fields as needed -->
+                
+                <button type="submit" class="btn-primary">提交申报</button>
+            </form>
+        </section>
+
+        <section class="instructions">
+            <h2>申报须知</h2>
+            <ul>
+                <li>请确保填写信息的真实性和准确性。</li>
+                <li>上传所有必需的证明文件。</li>
+                <li>如有疑问，请联系相关部门。</li>
+            </ul>
+            <!-- Add more instructions -->
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 政府部门. All rights reserved.</p>
+    </footer>
+
+    <!-- Link back to index -->
+    <p><a href="index.html">返回首页</a></p>
+
+</body>
+</html> 

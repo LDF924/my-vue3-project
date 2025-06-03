@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧农业技术 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',
+            secondary: '#FF8C00',
+            accent: '#22C55E',
+            neutral: '#F8F9FA',
+            dark: '#1E293B',
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+          --tw-translate-y: -0.25rem;
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+        }
+      }
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-primary:hover {
+        background-color: #0c4128;
+        transform: translateY(-1px);
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      
+      <nav class="hidden md:flex items-center space-x-6">
+        <a href="index.html" class="text-dark hover:text-primary transition-colors">首页</a>
+        <a href="market.html" class="text-dark hover:text-primary transition-colors">市场行情</a>
+        <a href="knowledge.html" class="text-dark hover:text-primary transition-colors">知识库</a>
+        <a href="community.html" class="text-dark hover:text-primary transition-colors">社区</a>
+        <a href="dashboard.html" class="text-dark hover:text-primary transition-colors">管理中心</a>
+      </nav>
+      
+      <button class="md:hidden text-dark">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要内容 -->
+  <main class="pt-20">
+    <!-- 页面标题 -->
+    <section class="bg-gradient-to-br from-purple-400 to-purple-600 text-white py-16">
+      <div class="container mx-auto px-4 text-center">
+        <div class="mb-6">
+          <i class="fa fa-robot text-6xl mb-4"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">智慧农业技术</h1>
+        <p class="text-xl opacity-90 max-w-2xl mx-auto">运用物联网、人工智能、大数据等现代信息技术，实现农业生产的智能化、精准化管理</p>
+      </div>
+    </section>
+
+    <!-- 核心功能模块 -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-4">核心技术服务</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">提供全方位的智慧农业技术解决方案，助力沃柑产业现代化发展</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- 物联网监测系统 -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-gradient-to-br from-blue-400 to-blue-600 h-48 flex items-center justify-center">
+              <i class="fa fa-wifi text-6xl text-white"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-3">物联网监测系统</h3>
+              <p class="text-gray-600 mb-4">实时监测土壤湿度、温度、光照、pH值等关键参数，为精准农业提供数据支撑</p>
+              <div class="space-y-2 mb-6">
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>土壤环境监测</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>气象数据采集</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>病虫害预警</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>远程数据传输</span>
+                </div>
+              </div>
+              <button class="btn-primary w-full">
+                <i class="fa fa-info-circle"></i>
+                了解详情
+              </button>
+            </div>
+          </div>
+
+          <!-- 无人机植保服务 -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-gradient-to-br from-green-400 to-green-600 h-48 flex items-center justify-center">
+              <i class="fa fa-helicopter text-6xl text-white"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-3">无人机植保服务</h3>
+              <p class="text-gray-600 mb-4">采用先进无人机技术，实现精准施药、高效作业，降低人工成本</p>
+              <div class="space-y-2 mb-6">
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>精准喷洒作业</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>航拍巡查监测</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>作业数据记录</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>智能路径规划</span>
+                </div>
+              </div>
+              <button class="btn-primary w-full">
+                <i class="fa fa-info-circle"></i>
+                了解详情
+              </button>
+            </div>
+          </div>
+
+          <!-- 数字化管理平台 -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-gradient-to-br from-orange-400 to-orange-600 h-48 flex items-center justify-center">
+              <i class="fa fa-chart-line text-6xl text-white"></i>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-3">数字化管理平台</h3>
+              <p class="text-gray-600 mb-4">集成数据分析、决策支持、生产管理于一体的智能化平台</p>
+              <div class="space-y-2 mb-6">
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>生产数据分析</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>智能决策支持</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>移动端管理</span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>云端数据存储</span>
+                </div>
+              </div>
+              <button class="btn-primary w-full">
+                <i class="fa fa-info-circle"></i>
+                了解详情
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 技术优势 -->
+    <section class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-4">技术优势</h2>
+          <p class="text-gray-600">先进的技术理念与丰富的实践经验相结合</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-brain text-2xl text-blue-600"></i>
+            </div>
+            <h3 class="font-semibold mb-2">AI智能分析</h3>
+            <p class="text-sm text-gray-600">运用人工智能算法，智能分析农业数据，提供精准决策建议</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-leaf text-2xl text-green-600"></i>
+            </div>
+            <h3 class="font-semibold mb-2">绿色环保</h3>
+            <p class="text-sm text-gray-600">减少农药使用，降低环境污染，实现可持续发展</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-clock text-2xl text-purple-600"></i>
+            </div>
+            <h3 class="font-semibold mb-2">高效便捷</h3>
+            <p class="text-sm text-gray-600">自动化作业，大幅提升工作效率，节省人力成本</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fa fa-shield-alt text-2xl text-orange-600"></i>
+            </div>
+            <h3 class="font-semibold mb-2">数据安全</h3>
+            <p class="text-sm text-gray-600">采用先进加密技术，确保农业数据安全可靠</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 应用案例 -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-4">应用案例</h2>
+          <p class="text-gray-600">成功案例见证技术实力</p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <img src="https://picsum.photos/600/300" alt="案例1" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-3">武鸣现代农业示范园</h3>
+              <p class="text-gray-600 mb-4">通过部署智慧农业系统，实现了沃柑产量提升30%，农药使用减少40%</p>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-500">项目规模：500亩</span>
+                <button class="text-primary hover:text-primary/80 text-sm font-medium">
+                  查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <img src="https://picsum.photos/600/301" alt="案例2" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-3">广西沃柑智慧基地</h3>
+              <p class="text-gray-600 mb-4">采用无人机植保技术，作业效率提升5倍，成本降低60%</p>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-500">项目规模：1200亩</span>
+                <button class="text-primary hover:text-primary/80 text-sm font-medium">
+                  查看详情 <i class="fa fa-arrow-right ml-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 服务流程 -->
+    <section class="bg-gray-50 py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-4">服务流程</h2>
+          <p class="text-gray-600">专业的服务流程，确保项目顺利实施</p>
+        </div>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+            <h3 class="font-semibold mb-2">需求调研</h3>
+            <p class="text-sm text-gray-600">深入了解客户需求，制定个性化解决方案</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+            <h3 class="font-semibold mb-2">方案设计</h3>
+            <p class="text-sm text-gray-600">根据实际情况，设计最优的技术实施方案</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+            <h3 class="font-semibold mb-2">设备部署</h3>
+            <p class="text-sm text-gray-600">专业团队现场安装调试，确保系统正常运行</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+            <h3 class="font-semibold mb-2">培训维护</h3>
+            <p class="text-sm text-gray-600">提供操作培训和后续维护服务支持</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系咨询 -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="bg-gradient-to-r from-primary to-green-600 rounded-2xl p-8 md:p-12 text-white text-center">
+          <h2 class="text-3xl font-bold mb-4">开启智慧农业新时代</h2>
+          <p class="text-xl opacity-90 mb-8 max-w-2xl mx-auto">专业的技术团队，为您提供一站式智慧农业解决方案</p>
+          
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="text-center">
+              <i class="fa fa-phone text-3xl mb-2"></i>
+              <h3 class="font-semibold mb-1">电话咨询</h3>
+              <p class="opacity-90">400-123-4567</p>
+            </div>
+            
+            <div class="text-center">
+              <i class="fa fa-envelope text-3xl mb-2"></i>
+              <h3 class="font-semibold mb-1">邮件咨询</h3>
+              <p class="opacity-90">smart@wuming.com</p>
+            </div>
+            
+            <div class="text-center">
+              <i class="fa fa-map-marker-alt text-3xl mb-2"></i>
+              <h3 class="font-semibold mb-1">实地考察</h3>
+              <p class="opacity-90">广西南宁武鸣区</p>
+            </div>
+          </div>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <i class="fa fa-phone mr-2"></i>
+              立即咨询
+            </button>
+            <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors">
+              <i class="fa fa-download mr-2"></i>
+              下载方案
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-8 h-8 rounded-full">
+            <span class="text-lg font-bold">武鸣沃柑产业平台</span>
+          </div>
+          <p class="text-gray-400 text-sm">致力于推动沃柑产业数字化转型，打造现代化农业生态系统。</p>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold mb-4">快速链接</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+            <li><a href="market.html" class="text-gray-400 hover:text-white transition-colors">市场行情</a></li>
+            <li><a href="knowledge.html" class="text-gray-400 hover:text-white transition-colors">知识库</a></li>
+            <li><a href="community.html" class="text-gray-400 hover:text-white transition-colors">社区</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold mb-4">技术服务</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">物联网监测</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">无人机植保</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">数字化管理</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">技术培训</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold mb-4">联系我们</h3>
+          <div class="space-y-2 text-sm text-gray-400">
+            <p><i class="fa fa-phone mr-2"></i>400-123-4567</p>
+            <p><i class="fa fa-envelope mr-2"></i>smart@wuming.com</p>
+            <p><i class="fa fa-map-marker-alt mr-2"></i>广西南宁武鸣区</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+        <p>&copy; 2024 武鸣沃柑产业数字化平台. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.classList.add('bg-white/95');
+      } else {
+        header.classList.remove('bg-white/95');
+      }
+    });
+  </script>
+</body>
+</html>

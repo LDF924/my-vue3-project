@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出口贸易服务</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Microsoft YaHei', Arial, sans-serif; background: #f6f8fb; margin: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding: 32px; }
+        h1 { color: #2b6cb0; }
+        .service-list { margin: 24px 0; }
+        .service-list li { margin-bottom: 12px; font-size: 16px; }
+        .price-info { background: #f0f4fa; border-radius: 8px; padding: 16px; margin: 24px 0; color: #2b6cb0; font-size: 18px; }
+        .apply-form { margin-top: 32px; }
+        .apply-form label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .apply-form input, .apply-form textarea, .apply-form select { width: 100%; padding: 8px; margin-bottom: 16px; border: 1px solid #cbd5e1; border-radius: 4px; }
+        .apply-form button { background: #2b6cb0; color: #fff; border: none; padding: 12px 32px; border-radius: 6px; font-size: 16px; cursor: pointer; }
+        .apply-form button:hover { background: #225ea8; }
+        .success-message { color: #38a169; font-size: 18px; margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>出口贸易服务</h1>
+        <p>销售加拿大、泰国等15国，提供清关认证、植物检疫等服务</p>
+        <ul class="service-list">
+            <li>✅ 清关认证服务</li>
+            <li>✅ 植物检疫证书办理</li>
+            <li>✅ 出口资质认证指导</li>
+        </ul>
+        <div class="price-info">
+            出口价格：6-12元/斤，认证费用2-5万元/次
+        </div>
+        <form class="apply-form" id="exportApplyForm">
+            <h2>出口申请表</h2>
+            <label for="company">公司名称</label>
+            <input type="text" id="company" name="company" required>
+            <label for="contact">联系人</label>
+            <input type="text" id="contact" name="contact" required>
+            <label for="phone">联系电话</label>
+            <input type="tel" id="phone" name="phone" required>
+            <label for="country">出口国家</label>
+            <select id="country" name="country" required>
+                <option value="">请选择</option>
+                <option value="加拿大">加拿大</option>
+                <option value="泰国">泰国</option>
+                <option value="新加坡">新加坡</option>
+                <option value="马来西亚">马来西亚</option>
+                <option value="其他">其他</option>
+            </select>
+            <label for="product">出口产品</label>
+            <input type="text" id="product" name="product" required>
+            <label for="weight">出口重量（斤）</label>
+            <input type="number" id="weight" name="weight" min="1" required>
+            <label for="note">备注</label>
+            <textarea id="note" name="note" rows="3"></textarea>
+            <button type="submit">提交申请</button>
+            <div class="success-message" id="successMsg" style="display:none;">申请已提交，我们会尽快与您联系！</div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('exportApplyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('successMsg').style.display = 'block';
+            this.reset();
+        });
+    </script>
+</body>
+</html> 

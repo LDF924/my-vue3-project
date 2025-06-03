@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>土地流转服务 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-neutral min-h-screen">
+  <header class="bg-white shadow p-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <img src="https://picsum.photos/40/40" alt="logo" class="w-10 h-10 rounded-full">
+      <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+    </div>
+    <a href="index.html" class="text-primary hover:underline flex items-center"><i class="fa fa-arrow-left mr-2"></i>返回首页</a>
+  </header>
+  <main class="max-w-5xl mx-auto p-4 mt-8">
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center"><i class="fa fa-map mr-3"></i>土地流转服务</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 土地信息登记 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="font-semibold text-orange-600 mb-3">土地信息登记</h4>
+          <form class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">土地位置</label>
+              <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">面积（亩）</label>
+              <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">流转方式</label>
+              <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+                <option>出租</option>
+                <option>转让</option>
+                <option>互换</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">期望价格（元/亩/年）</label>
+              <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500">
+            </div>
+            <button type="submit" class="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+              发布信息
+            </button>
+          </form>
+        </div>
+        <!-- 土地匹配结果 -->
+        <div class="bg-gray-50 rounded-lg p-4">
+          <h4 class="font-semibold text-orange-600 mb-3">土地匹配结果</h4>
+          <div class="space-y-4">
+            <div class="bg-white p-4 rounded-lg">
+              <h5 class="font-medium text-gray-900 mb-2">武鸣区双桥镇果园地块</h5>
+              <div class="space-y-2 text-sm text-gray-600">
+                <p>面积：50亩</p>
+                <p>租金：1000元/亩/年</p>
+                <p>土地类型：果园</p>
+                <p>设施条件：水利设施完善，交通便利</p>
+              </div>
+              <button class="mt-3 w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                联系业主
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html> 

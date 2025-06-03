@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>市场行情 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- 引入市场行情模块 -->
+  <script type="module">
+    import { initMarketData } from './js/marketData.js';
+    document.addEventListener('DOMContentLoaded', initMarketData);
+  </script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          transform: translateY(-0.25rem);
+        }
+      }
+      .btn-primary {
+        background-color: theme('colors.primary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          background-color: color-mix(in srgb, theme('colors.primary') 90%, transparent);
+        }
+      }
+      .btn-secondary {
+        background-color: theme('colors.secondary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          background-color: color-mix(in srgb, theme('colors.secondary') 90%, transparent);
+        }
+      }
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-home mr-2"></i>首页
+        </a>
+        <a href="dashboard.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-chart-bar mr-2"></i>数据看板
+        </a>
+        <a href="farm-management.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-calendar mr-2"></i>农事管理
+        </a>
+        <a href="trace.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-qrcode mr-2"></i>产品溯源
+        </a>
+        <a href="market.html" class="text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-line-chart mr-2"></i>市场行情
+        </a>
+        <a href="community.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-comments mr-2"></i>交流社区
+        </a>
+      </nav>
+      
+      <button class="md:hidden text-dark" id="menuBtn">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要内容区域 -->
+  <main class="pt-20 pb-12">
+    <div class="container mx-auto px-4">
+      <!-- 市场概览 -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mb-6">市场概览</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- 当前均价 -->
+          <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">当前均价</h3>
+              <span class="text-sm text-gray-500">更新于 <span id="priceUpdateTime">--</span></span>
+            </div>
+            <div class="text-3xl font-bold text-secondary mb-2">
+              ¥<span id="currentPrice">--</span><span class="text-base font-normal text-gray-500">/kg</span>
+            </div>
+            <div class="flex items-center text-sm">
+              <span id="priceChange" class="text-accent">--</span>
+              <span class="text-gray-500 ml-2">较上周</span>
+            </div>
+          </div>
+          
+          <!-- 交易量 -->
+          <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">今日交易量</h3>
+              <span class="text-sm text-gray-500">更新于 <span id="volumeUpdateTime">--</span></span>
+            </div>
+            <div class="text-3xl font-bold text-primary mb-2">
+              <span id="currentVolume">--</span><span class="text-base font-normal text-gray-500">吨</span>
+            </div>
+            <div class="flex items-center text-sm">
+              <span id="volumeChange" class="text-accent">--</span>
+              <span class="text-gray-500 ml-2">较昨日</span>
+            </div>
+          </div>
+          
+          <!-- 市场趋势 -->
+          <div class="bg-white rounded-xl p-6 shadow-sm card-hover">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold">市场趋势</h3>
+              <span class="text-sm text-gray-500">7天预测</span>
+            </div>
+            <div class="text-3xl font-bold text-accent mb-2" id="marketTrend">--</div>
+            <div class="text-sm text-gray-500" id="trendAnalysis">--</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 价格走势图 -->
+      <section class="bg-white rounded-xl p-6 shadow-sm mb-8">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-bold">价格走势</h2>
+          <div class="flex items-center space-x-4">
+            <select id="timeRange" class="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="7">近7天</option>
+              <option value="30">近30天</option>
+              <option value="90">近3个月</option>
+              <option value="365">近1年</option>
+            </select>
+            <button class="btn-primary" onclick="exportPriceData()">
+              <i class="fa fa-download mr-2"></i>导出数据
+            </button>
+          </div>
+        </div>
+        <div class="h-[400px]">
+          <canvas id="priceChart"></canvas>
+        </div>
+      </section>
+
+      <!-- 供需分析 -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <!-- 供应分析 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-6">供应分析</h2>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">当前供应量</span>
+              <span class="font-semibold" id="currentSupply">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">预计收获量</span>
+              <span class="font-semibold" id="expectedHarvest">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">库存水平</span>
+              <span class="font-semibold" id="stockLevel">--</span>
+            </div>
+          </div>
+          <div class="mt-6">
+            <canvas id="supplyChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- 需求分析 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm">
+          <h2 class="text-xl font-bold mb-6">需求分析</h2>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">当前需求量</span>
+              <span class="font-semibold" id="currentDemand">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">订单趋势</span>
+              <span class="font-semibold" id="orderTrend">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">主要销售区域</span>
+              <span class="font-semibold" id="mainSalesRegions">--</span>
+            </div>
+          </div>
+          <div class="mt-6">
+            <canvas id="demandChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- 市场资讯 -->
+      <section class="bg-white rounded-xl p-6 shadow-sm">
+        <h2 class="text-2xl font-bold mb-6">市场资讯</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="marketNews">
+          <!-- 资讯卡片将通过 JavaScript 动态生成 -->
+        </div>
+        <div class="text-center mt-8">
+          <button class="btn-primary" onclick="loadMoreNews()">
+            加载更多
+            <i class="fa fa-chevron-down ml-2"></i>
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-white border-t">
+    <div class="container mx-auto px-4 py-8">
+      <div class="text-center text-gray-500 text-sm">
+        © 2024 武鸣沃柑产业数字化平台. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- 移动端菜单 -->
+  <div class="md:hidden fixed inset-y-0 right-0 w-4/5 max-w-sm bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50" id="mobileMenu">
+    <div class="h-full flex flex-col">
+      <div class="flex items-center justify-between p-4 border-b">
+        <span class="text-lg font-bold text-primary">菜单导航</span>
+        <button class="text-dark" id="closeMenu">
+          <i class="fa fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto py-4">
+        <div class="flex flex-col space-y-4 px-4">
+          <a href="index.html" class="text-dark hover:text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-home w-8"></i>首页
+          </a>
+          <a href="dashboard.html" class="text-dark hover:text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-chart-bar w-8"></i>数据看板
+          </a>
+          <a href="farm-management.html" class="text-dark hover:text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-calendar w-8"></i>农事管理
+          </a>
+          <a href="trace.html" class="text-dark hover:text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-qrcode w-8"></i>产品溯源
+          </a>
+          <a href="market.html" class="text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-line-chart w-8"></i>市场行情
+          </a>
+          <a href="community.html" class="text-dark hover:text-primary font-medium py-2 flex items-center">
+            <i class="fa fa-comments w-8"></i>交流社区
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 移动端菜单控制
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuBtn = document.getElementById('menuBtn');
+    const closeMenu = document.getElementById('closeMenu');
+    let isMenuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      isMenuOpen = true;
+      mobileMenu.classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeMenu.addEventListener('click', () => {
+      isMenuOpen = false;
+      mobileMenu.classList.add('translate-x-full');
+      document.body.style.overflow = 'auto';
+    });
+
+    // 点击遮罩层关闭菜单
+    document.addEventListener('click', (e) => {
+      if (isMenuOpen && !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        isMenuOpen = false;
+        mobileMenu.classList.add('translate-x-full');
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
+</body>
+</html>

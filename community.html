@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>交流社区 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 引入社区数据模块 -->
+  <script type="module">
+    import { initCommunityData } from './js/communityData.js';
+    import { initCommunitySearch } from './js/communitySearch.js';
+    import { initCommunity } from './js/community.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initCommunityData();
+      initCommunitySearch();
+      initCommunity();
+    });
+  </script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+          --tw-translate-y: -0.25rem;
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+        }
+      }
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s;
+      }
+      .btn-secondary {
+        background-color: var(--secondary);
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s;
+      }
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 社区数据统计 -->
+  <div class="bg-white shadow-sm border-b sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- 综合讨论 -->
+        <div class="bg-neutral rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-primary mb-1" data-community="discussions">--</div>
+          <div class="text-sm text-gray-600">综合讨论</div>
+        </div>
+        <!-- 种植技术 -->
+        <div class="bg-neutral rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-primary mb-1" data-community="techPosts">--</div>
+          <div class="text-sm text-gray-600">种植技术</div>
+        </div>
+        <!-- 市场行情 -->
+        <div class="bg-neutral rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-primary mb-1" data-community="marketInfo">--</div>
+          <div class="text-sm text-gray-600">市场行情</div>
+        </div>
+        <!-- 问答互助 -->
+        <div class="bg-neutral rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold text-primary mb-1" data-community="helpPosts">--</div>
+          <div class="text-sm text-gray-600">问答互助</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="flex items-center space-x-2">
+          <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+          <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+        </a>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html#home" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-home mr-2"></i>首页
+        </a>
+        <a href="index.html#dashboard" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-chart-bar mr-2"></i>数据看板
+        </a>
+        <a href="index.html#services" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-concierge-bell mr-2"></i>服务中心
+        </a>
+        <a href="index.html#trace" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-qrcode mr-2"></i>产品溯源
+        </a>
+        <a href="index.html#news" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-newspaper mr-2"></i>产业资讯
+        </a>
+        <a href="#" class="text-dark hover:text-secondary font-medium transition-colors flex items-center">
+          <i class="fa fa-comments mr-2"></i>交流社区
+        </a>
+      </nav>
+      
+      <!-- 移动端菜单按钮 -->
+      <button class="md:hidden text-dark" id="menuBtn">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要内容区域 -->
+  <main class="pt-20">
+    <!-- 社区头部 -->
+    <section class="bg-primary text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">交流社区</h1>
+            <p class="text-white/90">加入沃柑产业交流社区，分享经验，互助成长</p>
+          </div>
+          <button onclick="showPostModal()" class="btn-secondary border-2 border-secondary bg-secondary hover:bg-secondary/90 transition-colors flex items-center">
+            <i class="fa fa-plus mr-2"></i><span>发布帖子</span>
+          </button>
+          <!-- 参与回答按钮 -->
+          <div class="relative">
+            <button onclick="toggleAnswerDropdown()" class="border-2 border-secondary bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-2 rounded-lg transition-colors ml-4 flex items-center">
+              <span class="flex items-center">
+                <i class="fa fa-comment mr-1"></i>参与回答
+              </span>
+            </button>
+
+            <!-- 功能模块下拉菜单 -->
+            <div id="answerDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50">
+              <div class="py-2">
+                <button onclick="handleQuickAnswer()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center text-black">
+                  <i class="fa fa-bolt mr-2 text-yellow-500"></i>快速回答
+                </button>
+                <button onclick="handleDetailedAnswer()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center text-black">
+                  <i class="fa fa-edit mr-2 text-blue-500"></i>详细解答
+                </button>
+                <button onclick="handleImageAnswer()" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center text-black">
+                  <i class="fa fa-image mr-2 text-green-500"></i>图片回答
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            // 切换下拉菜单显示状态
+            function toggleAnswerDropdown() {
+              const dropdown = document.getElementById('answerDropdown');
+              dropdown.classList.toggle('hidden');
+            }
+
+            // 点击其他地方关闭下拉菜单
+            document.addEventListener('click', (e) => {
+              const dropdown = document.getElementById('answerDropdown');
+              if (!e.target.closest('.relative') && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+              }
+            });
+
+            // 快速回答处理函数
+            function handleQuickAnswer() {
+              if(!isUserLoggedIn()) {
+                auth.showAuthModal();
+                return;
+              }
+              showQuickAnswerInput();
+            }
+
+            // 详细解答处理函数
+            function handleDetailedAnswer() {
+              if(!isUserLoggedIn()) {
+                auth.showAuthModal();
+                return;
+              }
+              showDetailedAnswerInput();
+            }
+
+            // 图片回答处理函数
+            function handleImageAnswer() {
+              if(!isUserLoggedIn()) {
+                auth.showAuthModal();
+                return;
+              }
+              showImageAnswerInput();
+            }
+
+            // 检查用户登录状态
+            function isUserLoggedIn() {
+              return localStorage.getItem('userLoggedIn') === 'true';
+            }
+
+            // 显示快速回答输入框
+            function showQuickAnswerInput() {
+              const answerModal = document.createElement('div');
+              answerModal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+              answerModal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-xl w-full max-w-xl mx-4 p-6">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold">快速回答</h3>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <textarea class="w-full h-24 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50" 
+                    placeholder="简短的回答内容..."></textarea>
+                  <div class="flex justify-end space-x-4 mt-4">
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                      class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">取消</button>
+                    <button onclick="submitAnswer(this)" 
+                      class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">提交回答</button>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(answerModal);
+            }
+
+            // 显示详细解答输入框
+            function showDetailedAnswerInput() {
+              const answerModal = document.createElement('div');
+              answerModal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+              answerModal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 p-6">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold">详细解答</h3>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <input type="text" class="w-full p-3 border rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="解答标题...">
+                  <textarea class="w-full h-48 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50" 
+                    placeholder="详细的解答内容..."></textarea>
+                  <div class="flex justify-end space-x-4 mt-4">
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                      class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">取消</button>
+                    <button onclick="submitDetailedAnswer(this)" 
+                      class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">提交解答</button>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(answerModal);
+            }
+
+            // 显示图片回答输入框
+            function showImageAnswerInput() {
+              const answerModal = document.createElement('div');
+              answerModal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+              answerModal.innerHTML = `
+                <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 p-6">
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold">图片回答</h3>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <textarea class="w-full h-32 p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 mb-4" 
+                    placeholder="回答内容..."></textarea>
+                  <div class="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center mb-4">
+                    <i class="fa fa-image text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500">点击或拖拽上传图片</p>
+                    <p class="text-sm text-gray-400 mt-1">支持jpg、png格式，最多3张</p>
+                  </div>
+                  <div class="flex justify-end space-x-4">
+                    <button onclick="this.parentElement.parentElement.parentElement.remove()" 
+                      class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">取消</button>
+                    <button onclick="submitImageAnswer(this)" 
+                      class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">提交回答</button>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(answerModal);
+            }
+
+            // 提交回答的通用函数
+            function submitAnswer(btn) {
+              const content = btn.parentElement.parentElement.querySelector('textarea').value;
+              if(!content.trim()) {
+                alert('请输入回答内容');
+                return;
+              }
+              
+              // TODO: 发送回答到服务器
+              console.log('提交回答:', content);
+              
+              // 关闭模态框
+              btn.parentElement.parentElement.parentElement.remove();
+              
+              // 显示提交成功提示
+              alert('回答提交成功！');
+            }
+
+            // 提交详细解答
+            function submitDetailedAnswer(btn) {
+              const title = btn.parentElement.parentElement.querySelector('input').value;
+              const content = btn.parentElement.parentElement.querySelector('textarea').value;
+              
+              if(!title.trim() || !content.trim()) {
+                alert('请填写完整的解答内容');
+                return;
+              }
+              
+              // TODO: 发送详细解答到服务器
+              console.log('提交详细解答:', {title, content});
+              
+              btn.parentElement.parentElement.parentElement.remove();
+              alert('解答提交成功！');
+            }
+
+            // 提交图片回答
+            function submitImageAnswer(btn) {
+              const content = btn.parentElement.parentElement.querySelector('textarea').value;
+              
+              if(!content.trim()) {
+                alert('请输入回答内容');
+                return;
+              }
+              
+              // TODO: 处理图片上传和发送到服务器
+              console.log('提交图片回答:', content);
+              
+              btn.parentElement.parentElement.parentElement.remove();
+              alert('回答提交成功！');
+            }
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <!-- 帖子列表 -->
+    <section class="py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- 左侧边栏 -->
+          <div class="md:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6 sticky top-24">
+              <h3 class="text-lg font-semibold mb-4">社区数据</h3>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">总帖子数</span>
+                  <span class="font-semibold">1,234</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">活跃用户</span>
+                  <span class="font-semibold">526</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">今日发帖</span>
+                  <span class="font-semibold">45</span>
+                </div>
+              </div>
+              <hr class="my-4">
+              <h3 class="text-lg font-semibold mb-4">热门标签</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">#种植技术</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">#病虫害防治</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">#市场行情</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">#果园管理</span>
+                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">#品质提升</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 帖子列表 -->
+          <div class="md:col-span-2 space-y-6">
+            <!-- 筛选栏 -->
+            <div class="bg-white rounded-xl shadow-md p-4 flex flex-wrap gap-4 items-center">
+              <button class="px-4 py-2 rounded-lg bg-primary text-white">最新发布</button>
+              <button class="px-4 py-2 rounded-lg hover:bg-gray-100">最多回复</button>
+              <button class="px-4 py-2 rounded-lg hover:bg-gray-100">最多点赞</button>
+              <div class="flex-grow"></div>
+              <div class="relative">
+                <input type="text" placeholder="搜索帖子..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              </div>
+            </div>
+
+            <!-- 帖子列表 -->
+            <div class="space-y-6">
+              <!-- 帖子1 -->
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://picsum.photos/40/40" alt="用户头像" class="w-10 h-10 rounded-full">
+                    <div>
+                      <h3 class="font-semibold">果农老王</h3>
+                      <p class="text-sm text-gray-500">2小时前</p>
+                    </div>
+                  </div>
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                </div>
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold mb-2">分享一下我的沃柑种植经验</h2>
+                  <p class="text-gray-600 line-clamp-3">今年的沃柑长势特别好，主要得益于以下几点：1. 合理施肥，采用有机肥为主，配合适量的复合肥；2. 科学修剪，保持树冠通风透光；3. 及时防治病虫害，特别是在萌芽期和果实膨大期...</p>
+                  <div class="grid grid-cols-3 gap-2 mt-4">
+                    <img src="https://picsum.photos/400/300" alt="果园照片" class="rounded-lg w-full h-32 object-cover">
+                    <img src="https://picsum.photos/400/301" alt="果园照片" class="rounded-lg w-full h-32 object-cover">
+                    <img src="https://picsum.photos/400/302" alt="果园照片" class="rounded-lg w-full h-32 object-cover">
+                  </div>
+                </div>
+                <div class="flex items-center space-x-6 mt-4 pt-4 border-t">
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-thumbs-up"></i>
+                    <span>88</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-comment"></i>
+                    <span>36</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-share"></i>
+                    <span>分享</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 帖子2 -->
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://picsum.photos/41/41" alt="用户头像" class="w-10 h-10 rounded-full">
+                    <div>
+                      <h3 class="font-semibold">技术专家李工</h3>
+                      <p class="text-sm text-gray-500">4小时前</p>
+                    </div>
+                  </div>
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                </div>
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold mb-2">关于沃柑黄龙病防治的几点建议</h2>
+                  <p class="text-gray-600 line-clamp-3">最近收到多位果农咨询黄龙病防治问题，在此分享一些专业建议：1. 选用抗病砧木；2. 定期检查，早发现早处理；3. 加强园区卫生，及时清除病株；4. 科学用药，注意防治木虱...</p>
+                </div>
+                <div class="flex items-center space-x-6 mt-4 pt-4 border-t">
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-thumbs-up"></i>
+                    <span>156</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-comment"></i>
+                    <span>52</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-share"></i>
+                    <span>分享</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 帖子3 -->
+              <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center space-x-3">
+                    <img src="https://picsum.photos/42/42" alt="用户头像" class="w-10 h-10 rounded-full">
+                    <div>
+                      <h3 class="font-semibold">果园小张</h3>
+                      <p class="text-sm text-gray-500">6小时前</p>
+                    </div>
+                  </div>
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <i class="fa fa-ellipsis-v"></i>
+                  </button>
+                </div>
+                <div class="mt-4">
+                  <h2 class="text-xl font-semibold mb-2">今年的沃柑市场行情分析</h2>
+                  <p class="text-gray-600 line-clamp-3">根据最近的市场调研，今年沃柑的市场需求持续走强，尤其是优质果，价格比去年同期上涨15%左右。主要原因是：1. 品质提升带来品牌效应；2. 电商渠道拓展顺利；3. 消费者认可度提高...</p>
+                </div>
+                <div class="flex items-center space-x-6 mt-4 pt-4 border-t">
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-thumbs-up"></i>
+                    <span>92</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-comment"></i>
+                    <span>28</span>
+                  </button>
+                  <button class="text-gray-500 hover:text-primary flex items-center space-x-2">
+                    <i class="fa fa-share"></i>
+                    <span>分享</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+        <!-- 行业问答板块 -->
+        <div class="lg:col-span-3 bg-white rounded-xl shadow-md overflow-hidden card-hover mx-auto px-4 max-w-7xl">
+          <div class="flex items-center justify-between p-6 border-b border-gray-100">
+            <div class="flex items-center gap-3">
+              <div class="bg-accent/10 w-12 h-12 rounded-full flex items-center justify-center">
+                <i class="fa fa-question-circle text-accent text-xl"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold">行业问答</h3>
+                <p class="text-gray-600 text-sm">解决种植销售实际问题</p>
+              </div>
+            </div>
+            <a href="#" class="text-primary hover:text-primary/80 transition-colors">
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+          <div class="p-6 space-y-4">
+            <!-- 问答项1 -->
+            <div class="bg-gray-50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+              <div class="flex items-start gap-4">
+                <img src="https://picsum.photos/40/40" alt="用户头像" class="w-10 h-10 rounded-full" loading="lazy">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h4 class="font-semibold text-base">如何提高沃柑品质？</h4>
+                    <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">种植技术</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-3">分享下提高沃柑品质的关键技术要点，包括水肥管理、整形修剪等方面的具体措施...</p>
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center gap-4">
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-comment mr-1"></i> 15 回答</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-thumbs-up mr-1"></i> 28 赞</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-star mr-1"></i> 12 收藏</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-primary">张三</span>
+                      <span>2024-05-25</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 问答项2 -->
+            <div class="bg-gray-50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+              <div class="flex items-start gap-4">
+                <img src="https://picsum.photos/41/41" alt="用户头像" class="w-10 h-10 rounded-full" loading="lazy">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h4 class="font-semibold text-base">沃柑采后保鲜技术？</h4>
+                    <span class="text-xs px-2 py-1 bg-secondary/10 text-secondary rounded-full">采后处理</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-3">请教下沃柑采后如何保持新鲜度，需要注意温度、湿度等环境因素的控制要点...</p>
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center gap-4">
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-comment mr-1"></i> 12 回答</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-thumbs-up mr-1"></i> 20 赞</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-star mr-1"></i> 8 收藏</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-primary">李四</span>
+                      <span>2024-05-23</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 问答项3 -->
+            <div class="bg-gray-50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+              <div class="flex items-start gap-4">
+                <img src="https://picsum.photos/42/42" alt="用户头像" class="w-10 h-10 rounded-full" loading="lazy">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h4 class="font-semibold text-base">沃柑病虫害防治方法？</h4>
+                    <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">病虫防治</span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-3">如何科学防治沃柑常见病虫害，特别是黄龙病、红蜘蛛等主要病虫害的防控措施...</p>
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center gap-4">
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-comment mr-1"></i> 18 回答</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-thumbs-up mr-1"></i> 24 赞</span>
+                      <span class="hover:text-primary cursor-pointer"><i class="fa fa-star mr-1"></i> 10 收藏</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-primary">王五</span>
+                      <span>2024-05-21</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- 加载更多 -->
+ <button class="w-full py-3 text-center text-gray-600 hover:text-primary transition-colors">
+  <i class="fa fa-spinner mr-2"></i>加载更多
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+  <!-- 发帖模态框 -->
+  <div id="postModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 overflow-hidden">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold">发布帖子</h3>
+          <button onclick="hidePostModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        <form class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+            <input type="text" placeholder="请输入帖子标题" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+            <textarea rows="6" placeholder="请输入帖子内容" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">添加图片</label>
+            <div class="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+              <i class="fa fa-image text-4xl text-gray-400 mb-2"></i>
+              <p class="text-gray-500">点击或拖拽图片上传</p>
+              <p class="text-sm text-gray-400 mt-1">支持jpg、png格式，最多上传9张</p>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">添加标签</label>
+            <input type="text" placeholder="输入标签，按回车添加" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          </div>
+        </form>
+        <div class="flex justify-end space-x-4 mt-6">
+          <button onclick="hidePostModal()" class="px-6 py-2 rounded-lg border border-gray-200 hover:bg-gray-50">取消</button>
+          <button class="btn-primary">发布</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    const menuBtn = document.getElementById('menuBtn');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('shadow-md');
+      } else {
+        navbar.classList.remove('shadow-md');
+      }
+    });
+
+    // 发帖模态框控制
+    function showPostModal() {
+      const postModal = document.getElementById('postModal');
+      postModal.classList.remove('hidden');
+      postModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hidePostModal() {
+      const postModal = document.getElementById('postModal');
+      postModal.classList.add('hidden');
+      postModal.classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+  <!-- 用户身份验证模态框 -->
+  <div id="authModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">请选择您的身份</h3>
+          <button onclick="auth.hideAuthModal()" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <p class="text-gray-600 mb-6">为了提供更好的交流体验，请选择您的身份类型</p>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="space-y-2">
+            <h4 class="font-medium text-primary flex items-center">
+              <i class="fa fa-graduation-cap mr-2"></i>教育机构
+            </h4>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="student" class="text-primary">
+              <span>高校相关专业学生</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="teacher" class="text-primary">
+              <span>高校相关专业老师</span>
+            </label>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-medium text-primary flex items-center">
+              <i class="fa fa-building mr-2"></i>企业/商户
+            </h4>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="ecommerce" class="text-primary">
+              <span>电商公司</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="coop" class="text-primary">
+              <span>农业合作社</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="store" class="text-primary">
+              <span>农资超市老板</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="market" class="text-primary">
+              <span>水果市场摊贩</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="company" class="text-primary">
+              <span>沃柑生产企业负责人</span>
+            </label>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-medium text-primary flex items-center">
+              <i class="fa fa-landmark mr-2"></i>政府/机构
+            </h4>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="agri_bureau" class="text-primary">
+              <span>农业局</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="research" class="text-primary">
+              <span>农业研究所</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="village" class="text-primary">
+              <span>村委</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="bank" class="text-primary">
+              <span>银行</span>
+            </label>
+          </div>
+          <div class="space-y-2">
+            <h4 class="font-medium text-primary flex items-center">
+              <i class="fa fa-users mr-2"></i>其他
+            </h4>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="farmer" class="text-primary">
+              <span>沃柑种植户</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+              <input type="radio" name="userType" value="consumer" class="text-primary">
+              <span>消费者</span>
+            </label>
+          </div>
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button onclick="auth.hideAuthModal()" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors">
+            <i class="fa fa-times mr-2"></i>取消
+          </button>
+          <button onclick="auth.confirmUserType()" class="btn-primary flex items-center">
+            <i class="fa fa-check mr-2"></i>确认身份
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

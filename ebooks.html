@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电子图书下载</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/ebooks.js"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <a href="index.html" class="text-xl font-semibold text-gray-800">首页</a>
+                <div class="flex space-x-4">
+                    <a href="knowledge.html" class="text-gray-600 hover:text-gray-800">知识库</a>
+                    <a href="ebooks.html" class="text-blue-500 font-semibold">电子图书</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">电子图书资源</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 图书卡片 -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/400x250" alt="沃柑高效栽培技术手册" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h2 class="text-xl font-semibold mb-2">沃柑高效栽培技术手册</h2>
+                    <p class="text-gray-600 mb-4">详细介绍沃柑栽培的各个节节，图文并茂，实用性强</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-500">农业出版社</span>
+                        <span class="text-sm text-gray-500">2024年版</span>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <span class="ml-1 text-sm text-gray-500">4.0</span>
+                        </div>
+                        <span class="mx-2 text-gray-300">|</span>
+                        <span class="text-sm text-gray-500">2,156次下载</span>
+                    </div>
+                    <a href="#" class="mt-4 block w-full bg-blue-500 text-white text-center py-2 rounded-md hover:bg-blue-600 transition duration-300">免费下载</a>
+                </div>
+            </div>
+            <!-- 更多图书卡片可以在这里添加 -->
+        </div>
+    </div>
+</body>
+</html>

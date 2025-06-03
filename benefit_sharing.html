@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利益联结机制公示</title>
+    <!-- Link to your CSS file if you have one -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>利益联结机制公示</h1>
+    </header>
+    <main>
+        <section>
+            <h2>公示详情</h2>
+            <p>这里是利益联结机制的具体公示内容。</p>
+            <!-- Add more content here as needed -->
+        </section>
+
+        <section>
+            <h2>提交您的反馈</h2>
+            <form id="feedbackForm">
+                <div>
+                    <label for="name">姓名:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div>
+                    <label for="email">邮箱:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div>
+                    <label for="feedback">反馈内容:</label>
+                    <textarea id="feedback" name="feedback" rows="4" required></textarea>
+                </div>
+                <div>
+                    <button type="submit">提交</button>
+                </div>
+            </form>
+        </section>
+
+        <section>
+            <h2>动态内容展示</h2>
+            <div id="dynamicContent">
+                <!-- Dynamic content will be loaded here -->
+                <p>加载中...</p>
+            </div>
+            <button id="interactiveButton">点击我进行交互</button>
+            <button id="toggleContentButton">切换动态内容可见性</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const feedback = document.getElementById('feedback').value;
+
+            console.log('Form submitted:', { name, email, feedback });
+
+            // Here you would typically send the data to a backend server
+            // Example using fetch API:
+            
+            fetch('/submit-feedback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, feedback })
+            }).then(response => response.json())
+              .then(data => {
+                console.log('Success:', data);
+                alert('反馈提交成功！');
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+                alert('提交反馈时出错。');
+              });
+            
+
+            // For now, just show an alert
+            // alert('反馈已通过控制台输出，实际提交功能待实现。');
+        });
+
+        // Function to generate and display mock data
+        function displayMockData() {
+            const dynamicContentDiv = document.getElementById('dynamicContent');
+            const mockData = [
+                { id: 1, value: '模拟数据条目 1' },
+                { id: 2, value: '模拟数据条目 2' },
+                { id: 3, value: '模拟数据条目 3' }
+            ];
+
+            let html = '<h3>模拟数据:</h3><ul>';
+            mockData.forEach(item => {
+                html += `<li>${item.value}</li>`;
+            });
+            html += '</ul>';
+
+            dynamicContentDiv.innerHTML = html;
+        }
+
+        // Add event listener to the interactive button
+        document.getElementById('interactiveButton').addEventListener('click', function() {
+            const dynamicContentDiv = document.getElementById('dynamicContent');
+            dynamicContentDiv.innerHTML += '<p>按钮被点击了！</p>';
+        });
+
+        // Function to simulate fetching data from an API
+        function fetchApiData() {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({ message: '这是从模拟API获取的数据！' });
+                }, 1000); // Simulate network delay
+            });
+        }
+
+        // Function to toggle visibility of an element
+        function toggleVisibility(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (element.style.display === 'none') {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            }
+        }
+
+        // Call functions on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayMockData();
+            fetchApiData().then(data => {
+                const dynamicContentDiv = document.getElementById('dynamicContent');
+                dynamicContentDiv.innerHTML += `<p>${data.message}</p>`;
+            });
+
+            // Add event listener for a new button (will be added in HTML)
+            const toggleButton = document.getElementById('toggleContentButton');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', function() {
+                    toggleVisibility('dynamicContent'); // Toggle visibility of dynamic content
+                });
+            }
+        });
+
+    </script>
+</body>
+</html> 

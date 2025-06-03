@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>培训咨询预约 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/auth.js"></script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 300ms;
+      }
+      .btn-primary:hover {
+        background-color: #0B4226;
+      }
+      .section-padding {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- 页面标题 -->
+      <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold text-primary mb-4">
+          <i class="fa fa-calendar-check text-secondary mr-3"></i>专家指导预约
+        </h1>
+        <p class="text-gray-600">一对一专家指导，为您提供专业的沃柑种植技术支持</p>
+      </div>
+
+      <!-- 专家库展示 -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-6">专家库</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 专家卡片 1 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="relative">
+              <img src="/images/experts/expert1.jpg" alt="专家照片" class="w-full h-48 object-cover">
+              <div class="absolute top-0 right-0 bg-green-600 text-white px-3 py-1 rounded-bl-lg">特聘专家</div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">陈教授</h3>
+              <p class="text-gray-600 mb-4">广西农业科学院果树研究所</p>
+              <div class="flex items-center mb-4">
+                <span class="text-yellow-500"><i class="fas fa-star"></i> 4.9</span>
+                <span class="text-gray-400 mx-2">|</span>
+                <span class="text-gray-600">已服务 128 次</span>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm">专注柑橘种植30年，在病虫害防治和品质提升方面有丰富经验</p>
+              <div class="flex justify-between items-center">
+                <span class="text-orange-500 font-bold">¥500/小时</span>
+                <button class="btn-primary">预约咨询</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 专家卡片 2 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="relative">
+              <img src="/images/experts/expert2.jpg" alt="专家照片" class="w-full h-48 object-cover">
+              <div class="absolute top-0 right-0 bg-blue-600 text-white px-3 py-1 rounded-bl-lg">技术顾问</div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">李博士</h3>
+              <p class="text-gray-600 mb-4">武鸣区农业技术推广站</p>
+              <div class="flex items-center mb-4">
+                <span class="text-yellow-500"><i class="fas fa-star"></i> 4.8</span>
+                <span class="text-gray-400 mx-2">|</span>
+                <span class="text-gray-600">已服务 96 次</span>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm">擅长沃柑栽培技术指导，土壤改良和施肥管理</p>
+              <div class="flex justify-between items-center">
+                <span class="text-orange-500 font-bold">¥300/小时</span>
+                <button class="btn-primary">预约咨询</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 专家卡片 3 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="relative">
+              <img src="/images/experts/expert3.jpg" alt="专家照片" class="w-full h-48 object-cover">
+              <div class="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg">资深专家</div>
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">王研究员</h3>
+              <p class="text-gray-600 mb-4">广西大学农学院</p>
+              <div class="flex items-center mb-4">
+                <span class="text-yellow-500"><i class="fas fa-star"></i> 4.7</span>
+                <span class="text-gray-400 mx-2">|</span>
+                <span class="text-gray-600">已服务 85 次</span>
+              </div>
+              <p class="text-gray-600 mb-4 text-sm">专注柑橘品种改良和产业规划，具有丰富的实践经验</p>
+              <div class="flex justify-between items-center">
+                <span class="text-orange-500 font-bold">¥400/小时</span>
+                <button class="btn-primary">预约咨询</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 咨询预约表单 -->
+      <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+        <form id="consultationForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">姓名</label>
+              <input type="text" name="name" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的姓名">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">联系电话</label>
+              <input type="tel" name="phone" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的联系电话">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">咨询类型</label>
+            <select name="type" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="">请选择咨询类型</option>
+              <option value="线下培训">线下培训与观摩</option>
+              <option value="线上指导">线上问诊与远程指导</option>
+              <option value="政策咨询">政策与市场信息咨询</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">种植规模（亩）</label>
+            <input type="number" name="scale" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的种植规模">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">咨询内容</label>
+            <textarea name="content" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 h-32" placeholder="请详细描述您需要咨询的问题"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">期望咨询时间</label>
+            <input type="datetime-local" name="expectedTime" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          </div>
+
+          <button type="submit" class="btn-primary w-full py-3 text-lg">
+            提交预约
+          </button>
+        </form>
+      </div>
+
+      <!-- 联系方式 -->
+      <div class="bg-white rounded-xl shadow-md p-8">
+        <h2 class="text-xl font-bold mb-6">联系方式</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-semibold mb-4">客服热线</h3>
+            <ul class="space-y-2">
+              <li class="text-gray-600"><i class="fa fa-phone mr-2"></i>400-XXX-XXXX</li>
+              <li class="text-gray-600"><i class="fa fa-clock mr-2"></i>工作时间：周一至周五 9:00-18:00</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-4">在线咨询</h3>
+            <ul class="space-y-2">
+              <li class="text-gray-600"><i class="fa fa-envelope mr-2"></i>support@example.com</li>
+              <li class="text-gray-600"><i class="fa fa-weixin mr-2"></i>微信公众号：武鸣沃柑</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('consultationForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const submitButton = event.target.querySelector('button[type="submit"]');
+      
+      try {
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>提交中...';
+        
+        // TODO: 实现表单提交逻辑
+        await new Promise(resolve => setTimeout(resolve, 1000)); // 模拟API请求
+        
+        alert('预约提交成功，我们将尽快与您联系！');
+        event.target.reset();
+      } catch (error) {
+        console.error('提交失败：', error);
+        alert('提交失败，请稍后重试');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML = '提交预约';
+      }
+    });
+  </script>
+</body>
+</html>

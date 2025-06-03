@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>病虫害绿色防控 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/auth.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 300ms;
+      }
+      .btn-primary:hover {
+        background-color: #0B4226;
+      }
+      .section-padding {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+      }
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          transform: translateY(-0.25rem);
+        }
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏占位 -->
+  <div class="h-16"></div>
+
+  <!-- 主要内容区域 -->
+  <main class="container mx-auto px-4 py-8">
+    <!-- 页面标题 -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-primary mb-4">
+        <i class="fa fa-shield-alt text-red-500 mr-3"></i>病虫害绿色防控
+      </h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">专业的沃柑病虫害绿色防控服务，从监测预警到统防统治全程保障</p>
+    </div>
+
+    <!-- 服务内容概述 -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <h2 class="text-xl font-bold mb-4">服务内容</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex items-start">
+          <div class="bg-red-100 rounded-full p-3 mr-4">
+            <i class="fa fa-search text-red-500 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">监测预警</h3>
+            <p class="text-sm text-gray-600">物联网监测设备实时监控，提前预警病虫害风险</p>
+          </div>
+        </div>
+        <div class="flex items-start">
+          <div class="bg-red-100 rounded-full p-3 mr-4">
+            <i class="fa fa-users text-red-500 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">统防统治</h3>
+            <p class="text-sm text-gray-600">区域联防联控，提高防治效率，降低防治成本</p>
+          </div>
+        </div>
+        <div class="flex items-start">
+          <div class="bg-red-100 rounded-full p-3 mr-4">
+            <i class="fa fa-bug text-red-500 text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">黄龙病专项防控</h3>
+            <p class="text-sm text-gray-600">针对性防控方案，保障沃柑产业健康发展</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 病虫害防控服务套餐 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">服务套餐</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 基础套餐 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border border-gray-100">
+          <div class="bg-red-50 p-6 text-center">
+            <h3 class="text-xl font-bold text-primary mb-2">基础套餐</h3>
+            <div class="text-3xl font-bold text-red-500 mb-2">¥500<span class="text-sm text-gray-500">/亩/年</span></div>
+            <p class="text-sm text-gray-600">适合小规模种植户</p>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>季节性病虫害监测</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>基础防治指导</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>电话咨询服务 (3个月)</span>
+              </li>
+              <li class="flex items-center text-gray-400">
+                <i class="fa fa-times-circle mr-2"></i>
+                <span>物联网监测设备</span>
+              </li>
+              <li class="flex items-center text-gray-400">
+                <i class="fa fa-times-circle mr-2"></i>
+                <span>黄龙病专项防控</span>
+              </li>
+            </ul>
+            <button class="w-full bg-primary text-white py-2 rounded-lg mt-6 hover:bg-primary/90 transition-colors">
+              立即预约
+            </button>
+          </div>
+        </div>
+
+        <!-- 标准套餐 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border-2 border-red-500 relative">
+          <div class="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-bl-lg text-sm font-medium">
+            推荐
+          </div>
+          <div class="bg-red-100 p-6 text-center">
+            <h3 class="text-xl font-bold text-primary mb-2">标准套餐</h3>
+            <div class="text-3xl font-bold text-red-500 mb-2">¥800<span class="text-sm text-gray-500">/亩/年</span></div>
+            <p class="text-sm text-gray-600">适合中等规模种植户</p>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>全年病虫害监测</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>专业防治指导</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>电话咨询服务 (全年)</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>统防统治服务</span>
+              </li>
+              <li class="flex items-center text-gray-400">
+                <i class="fa fa-times-circle mr-2"></i>
+                <span>物联网监测设备</span>
+              </li>
+            </ul>
+            <button class="w-full bg-primary text-white py-2 rounded-lg mt-6 hover:bg-primary/90 transition-colors">
+              立即预约
+            </button>
+          </div>
+        </div>
+
+        <!-- 高级套餐 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border border-gray-100">
+          <div class="bg-gradient-to-r from-red-200 to-primary/20 p-6 text-center">
+            <h3 class="text-xl font-bold text-primary mb-2">高级套餐</h3>
+            <div class="text-3xl font-bold text-red-500 mb-2">¥1,200<span class="text-sm text-gray-500">/亩/年</span></div>
+            <p class="text-sm text-gray-600">适合大规模种植户</p>
+          </div>
+          <div class="p-6">
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>物联网实时监测</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>专家定制防治方案</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>7×24小时咨询服务</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>统防统治服务</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                <span>黄龙病专项防控</span>
+              </li>
+            </ul>
+            <button class="w-full bg-primary text-white py-2 rounded-lg mt-6 hover:bg-primary/90 transition-colors">
+              立即预约
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 常见病虫害介绍 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">常见病虫害</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 黄龙病 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1025/300/200" alt="黄龙病" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-red-600 text-white px-3 py-1 rounded-bl-lg">高危害</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-bold mb-1">黄龙病</h3>
+            <p class="text-sm text-gray-600 mb-2">又称柑橘黄龙病，是柑橘类最具毁灭性的病害之一</p>
+            <p class="text-xs text-gray-500">症状：叶片黄化、果实畸形、树势衰弱，最终导致植株死亡</p>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <h4 class="text-sm font-semibold mb-1">防控措施：</h4>
+              <p class="text-xs text-gray-600">清除病株、防治木虱、使用健康苗木、加强园区管理</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 溃疡病 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1026/300/200" alt="溃疡病" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-orange-500 text-white px-3 py-1 rounded-bl-lg">中危害</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-bold mb-1">柑橘溃疡病</h3>
+            <p class="text-sm text-gray-600 mb-2">常见的细菌性病害，影响果实品质和产量</p>
+            <p class="text-xs text-gray-500">症状：叶片、果实和枝条上出现圆形凸起的褐色斑点</p>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <h4 class="text-sm font-semibold mb-1">防控措施：</h4>
+              <p class="text-xs text-gray-600">铜制剂喷施、避免雨季修剪、加强通风透光、清除病叶</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 红蜘蛛 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1027/300/200" alt="红蜘蛛" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-yellow-500 text-white px-3 py-1 rounded-bl-lg">常发生</div>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-bold mb-1">柑橘红蜘蛛</h3>
+            <p class="text-sm text-gray-600 mb-2">常见害虫，干旱季节多发，影响光合作用</p>
+            <p class="text-xs text-gray-500">症状：叶片失绿、黄化，严重时脱落，影响树势</p>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+              <h4 class="text-sm font-semibold mb-1">防控措施：</h4>
+              <p class="text-xs text-gray-600">生物防治、合理用药、增加湿度、保护天敌</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 防控技术专家 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">防控技术专家</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- 专家1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1010/300/200" alt="专家照片" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 rounded-bl-lg">首席专家</div>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-lg font-bold mb-1">陈教授</h3>
+            <p class="text-sm text-gray-600 mb-2">广西植保站</p>
+            <p class="text-xs text-gray-500">25年柑橘病虫害防治经验，黄龙病防控专家</p>
+          </div>
+        </div>
+        
+        <!-- 专家2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1011/300/200" alt="专家照片" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-blue-600 text-white px-3 py-1 rounded-bl-lg">技术顾问</div>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-lg font-bold mb-1">刘工程师</h3>
+            <p class="text-sm text-gray-600 mb-2">武鸣区农技站</p>
+            <p class="text-xs text-gray-500">擅长统防统治技术，病虫害综合防治</p>
+          </div>
+        </div>
+        
+        <!-- 专家3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1012/300/200" alt="专家照片" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-green-600 text-white px-3 py-1 rounded-bl-lg">监测专家</div>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-lg font-bold mb-1">张技师</h3>
+            <p class="text-sm text-gray-600 mb-2">智慧农业研究所</p>
+            <p class="text-xs text-gray-500">专注物联网监测技术，提前预警病虫害</p>
+          </div>
+        </div>
+        
+        <!-- 专家4 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1013/300/200" alt="专家照片" class="w-full h-48 object-cover">
+            <div class="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg">植保专家</div>
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-lg font-bold mb-1">黄博士</h3>
+            <p class="text-sm text-gray-600 mb-2">广西农业大学</p>
+            <p class="text-xs text-gray-500">生物防治与绿色防控技术专家，降低农药使用</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 预约表单 -->
+    <div class="bg-white rounded-xl shadow-md p-8 mb-12">
+      <h2 class="text-2xl font-bold mb-6">预约防控服务</h2>
+      <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+          <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的姓名">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">联系电话</label>
+          <input type="tel" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的联系电话">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">种植面积</label>
+          <input type="number" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入种植面积(亩)">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">服务套餐</label>
+          <select class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+            <option value="">请选择服务套餐</option>
+            <option value="basic">基础套餐</option>
+            <option value="standard">标准套餐</option>
+            <option value="premium">高级套餐</option>
+          </select>
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">种植地址</label>
+          <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入种植地址">
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">病虫害情况描述</label>
+          <textarea rows="4" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请详细描述您园区的病虫害情况或需要防控的问题"></textarea>
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">期望服务时间</label>
+          <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+        </div>
+        <div class="md:col-span-2 text-center">
+          <button type="submit" class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+            提交预约申请
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 常见问题 -->
+    <div class="bg-white rounded-xl shadow-md p-8">
+      <h2 class="text-2xl font-bold mb-6">常见问题</h2>
+      <div class="space-y-4">
+        <div class="border-b border-gray-200 pb-4">
+          <h3 class="font-semibold mb-2">病虫害防控服务如何收费？</h3>
+          <p class="text-gray-600">我们提供基础套餐(500元/亩/年)、标准套餐(800元/亩/年)和高级套餐(1,200元/亩/年)三种选择，根据您的种植规模和需求选择合适的套餐。</p>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <h3 class="font-semibold mb-2">如何判断园区是否感染黄龙病？</h3>
+          <p class="text-gray-600">黄龙病主要症状包括叶片黄化、叶脉变绿、果实畸形变小、树势衰弱等。如果您怀疑园区感染黄龙病，建议立即联系我们的专家进行诊断。</p>
+        </div>
+        <div class="border-b border-gray-200 pb-4">
+          <h3 class="font-semibold mb-2">统防统治有哪些优势？</h3>
+          <p class="text-gray-600">统防统治可以提高防治效率，降低防治成本，减少农药使用量，提高防治效果，有效控制病虫害扩散，保障区域沃柑产业健康发展。</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">物联网监测系统如何工作？</h3>
+          <p class="text-gray-600">物联网监测系统通过在园区安装各类传感器，实时监测温湿度、光照等环境因素，结合病虫害发生规律，提前预警可能发生的病虫害风险，帮助农户提前做好防控准备。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 底部联系方式 -->
+  <div class="bg-primary text-white py-4 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p>病虫害防控热线: 0771-12345678 | 工作时间: 周一至周日 8:00-20:00</p>
+    </div>
+  </div>
+
+  <!-- 返回首页悬浮按钮 -->
+  <a href="index.html" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-primary/90 transition-colors">
+    <i class="fa fa-home"></i>
+  </a>
+
+  <script>
+    // 表单提交处理
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('预约申请已提交，我们的工作人员将尽快与您联系！');
+      this.reset();
+    });
+  </script>
+</body>
+</html>

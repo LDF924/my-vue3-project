@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>云仓智能管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <div class="flex items-center mb-4">
+        <i class="fa fa-cloud text-4xl text-indigo-500 mr-4"></i>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800 mb-1">云仓智能管理</h1>
+          <p class="text-gray-600">采购商可远程查看库存状态，实现智能化仓储管理</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-indigo-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-indigo-700 mb-2">远程库存状态</h2>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li><i class="fa fa-check-circle text-green-500 mr-2"></i>剩余货位：<span class="font-bold" id="remain-slots">--</span> 个</li>
+            <li><i class="fa fa-boxes text-blue-400 mr-2"></i>已用货位：<span class="font-bold" id="used-slots">--</span> 个</li>
+            <li><i class="fa fa-percent text-purple-400 mr-2"></i>货位利用率：<span class="font-bold" id="slot-utilization">--</span></li>
+          </ul>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-green-700 mb-2">果品损耗率监控</h2>
+          <div class="text-gray-700 text-sm">
+            <p>本月损耗率：<span class="font-bold" id="loss-rate">--</span></p>
+            <p>上月损耗率：<span class="font-bold" id="last-loss-rate">--</span></p>
+            <p>损耗趋势：<span class="font-bold" id="loss-trend">--</span></p>
+          </div>
+        </div>
+        <div class="bg-yellow-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-yellow-700 mb-2">云端监控</h2>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li><i class="fa fa-eye text-indigo-400 mr-2"></i>24小时远程监控</li>
+            <li><i class="fa fa-bell text-red-400 mr-2"></i>异常自动报警</li>
+            <li><i class="fa fa-chart-line text-green-400 mr-2"></i>数据可视化报表</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">云仓实时数据</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="font-semibold text-gray-700 mb-2">温湿度监控</h3>
+            <p>当前温度：<span class="font-bold" id="temperature">--</span> ℃</p>
+            <p>当前湿度：<span class="font-bold" id="humidity">--</span> %</p>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700 mb-2">告警信息</h3>
+            <ul class="text-red-500 text-sm" id="alarm-list">
+              <li>暂无异常</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 模拟云仓数据
+    const totalSlots = 500; // 总货位
+    let usedSlots = 320; // 已用货位
+    let lossRate = 1.8; // 本月损耗率（%）
+    let lastLossRate = 2.1; // 上月损耗率（%）
+    let temperature = 6.5; // 当前温度
+    let humidity = 87; // 当前湿度
+    let alarms = [];
+    function updateCloudWarehouse() {
+      document.getElementById('remain-slots').textContent = (totalSlots - usedSlots);
+      document.getElementById('used-slots').textContent = usedSlots;
+      document.getElementById('slot-utilization').textContent = ((usedSlots / totalSlots * 100).toFixed(1)) + '%';
+      document.getElementById('loss-rate').textContent = lossRate + '%';
+      document.getElementById('last-loss-rate').textContent = lastLossRate + '%';
+      document.getElementById('loss-trend').textContent = (lossRate < lastLossRate ? '下降' : (lossRate > lastLossRate ? '上升' : '持平'));
+      document.getElementById('temperature').textContent = temperature;
+      document.getElementById('humidity').textContent = humidity;
+      const alarmList = document.getElementById('alarm-list');
+      alarmList.innerHTML = '';
+      if (alarms.length === 0) {
+        alarmList.innerHTML = '<li>暂无异常</li>';
+      } else {
+        alarms.forEach(a => {
+          const li = document.createElement('li');
+          li.textContent = a;
+          alarmList.appendChild(li);
+        });
+      }
+    }
+    updateCloudWarehouse();
+    // 可扩展：定时刷新、异常模拟等
+  </script>
+</body>
+</html> 

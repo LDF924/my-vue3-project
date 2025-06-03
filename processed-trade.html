@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加工品交易平台 - 农产品流通交易</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #a259c6 0%, #ff6a88 100%);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-inter text-dark">
+  <!-- 顶部导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-home mr-2"></i>首页
+        </a>
+        <a href="dashboard.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-chart-bar mr-2"></i>数据看板
+        </a>
+        <a href="farm-management.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-calendar mr-2"></i>农事管理
+        </a>
+        <a href="trace.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-qrcode mr-2"></i>产品溯源
+        </a>
+        <a href="market.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-line-chart mr-2"></i>市场行情
+        </a>
+        <a href="community.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-comments mr-2"></i>交流社区
+        </a>
+      </nav>
+      <button class="md:hidden text-dark" id="menuBtn">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+  <main class="pt-24 pb-12">
+    <!-- 加工品交易平台卡片 -->
+    <div class="max-w-3xl mx-auto px-4 mb-10">
+      <div class="bg-gradient-to-br from-purple-400 to-pink-500 rounded-xl shadow-lg p-8 text-white card-hover">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mr-6">
+            <i class="fa fa-industry text-4xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold mb-2">加工品交易平台</h1>
+            <p class="text-white/90">沃柑果汁、果干等深加工产品，对接食品企业和电商分销</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>沃柑果汁加工对接
+          </div>
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>果干产品销售渠道
+          </div>
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>食品企业合作对接
+          </div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 mb-4">
+          <div class="text-xs mb-1">加工成本：</div>
+          <div class="text-lg font-bold">果汁8000元/吨，果干50-80元/斤</div>
+        </div>
+        <div class="flex items-center">
+          <span class="text-2xl font-bold">50-80元</span>
+          <span class="ml-2 text-base">/斤</span>
+        </div>
+      </div>
+    </div>
+    <!-- 发布加工合作表单 -->
+    <div class="max-w-3xl mx-auto px-4 mb-10">
+      <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+        <h2 class="text-2xl font-bold text-purple-600 mb-6 flex items-center"><i class="fa fa-plus-circle mr-3"></i>发布加工合作需求</h2>
+        <form id="processForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="product" required placeholder="加工产品（如：果汁、果干）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <input type="number" name="quantity" required min="1" placeholder="需求数量（kg/吨）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="company" required placeholder="企业/联系人" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            <input type="text" name="contact" required placeholder="联系方式（手机/微信）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          </div>
+          <div>
+            <textarea name="remark" rows="3" placeholder="补充说明（可选）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-bold text-lg">
+            发布合作需求
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- 合作需求信息展示区 -->
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+        <h2 class="text-xl font-bold text-primary mb-6 flex items-center"><i class="fa fa-list mr-3"></i>最新加工合作需求</h2>
+        <div id="processList" class="space-y-4">
+          <!-- 合作需求信息将通过JS动态插入 -->
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h3 class="text-lg font-bold mb-2">智能供应链管理平台</h3>
+      <p class="text-gray-400 text-sm mb-2">专业鲜果流通，助力农产品高效对接市场</p>
+      <p class="text-gray-400 text-xs">&copy; 2024 智能供应链管理. 保留所有权利.</p>
+    </div>
+  </footer>
+  <script>
+    // 本地存储加工合作需求
+    const processForm = document.getElementById('processForm');
+    const processList = document.getElementById('processList');
+    let processes = JSON.parse(localStorage.getItem('processSupplies') || '[]');
+    function renderProcesses() {
+      processList.innerHTML = processes.length === 0 ? '<div class="text-gray-400 text-center">暂无合作需求信息</div>' : processes.map(s => `
+        <div class="border-l-4 border-purple-500 bg-purple-50 rounded-lg p-4">
+          <div class="flex flex-wrap justify-between items-center mb-2">
+            <div class="font-bold text-lg text-purple-700">${s.product} <span class="text-sm text-gray-500 font-normal">${s.quantity}${s.quantityUnit || ''}</span></div>
+            <div class="text-primary font-bold text-xl">${s.company}</div>
+          </div>
+          <div class="text-sm text-gray-600 mb-1">联系方式：${s.contact}</div>
+          <div class="text-xs text-gray-500 mb-1">${s.remark ? '备注：' + s.remark : ''}</div>
+          <div class="text-xs text-gray-400 text-right">发布时间：${s.time}</div>
+        </div>
+      `).join('');
+    }
+    renderProcesses();
+    processForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(processForm);
+      const process = {
+        product: formData.get('product'),
+        quantity: formData.get('quantity'),
+        company: formData.get('company'),
+        contact: formData.get('contact'),
+        remark: formData.get('remark'),
+        time: new Date().toLocaleString()
+      };
+      processes.unshift(process);
+      localStorage.setItem('processSupplies', JSON.stringify(processes));
+      renderProcesses();
+      processForm.reset();
+      alert('加工合作需求已发布！');
+    });
+  </script>
+</body>
+</html> 

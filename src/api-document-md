@@ -1,0 +1,3766 @@
+ # 后端接口文档
+这是一个基于node.js的后端项目
+
+### 1. 用户认证模块 (来自 `index.html`, `js/auth.js`, `js/register.js`)
+
+#### 1.1 登录 (Login)
+
+-   **描述**: 用户通过用户名/邮箱和密码进行登录，或通过手机号/邮箱和验证码进行登录。
+-   **URL**: `/api/auth/login`
+-   **方法**: `POST`
+-   **请求体示例 (账号密码登录)**:
+    ```json
+    {
+        "type": "account",
+        "username": "user123",
+        "password": "password123",
+        "captcha": "abc123"
+    }
+    ```
+-   **请求体示例 (验证码登录)**:
+    ```json
+    {
+        "type": "code",
+        "contact": "user@example.com", // 或手机号 "13800138000"
+        "verifyCode": "654321"
+    }
+    ```
+-   **响应体示例 (成功)**:
+    ```json
+    {
+        "code": 200,
+        "message": "登录成功",
+        "data": {
+            "token": "your_auth_token",
+            "user": {
+                "id": 1,
+                "username": "user123",
+                "avatar": "https://example.com/avatar.jpg",
+                "role": "farmer"
+            }
+        }
+    }
+    ```
+-   **响应体示例 (失败)**:
+    ```json
+    {
+        "code": 401,
+        "message": "用户名或密码错误",
+        "data": null
+    }
+    ```
+
+#### 1.2 退出登录 (Logout)
+
+-   **描述**: 用户退出当前登录会话。
+-   **URL**: `/api/auth/logout`
+-   **方法**: `POST`
+-   **请求体**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "退出成功",
+        "data": null
+    }
+    ```
+
+#### 1.3 获取图形验证码 (Get Captcha)
+
+-   **描述**: 获取登录所需的图形验证码图片。
+-   **URL**: `/api/auth/captcha`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**: 返回图片流或 base64 编码的图片数据。
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "captchaImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...",
+            "captchaId": "unique_captcha_id" // 用于后续验证的ID
+        }
+    }
+    ```
+
+#### 1.4 发送验证码 (Send Verification Code)
+
+-   **描述**: 向用户手机号或邮箱发送登录/注册验证码。
+-   **URL**: `/api/auth/sendCode`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "contact": "user@example.com", // 或手机号 "13800138000"
+        "type": "login" // 或 "register"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "验证码已发送",
+        "data": null
+    }
+    ```
+
+### 2. 用户注册模块 (来自 `index.html`, `js/register.js`)
+
+#### 2.1 用户注册 (Register)
+
+-   **描述**: 用户注册新账号。
+-   **URL**: `/api/auth/register`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "username": "newuser",
+        "password": "newpassword123",
+        "contact": "newuser@example.com", // 或手机号 "13812345678"
+        "verifyCode": "123456",
+        "userType": "farmer" // 或 "expert"
+    }
+    ```
+-   **响应体示例 (成功)**:
+    ```json
+    {
+        "code": 200,
+        "message": "注册成功",
+        "data": {
+            "userId": 101,
+            "username": "newuser"
+        }
+    }
+    ```
+-   **响应体示例 (失败)**:
+    ```json
+    {
+        "code": 400,
+        "message": "注册失败，该用户名/手机号/邮箱已存在",
+        "data": null
+    }
+    ```
+
+### 3. 首页数据展示模块 (来自 `index.html`)
+
+#### 3.1 获取首页数据 (Get Home Data)
+
+-   **描述**: 获取首页所需的各类统计数据、图表数据等。
+-   **URL**: `/api/home/data`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalOutput": "1200吨",
+            "totalFarmers": "500户",
+            "recentNews": [
+                { "id": 1, "title": "新闻标题1", "date": "2023-10-26" },
+                { "id": 2, "title": "新闻标题2", "date": "2023-10-25" }
+            ],
+            "chartData": {
+                "labels": ["1月", "2月", "3月"],
+                "datasets": [{ "label": "产量", "data": [100, 120, 150] }]
+            }
+        }
+    }
+    ```
+
+### 4. 市场行情卡片模块 (来自 `index.html`)
+
+#### 4.1 获取市场行情数据 (Get Market Data)
+
+-   **描述**: 获取沃柑市场行情数据，例如价格、销量趋势等。
+-   **URL**: `/api/market/data`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: `daily` (日), `weekly` (周), `monthly` (月)
+    -   `region`: 可选，地区筛选
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "currentPrice": "5.5元/斤",
+            "trendData": {
+                "labels": ["周一", "周二", "周三"],
+                "datasets": [{ "label": "价格", "data": [5.0, 5.2, 5.5] }]
+            },
+            "marketAnalysis": "近期沃柑价格稳中有升..."
+        }
+    }
+    ```
+
+### 5. 农资超市服务模块 (来自 `index.html`)
+
+#### 5.1 获取农资商品列表 (Get Agricultural Supplies List)
+
+-   **描述**: 获取农资超市的商品列表。
+-   **URL**: `/api/store/products`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `category`: 可选，商品类别筛选 (e.g., `化肥`, `农药`, `农具`)
+    -   `page`: 页码
+    -   `limit`: 每页数量
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "total": 100,
+            "products": [
+                { "id": 1, "name": "有机肥", "price": 80, "unit": "袋", "image": "url" },
+                { "id": 2, "name": "杀虫剂", "price": 50, "unit": "瓶", "image": "url" }
+            ]
+        }
+    }
+    ```
+
+#### 5.2 获取农资商品详情 (Get Agricultural Supply Details)
+
+-   **描述**: 获取单个农资商品的详细信息。
+-   **URL**: `/api/store/products/{productId}`
+-   **方法**: `GET`
+-   **请求参数**: 无（`productId` 作为路径参数）
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "name": "有机肥",
+            "description": "高效环保有机肥...",
+            "price": 80,
+            "unit": "袋",
+            "stock": 500,
+            "images": ["url1", "url2"]
+        }
+    }
+    ```
+
+#### 5.3 提交订单 (Submit Order)
+
+-   **描述**: 用户提交农资商品订单。
+-   **URL**: `/api/store/orders`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "items": [
+            { "productId": 1, "quantity": 2 },
+            { "productId": 2, "quantity": 1 }
+        ],
+        "shippingAddress": "广西武鸣区XXX",
+        "contactPhone": "138XXXXX"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "订单提交成功",
+        "data": {
+            "orderId": "ORD20231026001",
+            "totalAmount": 210
+        }
+    }
+    ```
+
+---
+
+### 6. 挂牌交易平台模块 (来自 `挂牌交易.html`)
+
+#### 6.1 发布供应信息 (Publish Listing)
+
+-   **描述**: 农户发布农产品供应信息。
+-   **URL**: `/api/listings`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "product": "武鸣沃柑",
+        "quantity": "50000斤",
+        "quality": "糖度14°Brix",
+        "contact": "13812345678",
+        "remark": "产地直发，品质保证"
+    }
+    ```
+-   **响应体示例 (成功)**:
+    ```json
+    {
+        "code": 200,
+        "message": "供应信息发布成功",
+        "data": { "listingId": 101 }
+    }
+    ```
+
+#### 6.2 获取挂牌信息列表 (Get Listings List)
+
+-   **描述**: 获取所有发布的农产品供应信息。
+-   **URL**: `/api/listings`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+    -   `sortBy`: 排序方式 (可选，如 `latest`, `quantity_desc`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 101,
+                "product": "武鸣沃柑",
+                "quantity": "50000斤",
+                "quality": "糖度14°Brix",
+                "contact": "13812345678",
+                "remark": "产地直发，品质保证",
+                "publishTime": "2024-05-27 10:00:00"
+            }
+        ]
+    }
+    ```
+
+#### 6.3 一键询盘 (One-Click Inquiry)
+
+-   **描述**: 采购商向供应商发送询盘意向。
+-   **URL**: `/api/listings/inquire`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "listingId": 101,
+        "buyerId": 201, // 询盘方用户ID
+        "buyerContact": "buyer@example.com",
+        "inquiryMessage": "对您的沃柑很感兴趣，请问能否提供样品？"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "询盘意向已发送",
+        "data": null
+    }
+    ```
+
+### 7. 农业旅游模块 (来自 `agri-tourism.html`)
+
+#### 7.1 采摘预约 (Picking Reservation)
+
+-   **描述**: 用户预约采摘园体验。
+-   **URL**: `/api/agri-tourism/reservations/picking`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "name": "张三",
+        "phone": "13912345678",
+        "date": "2024-06-15"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "采摘预约成功",
+        "data": { "reservationId": "PR20240527001" }
+    }
+    ```
+
+#### 7.2 农事体验报名 (Farm Activity Registration)
+
+-   **描述**: 用户报名参加农业体验活动（如农机驾驶、灌溉体验）。
+-   **URL**: `/api/agri-tourism/registrations/activity`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "activityType": "农机驾驶", // "沃柑采摘", "农机驾驶", "灌溉体验"
+        "name": "李四",
+        "phone": "13787654321"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "报名成功",
+        "data": { "registrationId": "AR20240527001" }
+    }
+    ```
+
+### 8. 在线拍卖平台模块 (来自 `auction.html`)
+
+#### 8.1 获取当前拍卖信息 (Get Current Auction Info)
+
+-   **描述**: 获取当前正在进行的拍卖项目信息。
+-   **URL**: `/api/auction/current`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "auctionId": 1,
+            "productName": "武鸣沃柑",
+            "startAmount": "5000斤",
+            "bidStep": "0.1元/斤",
+            "currentPrice": 5.8,
+            "endTime": "2024-05-28T10:00:00Z"
+        }
+    }
+    ```
+
+#### 8.2 提交出价 (Submit Bid)
+
+-   **描述**: 用户提交新的竞拍价格。
+-   **URL**: `/api/auction/bid`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "auctionId": 1,
+        "userId": 123,
+        "bidAmount": 5.9
+    }
+    ```
+-   **响应体示例 (成功)**:
+    ```json
+    {
+        "code": 200,
+        "message": "出价成功",
+        "data": { "newPrice": 5.9 }
+    }
+    ```
+-   **响应体示例 (失败)**:
+    ```json
+    {
+        "code": 400,
+        "message": "出价低于当前价格或无效",
+        "data": null
+    }
+    ```
+
+#### 8.3 获取竞拍历史 (Get Auction History)
+
+-   **描述**: 获取特定拍卖项目的竞拍历史记录。
+-   **URL**: `/api/auction/history/{auctionId}`
+-   **方法**: `GET`
+-   **请求参数**: 无（`auctionId` 作为路径参数）
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            { "user": "用户A", "price": 5.7, "time": "09:00:01" },
+            { "user": "用户B", "price": 5.8, "time": "09:01:15" }
+        ]
+    }
+    ```
+
+#### 8.4 实时价格更新 (Real-time Price Updates)
+
+-   **描述**: 通过 WebSocket 或长轮询实现实时更新拍卖价格和竞拍历史。
+-   **URL**: `ws://your_backend/auction/ws` (WebSocket endpoint)
+-   **消息类型示例 (来自后端)**:
+    ```json
+    {
+        "type": "price_update",
+        "data": {
+            "auctionId": 1,
+            "currentPrice": 5.9,
+            "lastBidder": "用户C",
+            "bidTime": "09:02:30"
+        }
+    }
+    ```
+    ```json
+    {
+        "type": "history_update",
+        "data": {
+            "auctionId": 1,
+            "entry": { "user": "用户C", "price": 5.9, "time": "09:02:30" }
+        }
+    }
+    ```
+
+### 9. 利益联结机制公示模块 (来自 `benefit_sharing.html`)
+
+#### 9.1 提交反馈 (Submit Feedback)
+
+-   **描述**: 用户提交对利益联结机制的反馈意见。
+-   **URL**: `/submit-feedback`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "name": "王小明",
+        "email": "wangxiaoming@example.com",
+        "feedback": "建议在收益分配方面可以考虑更多小农户的利益。"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "反馈提交成功！",
+        "data": null
+    }
+    ```
+
+#### 9.2 获取动态内容 (Get Dynamic Content)
+
+-   **描述**: 获取页面上的动态展示内容。
+-   **URL**: `/api/dynamic-content`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "title": "最新公示动态",
+            "items": [
+                { "id": 1, "value": "关于2024年利益联结机制调整的通知" },
+                { "id": 2, "value": "利益联结项目进展报告" }
+            ]
+        }
+    }
+    ```
+
+### 10. 采购商俱乐部模块 (来自 `buyers-club.html`)
+
+#### 10.1 报名线下品鉴会 (Register for Offline Tasting Event)
+
+-   **描述**: 采购商报名参加线下品鉴会活动。
+-   **URL**: `/api/buyers-club/events/register`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "eventName": "武鸣沃柑采购商大会",
+        "participantName": "李华",
+        "contactInfo": "13600001234",
+        "companyName": "XX贸易公司"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "报名成功",
+        "data": null
+    }
+    ```
+
+#### 10.2 申请采购商评级 (Apply for Buyer Rating)
+
+-   **描述**: 采购商提交评级申请，以获得专属权益。
+-   **URL**: `/api/buyers-club/ratings/apply`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "companyName": "XX果品公司",
+        "contactPerson": "王强",
+        "contactPhone": "13911112222",
+        "annualPurchaseVolume": 80, // 单位：吨
+        "otherDocuments": ["url_of_business_license", "url_of_purchase_records"]
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "评级申请已提交，请等待审核",
+        "data": null
+    }
+    ```
+
+#### 10.3 获取俱乐部数据看板数据 (Get Buyers Club Dashboard Data)
+
+-   **描述**: 获取采购商俱乐部的数据统计信息。
+-   **URL**: `/api/buyers-club/dashboard`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "buyersCount": 1500,
+            "annualPurchase": "50000吨",
+            "activityCount": 12,
+            "levelDist": { "AAA": 50, "AA": 100, "A": 300, "Other": 1050 },
+            "statTotalPurchase": 180000,
+            "statMembers": 1500,
+            "statActive": 800,
+            "statEvents": 12
+        }
+    }
+    ```
+
+#### 10.4 发布采购需求 (Publish Purchase Requirement)
+
+-   **描述**: 采购商发布具体的采购需求信息。
+-   **URL**: `/api/buyers-club/purchase-requirements`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "buyerId": 201,
+        "productName": "武鸣沃柑",
+        "quantity": "20吨",
+        "qualityRequirements": "糖度13°Brix以上，无病虫害",
+        "deliveryDate": "2024-12-01",
+        "contactInfo": "zhangsan@company.com",
+        "remark": "需要长期合作供应商"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "采购需求发布成功",
+        "data": { "requirementId": "PRQ20240527001" }
+    }
+    ```
+
+#### 10.5 报名专属活动 (Register for Exclusive Activity)
+
+-   **描述**: 采购商报名参加俱乐部提供的专属活动。
+-   **URL**: `/api/buyers-club/activities/register`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "activityId": 5, // 活动ID
+        "userId": 201,
+        "name": "李雷",
+        "phone": "13344445555"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "活动报名成功",
+        "data": null
+    }
+    ```
+
+#### 10.6 申请采购评级 (Submit Purchase Rating Application)
+
+-   **描述**: 采购商提交更详细的采购评级申请，以享受评级权益。
+-   **URL**: `/api/buyers-club/ratings/submit`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 201,
+        "applicationDetails": {
+            "companyName": "绿果贸易有限公司",
+            "annualPurchaseAmount": 5000000, // 年度采购金额
+            "purchaseFrequency": "每月",
+            "mainProducts": ["沃柑", "砂糖橘"],
+            "certsAndLicenses": ["url_of_cert1", "url_of_license1"]
+        }
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "评级申请已提交，审核中",
+        "data": null
+    }
+    ```
+
+### 11. 碳汇交易模块 (来自 `carbon-trade.html`)
+
+#### 11.1 申请碳汇项目 (Apply for Carbon Sink Project)
+
+-   **描述**: 果园主提交碳汇项目申请。
+-   **URL**: `/api/carbon-trade/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "orchardName": "光明沃柑园",
+        "area": 500, // 亩
+        "treeAge": 8, // 年
+        "contactPerson": "赵老板",
+        "contactPhone": "13012345678"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "碳汇项目申请已提交",
+        "data": { "applicationId": "CA20240527001" }
+    }
+    ```
+
+#### 11.2 获取碳汇项目案例 (Get Carbon Sink Project Cases)
+
+-   **描述**: 获取已成功的碳汇项目案例。
+-   **URL**: `/api/carbon-trade/cases`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "武鸣区沃柑示范园",
+                "area": 500,
+                "treeAge": 8,
+                "annualCarbonSequestration": 50, // 吨
+                "annualRevenue": 40000
+            },
+            {
+                "id": 2,
+                "name": "隆安县柑橘合作社",
+                "area": 300,
+                "treeAge": 5,
+                "annualCarbonSequestration": 25,
+                "annualRevenue": 20000
+            }
+        ]
+    }
+    ```
+
+#### 11.3 获取常见问题 (Get FAQs)
+
+-   **描述**: 获取关于碳汇交易的常见问题解答。
+-   **URL**: `/api/carbon-trade/faqs`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            { "question": "碳汇交易需要什么条件？", "answer": "答：需有规模化果园、合法土地手续、管理规范。" },
+            { "question": "收益如何分配？", "answer": "答：交易完成后，平台按协议发放收益。" }
+        ]
+    }
+    ```
+
+### 12. 认证服务模块 (来自 `certification.html`)
+
+#### 12.1 提交认证申请 (Submit Certification Application)
+
+-   **描述**: 用户提交农产品认证申请。
+-   **URL**: `/api/certification/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "certificationType": "绿色食品认证",
+        "applicantName": "李大壮",
+        "contactPhone": "18899998888",
+        "farmAddress": "武鸣区XX镇XX村"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "认证申请已提交",
+        "data": { "applicationId": "CERT20240527001" }
+    }
+    ```
+
+#### 12.2 查询认证进度 (Query Certification Progress)
+
+-   **描述**: 用户查询已提交的认证申请进度。
+-   **URL**: `/api/certification/progress`
+-   **方法**: `GET` (或 `POST` 依实现)
+-   **请求参数示例 (GET)**: `/api/certification/progress?applicationNumber=CERT20240527001`
+-   **请求体示例 (POST)**:
+    ```json
+    {
+        "applicationNumber": "CERT20240527001"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+            "applicationNumber": "CERT20240527001",
+            "status": "审核中",
+            "currentStage": "实地检查",
+            "updateTime": "2024-01-20"
+        }
+    }
+    ```
+
+### 13. 云仓智能管理模块 (来自 `cloud-warehouse.html`)
+
+#### 13.1 获取云仓实时数据 (Get Cloud Warehouse Real-time Data)
+
+-   **描述**: 获取云仓的实时库存、温湿度、损耗率及告警信息。
+-   **URL**: `/api/cloud-warehouse/realtime-data`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalSlots": 500,
+            "usedSlots": 320,
+            "lossRate": 1.8,
+            "lastLossRate": 2.1,
+            "temperature": 6.5,
+            "humidity": 87,
+            "alarms": ["温度异常：区域A超温", "湿度过高：区域B"]
+        }
+    }
+    ```
+
+### 14. 冷链运输服务预约模块 (来自 `coldchain-reserve.html`)
+
+#### 14.1 提交冷链运输预约 (Submit Cold Chain Transportation Reservation)
+
+-   **描述**: 用户提交冷链运输服务预约申请。
+-   **URL**: `/api/coldchain/reservations`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "name": "李女士",
+        "phone": "13566667777",
+        "startLocation": "南宁市",
+        "endLocation": "广州市",
+        "goodsType": "沃柑",
+        "weight": 1000, // kg
+        "expectedDepartureTime": "2024-06-01T09:00:00",
+        "remark": "需要加急处理"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "预约信息已提交，我们会尽快与您联系！",
+        "data": { "reservationId": "CLR20240527001" }
+    }
+    ```
+
+### 15. 交流社区模块 (来自 `community.html`, `js/communityData.js`, `js/communitySearch.js`, `js/community.js`)
+
+#### 15.1 获取社区数据统计 (Get Community Statistics)
+
+-   **描述**: 获取社区的各类统计数据，如帖子总数、活跃用户等。
+-   **URL**: `/api/community/stats`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "discussions": 1234,
+            "techPosts": 567,
+            "marketInfo": 345,
+            "helpPosts": 210,
+            "totalPosts": 2356,
+            "activeUsers": 526,
+            "todayPosts": 45
+        }
+    }
+    ```
+
+#### 15.2 获取热门标签 (Get Popular Tags)
+
+-   **描述**: 获取社区内最受欢迎的标签。
+-   **URL**: `/api/community/tags/popular`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": ["种植技术", "病虫害防治", "市场行情", "果园管理", "品质提升"]
+    }
+    ```
+
+#### 15.3 获取帖子列表 (Get Posts List)
+
+-   **描述**: 获取社区帖子列表，支持筛选和排序。
+-   **URL**: `/api/community/posts`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `page`: 页码 (可选，默认1)
+    -   `limit`: 每页数量 (可选，默认10)
+    -   `sortBy`: 排序方式 (可选，`latest`, `most_replies`, `most_likes`)
+    -   `tag`: 按标签筛选 (可选)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "分享一下我的沃柑种植经验",
+                "content": "今年的沃柑长势特别好，主要得益于以下几点：...",
+                "author": { "id": 101, "name": "果农老王", "avatar": "url_to_avatar" },
+                "publishTime": "2小时前",
+                "likes": 88,
+                "comments": 36,
+                "shares": 10,
+                "images": ["url_to_img1", "url_to_img2"],
+                "tags": ["种植技术"]
+            }
+        ]
+    }
+    ```
+
+#### 15.4 发布帖子 (Create Post)
+
+-   **描述**: 用户在社区发布新帖子。
+-   **URL**: `/api/community/posts`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "authorId": 101,
+        "title": "我的新沃柑品种试验",
+        "content": "最近引进了新品种，想和大家交流一下种植心得和遇到的问题。",
+        "images": ["url_to_image1", "url_to_image2"],
+        "tags": ["新品种", "种植技术"]
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "帖子发布成功",
+        "data": { "postId": 201 }
+    }
+    ```
+
+#### 15.5 提交回答 (Submit Answer)
+
+-   **描述**: 用户对帖子进行回答。
+-   **URL**: `/api/community/posts/{postId}/answers`
+-   **方法**: `POST`
+-   **请求体示例 (快速回答)**:
+    ```json
+    {
+        "authorId": 102,
+        "content": "简短的回答内容..."
+    }
+    ```
+-   **请求体示例 (详细解答)**:
+    ```json
+    {
+        "authorId": 103,
+        "title": "关于沃柑病虫害的专业解答",
+        "content": "详细的解答内容..."
+    }
+    ```
+-   **请求体示例 (图片回答)**:
+    ```json
+    {
+        "authorId": 104,
+        "content": "图片回答内容...",
+        "images": ["url_to_image3"]
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "回答提交成功",
+        "data": { "answerId": 301 }
+    }
+    ```
+
+#### 15.6 点赞帖子/回答 (Like Post/Answer)
+
+-   **描述**: 用户点赞帖子或回答。
+-   **URL**: `/api/community/posts/{postId}/like` 或 `/api/community/answers/{answerId}/like`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 105
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "点赞成功",
+        "data": { "likesCount": 89 }
+    }
+    ```
+
+#### 15.7 获取行业问答列表 (Get Industry Q&A List)
+
+-   **描述**: 获取行业相关的问答帖子列表。
+-   **URL**: `/api/community/qa`
+-   **方法**: `GET`
+-   **请求参数**: 同 `15.3 获取帖子列表`
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "question": "如何提高沃柑品质？",
+                "category": "种植技术",
+                "content": "分享下提高沃柑品质的关键技术要点...",
+                "answersCount": 15,
+                "likesCount": 28,
+                "favoritesCount": 12,
+                "author": { "id": 106, "name": "张三" },
+                "publishTime": "2024-05-25"
+            }
+        ]
+    }
+    ```
+
+#### 15.8 加载更多 (Load More)
+
+-   **描述**: 分页加载更多帖子或问答。
+-   **URL**: `/api/community/posts?page={pageNumber}&limit={pageSize}`
+-   **URL**: `/api/community/qa?page={pageNumber}&limit={pageSize}`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `page`: 要加载的页码
+    -   `limit`: 每页加载的数量
+-   **响应体**: 同 `15.3` 或 `15.7` 的响应体格式。
+
+### 16. 培训咨询预约模块 (来自 `consultation.html`)
+
+#### 16.1 获取专家库列表 (Get Expert List)
+
+-   **描述**: 获取可供预约的专家列表及其详细信息。
+-   **URL**: `/api/experts`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "陈教授",
+                "title": "特聘专家",
+                "organization": "广西农业科学院果树研究所",
+                "rating": 4.9,
+                "serviceCount": 128,
+                "description": "专注柑橘种植30年...",
+                "pricePerHour": 500,
+                "image": "/images/experts/expert1.jpg"
+            }
+        ]
+    }
+    ```
+
+#### 16.2 提交专家指导预约 (Submit Expert Consultation Reservation)
+
+-   **描述**: 用户提交专家指导预约申请。
+-   **URL**: `/api/consultations/reservations`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "name": "周丽",
+        "phone": "13123456789",
+        "consultationType": "线上问诊与远程指导",
+        "plantingScale": 200, // 亩
+        "content": "沃柑幼树黄叶问题，急需专家指导。",
+        "expectedTime": "2024-06-05T14:00:00",
+        "expertId": 1 // 预约的专家ID (如果用户选择了特定专家)
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "预约提交成功，我们将尽快与您联系！",
+        "data": { "reservationId": "CON20240527001" }
+    }
+    ```
+
+### 17. 课程学习模块 (来自 `course.html`)
+
+#### 17.1 获取课程详情 (Get Course Details)
+
+-   **描述**: 获取单个课程的详细信息，包括目录和章节。
+-   **URL**: `/api/courses/{courseId}`
+-   **方法**: `GET`
+-   **请求参数**: 无（`courseId` 作为路径参数）
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "title": "沃柑种植基础技术",
+            "description": "从选地建园到幼树管理，全面掌握沃柑种植基础知识",
+            "instructor": { "name": "李教授", "title": "农业专家", "avatar": "url_to_instructor_avatar" },
+            "duration": "45分钟",
+            "studentsCount": 1234,
+            "rating": 4.8,
+            "image": "url_to_course_cover",
+            "chapters": [
+                {
+                    "title": "第1章：沃柑种植概述",
+                    "duration": "15分钟",
+                    "lessons": [
+                        { "title": "1.1 沃柑品种特性介绍", "duration": "5分钟", "videoUrl": "url_to_video1" }
+                    ]
+                }
+            ],
+            "materials": [
+                { "name": "沃柑种植技术要点.pdf", "url": "url_to_pdf", "type": "pdf" }
+            ]
+        }
+    }
+    ```
+
+#### 17.2 获取课程评论 (Get Course Comments)
+
+-   **描述**: 获取特定课程下的评论列表。
+-   **URL**: `/api/courses/{courseId}/comments`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 101,
+                "content": "请问老师，沃柑幼树定植后需要多久才能挂果？",
+                "author": { "id": 201, "name": "张三", "avatar": "url_to_user_avatar" },
+                "publishTime": "2小时前",
+                "replies": []
+            }
+        ]
+    }
+    ```
+
+#### 17.3 提交评论 (Submit Comment)
+
+-   **描述**: 用户对课程发表评论。
+-   **URL**: `/api/courses/{courseId}/comments`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "courseId": 1,
+        "authorId": 202,
+        "content": "老师讲得很详细，学到了很多实用的技术要点！"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "评论发表成功",
+        "data": { "commentId": 102 }
+    }
+    ```
+
+#### 17.4 更新学习进度 (Update Learning Progress)
+
+-   **描述**: 更新用户的课程学习进度。
+-   **URL**: `/api/users/{userId}/courses/{courseId}/progress`
+-   **方法**: `PUT`
+-   **请求体示例**:
+    ```json
+    {
+        "completedLessons": [1.1, 1.2], // 已完成的课程小节ID
+        "totalProgress": 30 // 总进度百分比
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "学习进度更新成功",
+        "data": null
+    }
+    ```
+
+### 18. 数据看板模块 (来自 `dashboard.html`, `js/dashboard.js`)
+
+#### 18.1 获取关键指标数据 (Get Key Metrics Data)
+
+-   **描述**: 获取数据看板顶部的关键统计指标。
+-   **URL**: `/api/dashboard/metrics`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalArea": 15000, // 亩
+            "annualProduction": 12000, // 吨
+            "farmerCount": 850, // 户
+            "averagePrice": 5.8 // 元/kg
+        }
+    }
+    ```
+
+#### 18.2 获取月度产量趋势数据 (Get Monthly Production Trend Data)
+
+-   **描述**: 获取用于绘制月度产量趋势图的数据。
+-   **URL**: `/api/dashboard/production-trend`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `year`: 年份 (可选，默认当前年份)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "labels": ["1月", "2月", "3月", "4月", "5月"],
+            "datasets": [
+                {
+                    "label": "月度产量 (吨)",
+                    "data": [800, 950, 1100, 1050, 1200],
+                    "borderColor": "#0F5132",
+                    "backgroundColor": "rgba(15, 81, 50, 0.1)"
+                }
+            ]
+        }
+    }
+    ```
+
+#### 18.3 获取种植区域分布数据 (Get Planting Region Distribution Data)
+
+-   **描述**: 获取用于绘制种植区域分布图的数据。
+-   **URL**: `/api/dashboard/region-distribution`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "labels": ["武鸣区", "隆安县", "马山县", "其他"],
+            "datasets": [
+                {
+                    "label": "种植面积 (亩)",
+                    "data": [8000, 4000, 2000, 1000],
+                    "backgroundColor": ["#0F5132", "#FF8C00", "#22C55E", "#F8F9FA"]
+                }
+            ]
+        }
+    }
+    ```
+
+#### 18.4 获取品质指标数据 (Get Quality Metrics Data)
+
+-   **描述**: 获取用于绘制品质指标雷达图的数据。
+-   **URL**: `/api/dashboard/quality-metrics`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "labels": ["糖度(°Brix)", "酸度(%)", "汁胞化率(%)", "可溶性固形物(%)", "色泽评分"],
+            "datasets": [
+                {
+                    "label": "平均品质",
+                    "data": [14.5, 0.8, 95, 13.8, 4.5],
+                    "borderColor": "#FF8C00",
+                    "backgroundColor": "rgba(255, 140, 0, 0.2)"
+                }
+            ]
+        }
+    }
+    ```
+
+#### 18.5 获取产业地图数据 (Get Industry Map Data)
+
+-   **描述**: 获取用于在地图上展示产业相关点位的数据（如种植基地、加工厂、物流中心等）。
+-   **URL**: `/api/dashboard/industry-map-data`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 点位类型 (可选，如 `farm`, `processing_plant`, `logistics_center`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "幸福沃柑种植基地",
+                "latitude": 23.2345,
+                "longitude": 108.3456,
+                "type": "farm",
+                "info": "种植面积500亩，年产量2000吨"
+            }
+        ]
+    }
+    ```
+
+### 19. 电子图书下载模块 (来自 `ebooks.html`, `js/ebooks.js`)
+
+#### 19.1 获取电子图书列表 (Get Ebook List)
+
+-   **描述**: 获取可供下载的电子图书列表。
+-   **URL**: `/api/ebooks`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "沃柑高效栽培技术手册",
+                "description": "详细介绍沃柑栽培的各个节节，图文并茂，实用性强",
+                "publisher": "农业出版社",
+                "publishYear": "2024年版",
+                "rating": 4.0,
+                "downloadCount": 2156,
+                "coverImage": "https://via.placeholder.com/400x250",
+                "downloadUrl": "/api/ebooks/1/download" // 指向下载接口
+            }
+        ]
+    }
+    ```
+
+#### 19.2 下载电子图书 (Download Ebook)
+
+-   **描述**: 用户下载指定的电子图书文件。
+-   **URL**: `/api/ebooks/{ebookId}/download`
+-   **方法**: `GET`
+-   **请求参数**: 无（`ebookId` 作为路径参数）
+-   **响应**: 直接返回文件流进行下载。
+
+#### 19.3 记录下载次数 (Record Download Count)
+
+-   **描述**: 记录电子图书的下载次数。
+-   **URL**: `/api/ebooks/{ebookId}/download-count`
+-   **方法**: `POST` (或 `PUT`)
+-   **请求体示例**:
+    ```json
+    {
+        "increment": 1 // 每次下载增加1
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "下载次数已更新",
+        "data": { "newCount": 2157 }
+    }
+    ```
+
+### 20. 出口贸易服务模块 (来自 `export-trade.html`)
+
+#### 20.1 提交出口申请 (Submit Export Application)
+
+-   **描述**: 公司提交出口贸易服务申请。
+-   **URL**: `/api/export-trade/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "companyName": "国际果品贸易有限公司",
+        "contactPerson": "张经理",
+        "phone": "13900001111",
+        "country": "加拿大",
+        "product": "沃柑",
+        "weight": 50000, // 斤
+        "note": "需要提供全程冷链服务"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "申请已提交，我们会尽快与您联系！",
+        "data": null
+    }
+    ```
+
+### 21. 出口专区服务模块 (来自 `export-zone.html`)
+
+#### 21.1 提交出口专区服务申请 (Submit Export Zone Service Application)
+
+-   **描述**: 公司提交出口专区服务申请。
+-   **URL**: `/api/export-zone/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "companyName": "全球鲜果供应链",
+        "contactPerson": "王总",
+        "phone": "13812345678",
+        "serviceType": "报关物流", // "报关物流", "认证服务", "跨境支付", "全流程管理"
+        "note": "首次尝试出口，希望提供全面指导"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "申请已提交，我们会尽快与您联系！",
+        "data": null
+    }
+    ```
+
+#### 21.2 PayPal 支付集成 (PayPal Payment Integration)
+
+-   **描述**: 实现与 PayPal 的跨境支付功能集成。
+-   **创建订单**:
+    -   **URL**: `/api/paypal/orders/create`
+    -   **方法**: `POST`
+    -   **请求体示例**:
+        ```json
+        {
+            "amount": "100.00",
+            "currency": "USD",
+            "description": "出口专区服务费用",
+            "items": [
+                {
+                    "name": "报关物流服务",
+                    "quantity": 1,
+                    "price": "100.00",
+                    "currency": "USD"
+                }
+            ]
+        }
+        ```
+    -   **响应体示例**:
+        ```json
+        {
+            "code": 200,
+            "message": "订单创建成功",
+            "data": { "orderId": "PAYPAL_ORDER_ID_XYZ", "approveUrl": "https://www.paypal.com/checkout?token=..." }
+        }
+        ```
+-   **捕获订单**:
+    -   **URL**: `/api/paypal/orders/{orderId}/capture`
+    -   **方法**: `POST`
+    -   **请求体示例**:
+        ```json
+        {
+            "payerId": "PAYPAL_PAYER_ID_ABC"
+        }
+        ```
+    -   **响应体示例**:
+        ```json
+        {
+            "code": 200,
+            "message": "支付成功",
+            "data": { "transactionId": "PAYPAL_TRANSACTION_ID_DEF", "status": "COMPLETED" }
+        }
+    }
+    ```
+
+#### 21.3 获取国际贸易规则知识库内容 (Get International Trade Rules Knowledge Base Content)
+
+-   **描述**: 获取国际贸易规则、政策解读、案例分析等信息。
+-   **URL**: `/api/trade-rules/knowledge-base`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `category`: 分类 (可选，如 `政策解读`, `案例分析`)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "最新RCEP协定解读",
+                "content": "RCEP协定生效对农产品出口的影响...",
+                "category": "政策解读",
+                "publishDate": "2024-05-20",
+                "attachments": ["url_to_document1"]
+            }
+        ]
+    }
+    ```
+
+
+### 22. 农事管理模块 (来自 `farm-management.html`)
+
+**注意**: `farm-management.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农事管理系统的功能，我可以推断出以下可能的后端接口。如果该文件内容实际上有明确的 API 调用，请提供文件内容以便我更准确地分析。
+
+#### 22.1 获取农事活动列表 (Get Farm Activities List)
+
+-   **描述**: 获取农户的农事活动记录或计划。
+-   **URL**: `/api/farm-management/activities`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `userId`: 用户ID (可选，用于过滤农户自己的活动)
+    -   `dateRange`: 日期范围 (可选，如 `2024-01-01,2024-12-31`)
+    -   `status`: 活动状态 (可选，如 `planned`, `completed`, `ongoing`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "activityName": "沃柑施肥",
+                "date": "2024-03-15",
+                "orchardId": 101,
+                "description": "第三季沃柑追肥，使用复合肥。",
+                "status": "completed"
+            },
+            {
+                "id": 2,
+                "activityName": "病虫害巡查",
+                "date": "2024-05-30",
+                "orchardId": 101,
+                "description": "例行巡查，检查红蜘蛛发生情况。",
+                "status": "planned"
+            }
+        ]
+    }
+    ```
+
+#### 22.2 添加农事活动 (Add Farm Activity)
+
+-   **描述**: 农户添加新的农事活动记录或计划。
+-   **URL**: `/api/farm-management/activities`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "activityName": "果园灌溉",
+        "date": "2024-05-29",
+        "orchardId": 101,
+        "description": "对A区果园进行滴灌。",
+        "status": "planned"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "农事活动添加成功",
+        "data": { "activityId": 3 }
+    }
+    ```
+
+#### 22.3 更新农事活动状态 (Update Farm Activity Status)
+
+-   **描述**: 更新农事活动的完成状态或其他信息。
+-   **URL**: `/api/farm-management/activities/{activityId}/status`
+-   **方法**: `PUT`
+-   **请求体示例**:
+    ```json
+    {
+        "status": "completed",
+        "completionDate": "2024-05-29",
+        "remark": "灌溉已完成，水量充足。"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "农事活动状态更新成功",
+        "data": null
+    }
+    ```
+
+---
+
+### 23. 金融服务模块 (来自 `finance.html`)
+
+**注意**: `finance.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般金融服务系统的功能，我可以推断出以下可能的后端接口。如果该文件内容实际上有明确的 API 调用，请提供文件内容以便我更准确地分析。
+
+#### 23.1 获取金融产品列表 (Get Financial Products List)
+
+-   **描述**: 获取平台提供的各类金融产品（如农业贷款、保险等）。
+-   **URL**: `/api/finance/products`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 产品类型 (可选，如 `贷款`, `保险`, `补贴`)
+    -   `region`: 地区筛选 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "沃柑种植专项贷款",
+                "type": "贷款",
+                "provider": "某银行",
+                "interestRate": "年化4.5%",
+                "maxAmount": "50万元",
+                "description": "专为沃柑种植户设计的低息贷款，支持扩大种植规模。"
+            },
+            {
+                "id": 2,
+                "name": "农业政策性保险",
+                "type": "保险",
+                "provider": "某保险公司",
+                "coverage": "自然灾害、病虫害",
+                "premium": "保额的1%",
+                "description": "覆盖主要农业风险，保障农户收益。"
+            }
+        ]
+    }
+    ```
+
+#### 23.2 提交金融服务申请 (Submit Financial Service Application)
+
+-   **描述**: 用户提交金融产品申请。
+-   **URL**: `/api/finance/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "productId": 1,
+        "applicantName": "张大爷",
+        "contactPhone": "13800001234",
+        "applicationDetails": "申请贷款，用于购买农机。",
+        "requestedAmount": 100000 // 贷款金额
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "金融服务申请已提交",
+        "data": { "applicationId": "FINAPP20240527001" }
+    }
+    ```
+
+#### 23.3 获取金融服务申请进度 (Get Financial Service Application Progress)
+
+-   **描述**: 查询用户已提交的金融服务申请进度。
+-   **URL**: `/api/finance/applications/{applicationId}/progress`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`applicationId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+            "applicationId": "FINAPP20240527001",
+            "status": "审核中",
+            "currentStage": "资料审核",
+            "updateTime": "2024-05-27 11:30:00",
+            "remark": "您的资料正在由风控部门审核。"
+        }
+    }
+    ```
+
+---
+
+### 24. 果品销售模块 (来自 `fruit-sale.html`)
+
+**注意**: `fruit-sale.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农产品销售系统的功能，我可以推断出以下可能的后端接口。
+
+#### 24.1 获取销售商品列表 (Get Sale Products List)
+
+-   **描述**: 获取可供销售的农产品列表。
+-   **URL**: `/api/fruit-sale/products`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `category`: 商品类别 (可选，如 `沃柑`, `沙糖桔`)
+    -   `origin`: 产地 (可选)
+    -   `priceRange`: 价格范围 (可选)
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "武鸣特优沃柑",
+                "pricePerKg": 6.5,
+                "minOrderQuantity": "100kg",
+                "origin": "广西南宁武鸣区",
+                "grade": "一级",
+                "image": "url_to_image",
+                "stock": 5000 // kg
+            }
+        ]
+    }
+    ```
+
+#### 24.2 获取商品详情 (Get Product Details)
+
+-   **描述**: 获取单个农产品的详细信息。
+-   **URL**: `/api/fruit-sale/products/{productId}`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`productId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "name": "武鸣特优沃柑",
+            "description": "武鸣核心产区直供，糖度14-16，汁多肉脆。",
+            "pricePerKg": 6.5,
+            "minOrderQuantity": "100kg",
+            "origin": "广西南宁武鸣区",
+            "grade": "一级",
+            "images": ["url_to_image1", "url_to_image2"],
+            "stock": 5000,
+            "sellerInfo": { "id": 101, "name": "武鸣果农合作社", "contact": "13912345678" }
+        }
+    }
+    ```
+
+#### 24.3 提交采购订单 (Submit Purchase Order)
+
+-   **描述**: 采购商提交农产品采购订单。
+-   **URL**: `/api/fruit-sale/orders`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "buyerId": 1,
+        "productId": 1,
+        "quantity": 500, // kg
+        "deliveryAddress": "广东省广州市天河区XX",
+        "contactName": "李先生",
+        "contactPhone": "18600001111",
+        "paymentMethod": "银行转账",
+        "remark": "希望尽快发货"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "订单提交成功",
+        "data": { "orderId": "FRUITORDER20240527001", "totalAmount": 3250 }
+    }
+    ```
+
+---
+
+### 25. 资金追溯模块 (来自 `funding_tracking.html`)
+
+**注意**: `funding_tracking.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般资金追溯系统的功能，我可以推断出以下可能的后端接口。
+
+#### 25.1 获取资金流向记录 (Get Fund Flow Records)
+
+-   **描述**: 获取农业项目或补贴资金的流向记录。
+-   **URL**: `/api/funding/records`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `projectId`: 项目ID (可选)
+    -   `type`: 资金类型 (可选，如 `补贴`, `贷款`, `投资`)
+    -   `dateRange`: 日期范围 (可选)
+    -   `payerId`: 支付方ID (可选)
+    -   `receiverId`: 接收方ID (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "transactionId": "TXN20240527001",
+                "type": "补贴",
+                "amount": 10000,
+                "currency": "CNY",
+                "payer": "农业局",
+                "receiver": "王庄农户",
+                "date": "2024-05-20",
+                "description": "2024年沃柑种植补贴"
+            },
+            {
+                "id": 2,
+                "transactionId": "TXN20240527002",
+                "type": "贷款",
+                "amount": 50000,
+                "currency": "CNY",
+                "payer": "某银行",
+                "receiver": "李强合作社",
+                "date": "2024-05-25",
+                "description": "扩大种植规模贷款"
+            }
+        ]
+    }
+    ```
+
+#### 25.2 获取资金统计概览 (Get Fund Statistics Overview)
+
+-   **描述**: 获取资金总额、各类资金比例等统计概览数据。
+-   **URL**: `/api/funding/overview`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalFundingAmount": 12000000, // 总资金流入
+            "subsidyAmount": 3000000,
+            "loanAmount": 7000000,
+            "investmentAmount": 2000000,
+            "fundDistribution": {
+                "补贴": 25, // 百分比
+                "贷款": 58,
+                "投资": 17
+            }
+        }
+    }
+    ```
+
+---
+
+### 26. 知识库模块 (来自 `knowledge.html`)
+
+**注意**: `knowledge.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般知识库系统的功能，我可以推断出以下可能的后端接口。
+
+#### 26.1 获取知识文章列表 (Get Knowledge Articles List)
+
+-   **描述**: 获取知识库中的文章列表。
+-   **URL**: `/api/knowledge/articles`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `category`: 文章类别 (可选，如 `种植技术`, `病虫害防治`, `市场分析`)
+    -   `search`: 关键词搜索 (可选)
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "沃柑常见病虫害防治手册",
+                "category": "病虫害防治",
+                "summary": "详细介绍了沃柑种植过程中常见的病虫害及其科学防治方法。",
+                "author": "李教授",
+                "publishDate": "2023-11-01",
+                "readCount": 1500,
+                "imageUrl": "url_to_thumbnail"
+            },
+            {
+                "id": 2,
+                "title": "如何科学施肥提升沃柑品质",
+                "category": "种植技术",
+                "summary": "从土壤分析到不同生长阶段的施肥策略，全面指导沃柑施肥。",
+                "author": "王专家",
+                "publishDate": "2024-01-10",
+                "readCount": 2300,
+                "imageUrl": "url_to_thumbnail"
+            }
+        ]
+    }
+    ```
+
+#### 26.2 获取知识文章详情 (Get Knowledge Article Details)
+
+-   **描述**: 获取单个知识文章的详细内容。
+-   **URL**: `/api/knowledge/articles/{articleId}`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`articleId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "title": "沃柑常见病虫害防治手册",
+            "category": "病虫害防治",
+            "content": "<p><b>红蜘蛛防治：</b>...</p><p><b>黄龙病预警：</b>...</p>", // HTML 或 Markdown 格式内容
+            "author": "李教授",
+            "publishDate": "2023-11-01",
+            "readCount": 1501, // 每次请求增加阅读量
+            "attachments": [
+                { "name": "红蜘蛛防治图解.pdf", "url": "url_to_pdf" }
+            ]
+        }
+    }
+    ```
+
+#### 26.3 搜索知识文章 (Search Knowledge Articles)
+
+-   **描述**: 在知识库中搜索文章。
+-   **URL**: `/api/knowledge/search`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `query`: 搜索关键词 (必填)
+    -   `category`: 类别过滤 (可选)
+    -   `page`: 页码 (可选)
+    -   `limit`: 每页数量 (可选)
+-   **响应体示例**: 同 `26.1 获取知识文章列表`
+
+---
+
+### 27. IoT 设备模块 (来自 `iot-device.html`)
+
+**注意**: `iot-device.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般 IoT 设备管理系统的功能，我可以推断出以下可能的后端接口。
+
+#### 27.1 获取 IoT 设备列表 (Get IoT Devices List)
+
+-   **描述**: 获取用户或果园中已部署的 IoT 设备列表。
+-   **URL**: `/api/iot/devices`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `userId`: 用户ID (可选)
+    -   `orchardId`: 果园ID (可选)
+    -   `type`: 设备类型 (可选，如 `传感器`, `摄像头`, `智能灌溉`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "deviceName": "土壤温湿度传感器1",
+                "deviceType": "传感器",
+                "location": "A区果园",
+                "status": "online",
+                "lastDataTime": "2024-05-27T12:00:00Z"
+            },
+            {
+                "id": 2,
+                "deviceName": "果园监控摄像头1",
+                "deviceType": "摄像头",
+                "location": "B区果园",
+                "status": "online",
+                "streamUrl": "rtmp://..."
+            }
+        ]
+    }
+    ```
+
+#### 27.2 获取设备实时数据 (Get Device Real-time Data)
+
+-   **描述**: 获取特定 IoT 设备的实时监测数据（如温度、湿度、光照、土壤PH等）。
+-   **URL**: `/api/iot/devices/{deviceId}/realtime-data`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`deviceId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "deviceId": 1,
+            "timestamp": "2024-05-27T12:05:30Z",
+            "temperature": 25.3, // 摄氏度
+            "humidity": 78.5, // %
+            "soilMoisture": 65, // %
+            "lightIntensity": 12000, // Lux
+            "batteryLevel": 85 // %
+        }
+    }
+    ```
+
+#### 27.3 控制 IoT 设备 (Control IoT Device)
+
+-   **描述**: 向智能灌溉系统或摄像头发送控制指令。
+-   **URL**: `/api/iot/devices/{deviceId}/control`
+-   **方法**: `POST`
+-   **请求体示例 (灌溉)**:
+    ```json
+    {
+        "command": "start_irrigation",
+        "durationMinutes": 30,
+        "area": "A区"
+    }
+    ```
+-   **请求体示例 (摄像头)**:
+    ```json
+    {
+        "command": "rotate_camera",
+        "direction": "left",
+        "angle": 45
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "设备控制指令已发送",
+        "data": null
+    }
+    ```
+
+---
+
+### 28. 土地流转模块 (来自 `land-transfer.html`)
+
+**注意**: `land-transfer.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般土地流转系统的功能，我可以推断出以下可能的后端接口。
+
+#### 28.1 获取土地流转信息列表 (Get Land Transfer Listings)
+
+-   **描述**: 获取可供流转的土地信息列表。
+-   **URL**: `/api/land-transfer/listings`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `region`: 地区 (可选)
+    -   `areaRange`: 面积范围 (可选)
+    -   `type`: 流转类型 (可选，如 `出租`, `转让`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "武鸣XX村沃柑园土地出租",
+                "area": "50亩",
+                "pricePerMuPerYear": "800元",
+                "transferType": "出租",
+                "duration": "10年",
+                "location": "武鸣区XX村",
+                "contactInfo": "李先生 139...",
+                "description": "适合种植沃柑，配套水利设施完善。",
+                "publishDate": "2024-05-15"
+            }
+        ]
+    }
+    ```
+
+#### 28.2 发布土地流转信息 (Publish Land Transfer Listing)
+
+-   **描述**: 农户发布自己的土地流转信息。
+-   **URL**: `/api/land-transfer/listings`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "ownerId": 1,
+        "title": "自家闲置土地转让",
+        "area": "30亩",
+        "price": "5万元/亩",
+        "transferType": "转让",
+        "location": "隆安县XX镇",
+        "contactInfo": "王女士 133...",
+        "description": "土地平整，交通便利，可用于农业开发。"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "土地流转信息发布成功",
+        "data": { "listingId": 101 }
+    }
+    ```
+
+---
+
+### 29. 直播模块 (来自 `live.html`)
+
+**注意**: `live.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般直播系统的功能，我可以推断出以下可能的后端接口。
+
+#### 29.1 获取直播列表 (Get Live Streams List)
+
+-   **描述**: 获取正在进行或即将开始的直播列表。
+-   **URL**: `/api/live/streams`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `status`: 直播状态 (可选，如 `live`, `upcoming`, `replay`)
+    -   `category`: 直播类别 (可选，如 `种植技术`, `产品销售`, `专家讲座`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "武鸣沃柑采摘季直播",
+                "streamer": "小李果农",
+                "status": "live",
+                "viewerCount": 1500,
+                "thumbnailUrl": "url_to_thumbnail",
+                "streamUrl": "rtmp://...",
+                "startTime": "2024-05-27T10:00:00Z",
+                "category": "产品销售"
+            },
+            {
+                "id": 2,
+                "title": "专家教你如何防治沃柑溃疡病",
+                "streamer": "陈教授",
+                "status": "upcoming",
+                "scheduledTime": "2024-05-28T14:00:00Z",
+                "thumbnailUrl": "url_to_thumbnail",
+                "category": "种植技术"
+            }
+        ]
+    }
+    ```
+
+#### 29.2 获取直播间详情 (Get Live Stream Details)
+
+-   **描述**: 获取单个直播间的详细信息，包括直播间URL、聊天记录等。
+-   **URL**: `/api/live/streams/{streamId}`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`streamId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "title": "武鸣沃柑采摘季直播",
+            "streamer": { "id": 101, "name": "小李果农", "avatar": "url_to_avatar" },
+            "streamUrl": "rtmp://your_live_server/live/stream1",
+            "chatHistory": [
+                { "userId": 201, "username": "观众A", "message": "沃柑看起来很新鲜！", "timestamp": "12:01" }
+            ],
+            "productsForSale": [
+                { "productId": 1, "name": "新鲜沃柑5kg", "price": 59.9, "stock": 100 }
+            ]
+        }
+    }
+    ```
+
+#### 29.3 发送直播间消息 (Send Live Stream Message)
+
+-   **描述**: 用户在直播间发送聊天消息。
+-   **URL**: `/api/live/streams/{streamId}/chat`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 202,
+        "username": "观众B",
+        "message": "请问沃柑甜度怎么样？"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "消息发送成功",
+        "data": null
+    }
+    ```
+
+#### 29.4 购买直播间商品 (Purchase Live Stream Product)
+
+-   **描述**: 用户在直播间直接购买展示的农产品。
+-   **URL**: `/api/live/streams/{streamId}/purchase`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 203,
+        "productId": 1,
+        "quantity": 1,
+        "deliveryAddress": "XX省XX市",
+        "contactPhone": "13XXXXXXXXX"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "购买成功，订单已生成",
+        "data": { "orderId": "LIVEORDER20240527001" }
+    }
+    ```
+
+---
+
+### 30. 登录模态框模块 (来自 `login-modal.html`)
+
+**注意**: `login-modal.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。通常登录模态框的后端接口与用户认证模块（已在前面 `1. 用户认证模块` 中定义）共享。因此，这里不再重复定义新的接口，而是强调其可能与现有接口的关联。
+
+#### 30.1 (重申) 登录 (Login)
+
+-   **描述**: 模态框内的登录表单提交。
+-   **URL**: `/api/auth/login` (同 `1.1`)
+-   **方法**: `POST`
+
+#### 30.2 (重申) 获取图形验证码 (Get Captcha)
+
+-   **描述**: 模态框内刷新验证码。
+-   **URL**: `/api/auth/captcha` (同 `1.3`)
+-   **方法**: `GET`
+
+#### 30.3 (重申) 发送验证码 (Send Verification Code)
+
+-   **描述**: 模态框内发送手机/邮箱验证码。
+-   **URL**: `/api/auth/sendCode` (同 `1.4`)
+-   **方法**: `POST`
+
+#### 30.4 忘记密码 (Forgot Password)
+
+-   **描述**: 用户点击“忘记密码”链接后可能跳转或弹出模态框进行密码重置流程。
+-   **URL**: `/api/auth/forgot-password` (或跳转到专门的忘记密码页面)
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "contact": "user@example.com" // 或手机号 "13800138000"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "重置密码链接已发送至您的邮箱/手机",
+        "data": null
+    }
+    ```
+
+#### 30.5 注册 (Register)
+
+-   **描述**: 用户点击“立即注册”链接后可能跳转或弹出模态框进行注册流程。
+-   **URL**: `/api/auth/register` (同 `2.1`)
+-   **方法**: `POST`
+
+---
+
+### 31. 物流优化模块 (来自 `logistics-optimization.html`)
+
+**注意**: `logistics-optimization.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般物流优化系统的功能，我可以推断出以下可能的后端接口。
+
+#### 31.1 获取物流优化方案 (Get Logistics Optimization Solutions)
+
+-   **描述**: 获取基于 AI 算法生成的物流优化方案。
+-   **URL**: `/api/logistics/optimization/solutions`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `origin`: 起点 (可选)
+    -   `destination`: 终点 (可选)
+    -   `goodsType`: 货物类型 (可选)
+    -   `quantity`: 数量 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "solutionName": "武鸣至广州最佳运输路径",
+                "route": ["武鸣", "南宁", "广州"],
+                "estimatedCost": "800元/吨",
+                "estimatedTime": "12小时",
+                "recommendedVehicle": "冷藏车",
+                "optimizationReason": "AI算法推荐，避开拥堵路段，结合最佳温控方案。"
+            }
+        ]
+    }
+    ```
+
+#### 31.2 提交物流优化请求 (Submit Logistics Optimization Request)
+
+-   **描述**: 用户提交自己的物流需求，请求生成优化方案。
+-   **URL**: `/api/logistics/optimization/requests`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "origin": "武鸣县沃柑基地",
+        "destination": "上海市批发市场",
+        "goodsType": "沃柑",
+        "quantity": 10000, // kg
+        "expectedDeliveryDate": "2024-06-03",
+        "temperatureRequirement": "-2°C~8°C",
+        "remark": "对运输时效要求高"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "物流优化请求已提交，请等待方案生成",
+        "data": { "requestId": "LOGOPT20240527001" }
+    }
+    ```
+
+#### 31.3 获取优化请求状态 (Get Optimization Request Status)
+
+-   **描述**: 查询已提交的物流优化请求的处理状态。
+-   **URL**: `/api/logistics/optimization/requests/{requestId}/status`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`requestId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+            "requestId": "LOGOPT20240527001",
+            "status": "已完成",
+            "solution": {
+                "id": 1,
+                "solutionName": "武鸣至上海最优方案",
+                "estimatedCost": "8000元",
+                "estimatedTime": "36小时"
+            },
+            "updateTime": "2024-05-27T14:00:00Z"
+        }
+    }
+    ```
+
+---
+
+### 32. 物流跟踪模块 (来自 `logistics-tracking.html`)
+
+**注意**: `logistics-tracking.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般物流跟踪系统的功能，我可以推断出以下可能的后端接口。
+
+#### 32.1 查询物流订单 (Query Logistics Order)
+
+-   **描述**: 根据订单号查询物流运输详情。
+-   **URL**: `/api/logistics/tracking/orders/{orderNumber}`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`orderNumber` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+            "orderNumber": "ABC123456789",
+            "status": "运输中",
+            "origin": "武鸣区",
+            "destination": "广州市",
+            "currentLocation": "湖南衡阳服务区",
+            "estimatedArrivalTime": "2024-05-28T08:00:00Z",
+            "driverInfo": {
+                "name": "王师傅",
+                "phone": "136XXXXXXXX"
+            },
+            "trackingHistory": [
+                { "timestamp": "2024-05-27T09:00:00Z", "location": "武鸣区装车", "status": "已发货" },
+                { "timestamp": "2024-05-27T15:00:00Z", "location": "湖南衡阳服务区，预计停留1小时", "status": "运输中" }
+            ],
+            "temperatureData": [ // 冷链运输可能包含
+                { "timestamp": "2024-05-27T10:00:00Z", "temperature": 5.2 },
+                { "timestamp": "2024-05-27T11:00:00Z", "temperature": 5.5 }
+            ]
+        }
+    }
+    ```
+
+#### 32.2 获取我的物流订单 (Get My Logistics Orders)
+
+-   **描述**: 获取当前用户的所有物流订单。
+-   **URL**: `/api/logistics/tracking/my-orders`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `userId`: 用户ID (必填，或通过 token 获取)
+    -   `status`: 订单状态过滤 (可选，如 `运输中`, `已完成`)
+-   **响应体示例**: 同 `32.1` 的 `data` 字段为数组。
+
+---
+
+### 33. 市场模块 (来自 `market.html`)
+
+**注意**: `market.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。该文件可能与 `4. 市场行情卡片模块` 功能重叠或提供更详细的市场数据。我会基于其文件名推断更全面的市场相关接口。
+
+#### 33.1 获取市场行情概览 (Get Market Overview)
+
+-   **描述**: 获取当前农产品市场的总体行情概览，包括主要产品均价、销量趋势等。
+-   **URL**: `/api/market/overview`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "mainProduct": "沃柑",
+            "averagePrice": 6.2, // 元/kg
+            "priceTrend": "上涨", // 上涨, 下跌, 持平
+            "totalVolume": "15000吨 (本月)",
+            "hotProducts": [
+                { "name": "武鸣沃柑", "price": 6.8, "trend": "上涨" },
+                { "name": "沙糖桔", "price": 4.5, "trend": "持平" }
+            ]
+        }
+    }
+    ```
+
+#### 33.2 获取分地区市场数据 (Get Regional Market Data)
+
+-   **描述**: 获取不同地区农产品的市场价格和供应情况。
+-   **URL**: `/api/market/regions/{regionName}/data`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`regionName` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "region": "广州",
+            "products": [
+                { "name": "沃柑", "price": 7.0, "supplyStatus": "充足" },
+                { "name": "沙糖桔", "price": 4.8, "supplyStatus": "偏紧" }
+            ],
+            "analysis": "广州市场需求旺盛，沃柑价格略高于平均水平。"
+        }
+    }
+    ```
+
+#### 33.3 获取历史价格数据 (Get Historical Price Data)
+
+-   **描述**: 获取特定农产品在一段时间内的历史价格数据，用于图表展示。
+-   **URL**: `/api/market/products/{productId}/history-prices`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `timeframe`: 时间范围 (可选，如 `7d`, `30d`, `90d`, `1y`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "productId": 1,
+            "productName": "沃柑",
+            "labels": ["2024-05-20", "2024-05-21", "2024-05-22"],
+            "prices": [6.0, 6.1, 6.2]
+        }
+    }
+    ```
+
+---
+
+### 34. 在线申请模块 (来自 `online_application.html`)
+
+**注意**: `online_application.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。这个模块可能是一个通用的在线申请入口，需要结合具体的申请类型来定义后端接口。这里我将推断一个通用的申请提交接口，并假设通过 `applicationType` 区分具体的业务。
+
+#### 34.1 提交通用在线申请 (Submit Generic Online Application)
+
+-   **描述**: 用户提交各类在线申请，如补贴申请、项目申报等。
+-   **URL**: `/api/applications/submit`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "applicationType": "农业补贴申请", // 例如："农业补贴申请", "农机购置补贴", "绿色农产品认证"
+        "applicantName": "李华",
+        "contactInfo": "138XXXXXXXX",
+        "applicationDetails": {
+            "projectName": "2024年沃柑标准化种植补贴",
+            "farmArea": "50亩",
+            "bankAccount": "6222XXXXXXXXXXXXXX"
+        },
+        "attachments": ["url_to_doc1.pdf", "url_to_image.jpg"] // 附件URL列表
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "申请已提交，请等待审核",
+        "data": { "applicationId": "GENAPP20240527001" }
+    }
+    ```
+
+#### 34.2 查询申请进度 (Query Application Progress)
+
+-   **描述**: 查询用户提交的各类在线申请的进度。
+-   **URL**: `/api/applications/{applicationId}/progress`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`applicationId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "查询成功",
+        "data": {
+            "applicationId": "GENAPP20240527001",
+            "applicationType": "农业补贴申请",
+            "status": "审批中",
+            "currentStage": "部门初审",
+            "updateTime": "2024-05-27T16:00:00Z",
+            "remark": "您的申请正在农业局进行初审。"
+        }
+    }
+    ```
+
+---
+
+### 35. 病虫害防治模块 (来自 `pest-control.html`)
+
+**注意**: `pest-control.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般病虫害防治系统的功能，我可以推断出以下可能的后端接口。
+
+#### 35.1 获取病虫害数据库 (Get Pest & Disease Database)
+
+-   **描述**: 获取常见的沃柑病虫害信息，包括症状、防治方法、推荐农药等。
+-   **URL**: `/api/pest-control/database`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 类型 (可选，`病害`, `虫害`)
+    -   `search`: 关键词搜索 (可选，如 `黄龙病`, `红蜘蛛`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "柑橘黄龙病",
+                "type": "病害",
+                "symptoms": "叶片黄化，果实畸形，植株枯死。",
+                "prevention": "选用无病苗木，清除病株，防治木虱。",
+                "treatment": "目前无有效治疗方法，以预防为主。",
+                "imageUrl": "url_to_image"
+            },
+            {
+                "id": 2,
+                "name": "柑橘红蜘蛛",
+                "type": "虫害",
+                "symptoms": "叶片出现灰白色斑点，严重时落叶。",
+                "prevention": "加强果园管理，保护天敌。",
+                "treatment": "可使用阿维菌素、螺螨酯等农药防治。",
+                "recommendedPesticides": ["农药A", "农药B"]
+            }
+        ]
+    }
+    ```
+
+#### 35.2 提交病虫害报告 (Submit Pest & Disease Report)
+
+-   **描述**: 农户上传病虫害照片和描述，寻求专家诊断和建议。
+-   **URL**: `/api/pest-control/reports`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "orchardId": 101,
+        "description": "沃柑叶片出现大面积黄化，怀疑黄龙病。",
+        "images": ["url_to_img1", "url_to_img2"],
+        "contactInfo": "139XXXXXXXX"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "病虫害报告已提交，请等待专家诊断",
+        "data": { "reportId": "PDR20240527001" }
+    }
+    ```
+
+#### 35.3 获取病虫害诊断结果 (Get Pest & Disease Diagnosis Result)
+
+-   **描述**: 获取专家对已提交病虫害报告的诊断结果和防治建议。
+-   **URL**: `/api/pest-control/reports/{reportId}/diagnosis`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`reportId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "reportId": "PDR20240527001",
+            "diagnosis": "初步判断为柑橘黄龙病，建议立即隔离病株，并加强园区内木虱的防治。",
+            "suggestedTreatment": "推荐使用生物防治与化学防治相结合的方案。",
+            "expertInfo": { "name": "李博士", "title": "植物保护专家" },
+            "diagnosisTime": "2024-05-27T17:00:00Z"
+        }
+    }
+    ```
+
+---
+
+### 36. 农药报告模块 (来自 `pesticide-report.html`)
+
+**注意**: `pesticide-report.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农药使用报告系统的功能，我可以推断出以下可能的后端接口。
+
+#### 36.1 提交农药使用报告 (Submit Pesticide Usage Report)
+
+-   **描述**: 农户提交农药使用记录，用于产品溯源和合规性管理。
+-   **URL**: `/api/pesticide-reports`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "orchardId": 101,
+        "applicationDate": "2024-05-25",
+        "pesticideName": "高效氯氟氰菊酯",
+        "dosage": "100ml/亩",
+        "applicationMethod": "喷雾",
+        "operator": "王小二",
+        "remark": "用于防治蚜虫"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "农药使用报告提交成功",
+        "data": { "reportId": "PU20240527001" }
+    }
+    ```
+
+#### 36.2 获取农药使用报告列表 (Get Pesticide Usage Reports List)
+
+-   **描述**: 获取果园或用户的农药使用报告列表。
+-   **URL**: `/api/pesticide-reports`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `orchardId`: 果园ID (可选)
+    -   `dateRange`: 日期范围 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "orchardId": 101,
+                "applicationDate": "2024-05-20",
+                "pesticideName": "代森锰锌",
+                "dosage": "50g/亩",
+                "applicationMethod": "叶面喷施",
+                "operator": "张三",
+                "remark": "防治炭疽病"
+            }
+        ]
+    }
+    ```
+
+---
+
+### 37. 农药检测模块 (来自 `pesticide-test.html`)
+
+**注意**: `pesticide-test.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农药残留检测系统的功能，我可以推断出以下可能的后端接口。
+
+#### 37.1 提交农药检测申请 (Submit Pesticide Test Application)
+
+-   **描述**: 农户或企业提交农产品农药残留检测申请。
+-   **URL**: `/api/pesticide-tests/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "applicantName": "李明",
+        "contactPhone": "137XXXXXXXX",
+        "sampleType": "沃柑",
+        "sampleWeight": "2kg",
+        "testingItems": ["百菌清", "多菌灵"],
+        "deliveryMethod": "快递",
+        "address": "广西南宁市XXXX实验室",
+        "remark": "需要加急检测"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "农药检测申请已提交",
+        "data": { "testApplicationId": "PTAPP20240527001" }
+    }
+    ```
+
+#### 37.2 查询农药检测结果 (Query Pesticide Test Result)
+
+-   **描述**: 查询已提交农药检测申请的检测结果。
+-   **URL**: `/api/pesticide-tests/{testApplicationId}/result`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`testApplicationId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "testApplicationId": "PTAPP20240527001",
+            "sampleType": "沃柑",
+            "testDate": "2024-05-26",
+            "results": [
+                { "itemName": "百菌清", "detectionValue": "0.01mg/kg", "standardLimit": "0.1mg/kg", "status": "合格" },
+                { "itemName": "多菌灵", "detectionValue": "0.005mg/kg", "standardLimit": "0.05mg/kg", "status": "合格" }
+            ],
+            "conclusion": "所检项目符合国家农药残留标准",
+            "reportUrl": "url_to_test_report.pdf",
+            "status": "已完成"
+        }
+    }
+    ```
+
+---
+
+### 38. 规划设计模块 (来自 `planning-design.html`)
+
+**注意**: `planning-design.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农业规划设计系统的功能，我可以推断出以下可能的后端接口。
+
+#### 38.1 提交规划设计需求 (Submit Planning & Design Request)
+
+-   **描述**: 用户提交果园或农场规划设计需求。
+-   **URL**: `/api/planning-design/requests`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "applicantName": "赵老板",
+        "contactPhone": "136XXXXXXXX",
+        "projectType": "新果园规划", // 或 "老果园改造", "智慧农业园区设计"
+        "area": "200亩",
+        "location": "广西南宁市隆安县",
+        "requirements": "希望设计一个高效率、低成本的沃柑种植基地，包含智能灌溉系统。",
+        "attachments": ["url_to_site_map.jpg"] // 附带现场图
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "规划设计需求已提交",
+        "data": { "designRequestId": "PDRQ20240527001" }
+    }
+    ```
+
+#### 38.2 获取设计方案列表 (Get Design Solutions List)
+
+-   **描述**: 获取已完成或进行中的规划设计方案列表。
+-   **URL**: `/api/planning-design/solutions`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `userId`: 用户ID (可选)
+    -   `status`: 方案状态 (可选，如 `草案`, `已完成`, `待确认`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "designRequestId": "PDRQ20240527001",
+                "solutionName": "武鸣沃柑智慧果园规划方案",
+                "status": "已完成",
+                "designDate": "2024-05-20",
+                "designTeam": "智慧农业设计院",
+                "previewUrl": "url_to_preview_pdf",
+                "description": "包含了果园分区、灌溉系统、道路规划等详细内容。"
+            }
+        ]
+    }
+    ```
+
+---
+
+### 39. 种植指导模块 (来自 `planting-guidance.html`)
+
+**注意**: `planting-guidance.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般种植指导系统的功能，我可以推断出以下可能的后端接口。
+
+#### 39.1 获取种植指南列表 (Get Planting Guides List)
+
+-   **描述**: 获取关于沃柑种植各阶段的指南文章或视频。
+-   **URL**: `/api/planting-guidance/guides`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `stage`: 种植阶段 (可选，如 `幼树期`, `开花期`, `结果期`)
+    -   `type`: 指南类型 (可选，如 `文章`, `视频`)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "沃柑幼树管理技术要点",
+                "stage": "幼树期",
+                "type": "文章",
+                "summary": "详细介绍幼树修剪、水肥管理、病虫害防治等。",
+                "author": "专家团队",
+                "publishDate": "2023-10-10",
+                "readCount": 800,
+                "coverImage": "url_to_image"
+            },
+            {
+                "id": 2,
+                "title": "沃柑春季施肥视频教程",
+                "stage": "开花期",
+                "type": "视频",
+                "summary": "视频演示春季沃柑施肥的正确方法和注意事项。",
+                "author": "农技站",
+                "publishDate": "2024-03-01",
+                "readCount": 1200,
+                "videoUrl": "url_to_video"
+            }
+        ]
+    }
+    ```
+
+#### 39.2 获取种植指南详情 (Get Planting Guide Details)
+
+-   **描述**: 获取单个种植指南的详细内容。
+-   **URL**: `/api/planting-guidance/guides/{guideId}`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`guideId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "id": 1,
+            "title": "沃柑幼树管理技术要点",
+            "content": "<p><b>修剪：</b>...", // HTML 或 Markdown 内容
+            "attachments": [
+                { "name": "幼树管理图解.pdf", "url": "url_to_pdf" }
+            ]
+        }
+    }
+    ```
+
+---
+
+### 40. 政策匹配模块 (来自 `policy_matching.html`)
+
+**注意**: `policy_matching.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般政策匹配系统的功能，我可以推断出以下可能的后端接口。
+
+#### 40.1 获取政策列表 (Get Policy List)
+
+-   **描述**: 获取农业相关政策列表，支持按类型、地区、关键词筛选。
+-   **URL**: `/api/policies`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 政策类型 (可选，如 `补贴`, `贷款`, `技术推广`)
+    -   `region`: 地区 (可选)
+    -   `search`: 关键词搜索 (可选)
+    -   `status`: 政策状态 (可选，如 `最新发布`, `即将到期`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "2024年武鸣区沃柑产业发展补贴政策",
+                "type": "补贴",
+                "region": "武鸣区",
+                "publishDate": "2024-01-01",
+                "deadline": "2024-12-31",
+                "summary": "针对沃柑种植户的财政补贴政策，鼓励优质高产。",
+                "eligibility": "武鸣区内注册的沃柑种植合作社或规模化种植户。"
+            },
+            {
+                "id": 2,
+                "title": "农业科技创新项目申报指南",
+                "type": "技术推广",
+                "region": "广西全省",
+                "publishDate": "2024-03-15",
+                "summary": "支持农业科技创新和成果转化项目。"
+            }
+        ]
+    }
+    ```
+
+#### 40.2 提交政策匹配需求 (Submit Policy Matching Request)
+
+-   **描述**: 用户提交自身情况，系统智能匹配符合条件的政策。
+-   **URL**: `/api/policy-matching/requests`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "userProfile": { // 用户填写的自身情况
+            "location": "武鸣区XX镇",
+            "plantingArea": 150, // 亩
+            "mainCrop": "沃柑",
+            "businessType": "合作社", // "个体农户", "企业"
+            "needs": ["资金支持", "技术指导"]
+        }
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "政策匹配请求已提交，系统正在为您匹配...",
+        "data": { "matchingRequestId": "PMREQ20240527001" }
+    }
+    ```
+
+#### 40.3 获取政策匹配结果 (Get Policy Matching Result)
+
+-   **描述**: 获取政策匹配请求的匹配结果。
+-   **URL**: `/api/policy-matching/requests/{matchingRequestId}/results`
+-   **方法**: `GET`
+-   **请求参数**: 无 (`matchingRequestId` 作为路径参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "匹配结果已生成",
+        "data": {
+            "matchingRequestId": "PMREQ20240527001",
+            "matchedPolicies": [
+                {
+                    "policyId": 1,
+                    "title": "2024年武鸣区沃柑产业发展补贴政策",
+                    "matchScore": 95, // 匹配度评分
+                    "reason": "您是武鸣区沃柑合作社，符合补贴对象条件，且种植面积符合要求。"
+                }
+            ],
+            "unmatchedReason": "部分政策因种植规模不足或地区不符而未匹配。",
+            "recommendations": "建议您关注其他地区政策或考虑扩大种植规模以符合更多政策。"
+        }
+    }
+    ```
+
+---
+
+### 41. 采后处理技术模块 (来自 `post-harvest-tech.html`)
+
+**注意**: `post-harvest-tech.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般采后处理技术系统的功能，我可以推断出以下可能的后端接口。
+
+#### 41.1 获取采后处理技术指南 (Get Post-Harvest Tech Guides)
+
+-   **描述**: 获取关于沃柑采摘后保鲜、分级、包装等技术指南。
+-   **URL**: `/api/post-harvest-tech/guides`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 技术类型 (可选，如 `保鲜`, `分级`, `包装`)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "沃柑采后保鲜技术与冷链管理",
+                "type": "保鲜",
+                "summary": "详细介绍采摘时机、预冷、冷藏条件、气调保鲜等。",
+                "publishDate": "2023-12-01",
+                "readCount": 1500
+            },
+            {
+                "id": 2,
+                "title": "沃柑智能分级与包装标准",
+                "type": "分级",
+                "summary": "介绍沃柑的等级划分、分级设备选择及包装材料应用。",
+                "publishDate": "2024-01-20",
+                "readCount": 1000
+            }
+        ]
+    }
+    ```
+
+#### 41.2 获取采后处理设备信息 (Get Post-Harvest Equipment Info)
+
+-   **描述**: 获取采后处理相关设备的信息，如分选机、包装机、冷库设备等。
+-   **URL**: `/api/post-harvest-tech/equipment`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 设备类型 (可选，如 `分选机`, `包装机`, `冷库`)
+    -   `brand`: 品牌 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "智能沃柑分选机",
+                "type": "分选机",
+                "brand": "某智能设备公司",
+                "capacity": "5吨/小时",
+                "features": ["按大小分级", "按颜色分级", "缺陷检测"],
+                "priceRange": "10-20万元",
+                "imageUrl": "url_to_image"
+            }
+        ]
+    }
+    ```
+
+---
+
+### 42. 加工贸易模块 (来自 `processed-trade.html`)
+
+**注意**: `processed-trade.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农产品加工贸易系统的功能，我可以推断出以下可能的后端接口。
+
+#### 42.1 获取加工产品列表 (Get Processed Products List)
+
+-   **描述**: 获取沃柑深加工产品列表，如沃柑汁、沃柑干、果酱等。
+-   **URL**: `/api/processed-trade/products`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `category`: 产品类别 (可选，如 `果汁`, `果干`, `果酱`)
+    -   `brand`: 品牌 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "武鸣沃柑原汁",
+                "category": "果汁",
+                "brand": "鸣果",
+                "specifications": "250ml/瓶",
+                "price": "8元/瓶",
+                "description": "100%武鸣沃柑鲜榨，无添加。",
+                "imageUrl": "url_to_image"
+            },
+            {
+                "id": 2,
+                "name": "沃柑果干",
+                "category": "果干",
+                "brand": "甜橙工坊",
+                "specifications": "100g/袋",
+                "price": "15元/袋",
+                "description": "低温烘干，保留沃柑风味。",
+                "imageUrl": "url_to_image"
+            }
+        ]
+    }
+    ```
+
+#### 42.2 提交加工订单 (Submit Processing Order)
+
+-   **描述**: 用户提交对沃柑进行加工的订单需求。
+-   **URL**: `/api/processed-trade/orders`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "rawMaterialId": 101, // 原料沃柑的ID或批次信息
+        "processingType": "榨汁", // "榨汁", "烘干", "果酱制作"
+        "quantityKg": 5000, // 加工原料数量
+        "expectedProduct": "沃柑原汁",
+        "packagingRequirements": "250ml瓶装",
+        "deliveryDate": "2024-06-15",
+        "contactInfo": "138XXXXXXXX"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "加工订单已提交",
+        "data": { "processingOrderId": "PROCORDER20240527001" }
+    }
+    ```
+
+---
+
+### 43. 品质提升模块 (来自 `quality-improvement.html`)
+
+**注意**: `quality-improvement.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般品质提升系统的功能，我可以推断出以下可能的后端接口。
+
+#### 43.1 获取品质提升技术方案 (Get Quality Improvement Solutions)
+
+-   **描述**: 获取提升沃柑品质的技术方案和最佳实践。
+-   **URL**: `/api/quality-improvement/solutions`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `aspect`: 提升方面 (可选，如 `糖度`, `色泽`, `口感`)
+    -   `stage`: 种植阶段 (可选)
+    -   `search`: 关键词搜索 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "title": "通过水肥管理提升沃柑糖度",
+                "aspect": "糖度",
+                "stage": "结果期",
+                "summary": "科学控制水分，合理施用钾肥，有效提高沃柑糖度。",
+                "author": "农业专家",
+                "publishDate": "2023-11-01",
+                "contentUrl": "url_to_detail_page"
+            },
+            {
+                "id": 2,
+                "title": "沃柑着色技术与管理",
+                "aspect": "色泽",
+                "stage": "转色期",
+                "summary": "影响沃柑着色的因素分析及提升着色均匀性的方法。",
+                "author": "技术推广站",
+                "publishDate": "2024-01-10",
+                "contentUrl": "url_to_detail_page"
+            }
+        ]
+    }
+    ```
+
+#### 43.2 提交品质问题反馈 (Submit Quality Problem Feedback)
+
+-   **描述**: 农户或采购商提交沃柑品质问题反馈，寻求解决方案或技术支持。
+-   **URL**: `/api/quality-improvement/feedback`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "userId": 1,
+        "problemType": "糖度不足", // 或 "着色不均", "口感不佳"
+        "description": "今年的沃柑糖度普遍偏低，达不到预期。",
+        "images": ["url_to_sample_image"],
+        "contactInfo": "13XXXXXXXXX"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "品质问题反馈已提交，我们会安排专家对接",
+        "data": { "feedbackId": "QIFB20240527001" }
+    }
+    ```
+
+---
+
+### 44. 智慧农业模块 (来自 `smart-agriculture.html`)
+
+**注意**: `smart-agriculture.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般智慧农业系统的功能，我可以推断出以下可能的后端接口。此模块可能整合了IoT、农事管理、数据看板等多个功能。
+
+#### 44.1 获取智慧农业概览数据 (Get Smart Agriculture Overview)
+
+-   **描述**: 获取智慧农业系统的整体运行概况，包括设备状态、环境数据、农事任务统计等。
+-   **URL**: `/api/smart-agriculture/overview`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `orchardId`: 果园ID (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "deviceCount": 20, // 设备总数
+            "onlineDevices": 18, // 在线设备数
+            "sensorData": { // 最新环境数据
+                "temperature": 26.1,
+                "humidity": 75.8,
+                "soilMoisture": 62
+            },
+            "farmTaskSummary": { // 农事任务概览
+                "totalTasks": 50,
+                "pendingTasks": 5,
+                "completedTasks": 45
+            },
+            "alertsCount": 2, // 告警数量
+            "recentAlerts": ["设备离线：灌溉泵1", "温度异常：大棚2"]
+        }
+    }
+    ```
+
+#### 44.2 获取环境监测数据 (Get Environmental Monitoring Data)
+
+-   **描述**: 获取特定时间范围内的环境监测数据（如温度、湿度、光照、土壤参数）。
+-   **URL**: `/api/smart-agriculture/environmental-data`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `orchardId`: 果园ID (必填)
+    -   `sensorId`: 传感器ID (可选)
+    -   `dataType`: 数据类型 (可选，如 `temperature`, `humidity`, `soil_ph`)
+    -   `timeRange`: 时间范围 (必填，如 `last_24h`, `last_7d`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "orchardId": 101,
+            "dataType": "temperature",
+            "unit": "℃",
+            "timestamps": ["2024-05-27T08:00:00Z", "2024-05-27T09:00:00Z"],
+            "values": [25.5, 26.0]
+        }
+    }
+    ```
+
+#### 44.3 获取智能决策建议 (Get Smart Decision Suggestions)
+
+-   **描述**: 基于环境数据、作物生长模型等，提供智能化的农事决策建议（如灌溉建议、施肥建议）。
+-   **URL**: `/api/smart-agriculture/decision-suggestions`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `orchardId`: 果园ID (必填)
+    -   `cropStage`: 作物生长阶段 (可选)
+    -   `queryType`: 建议类型 (可选，如 `irrigation`, `fertilization`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "orchardId": 101,
+            "suggestionType": "irrigation",
+            "suggestion": "当前土壤湿度偏低，建议立即进行一次2小时的滴灌。",
+            "recommendedAction": { "command": "start_irrigation", "duration": 120 }
+        }
+    }
+    ```
+
+---
+
+### 45. 智慧仓储模块 (来自 `smart-warehouse.html`)
+
+**注意**: `smart-warehouse.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。此模块可能与 `cloud-warehouse.html` 功能重叠或提供更详细的仓储管理功能。
+
+#### 45.1 获取仓储库存概览 (Get Warehouse Inventory Overview)
+
+-   **描述**: 获取仓库内农产品的库存概览，包括总量、不同品类库存、库位利用率等。
+-   **URL**: `/api/smart-warehouse/inventory/overview`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `warehouseId`: 仓库ID (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalStock": "500吨",
+            "productCategories": [
+                { "name": "沃柑", "stock": "300吨" },
+                { "name": "沙糖桔", "stock": "200吨" }
+            ],
+            "locationUtilization": { "occupied": 75, "available": 25 }, // 百分比
+            "recentInbound": 50, // 近期入库量（吨）
+            "recentOutbound": 30 // 近期出库量（吨）
+        }
+    }
+    ```
+
+#### 45.2 获取入库记录 (Get Inbound Records)
+
+-   **描述**: 获取农产品入库记录。
+-   **URL**: `/api/smart-warehouse/inbound-records`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `warehouseId`: 仓库ID (可选)
+    -   `dateRange`: 日期范围 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "recordId": 1,
+                "productName": "武鸣沃柑A级",
+                "quantity": "20吨",
+                "inboundDate": "2024-05-25",
+                "supplier": "幸福果园",
+                "operator": "仓库管理员A"
+            }
+        ]
+    }
+    ```
+
+#### 45.3 获取出库记录 (Get Outbound Records)
+
+-   **描述**: 获取农产品出库记录。
+-   **URL**: `/api/smart-warehouse/outbound-records`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `warehouseId`: 仓库ID (可选)
+    -   `dateRange`: 日期范围 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "recordId": 1,
+                "productName": "武鸣沃柑A级",
+                "quantity": "15吨",
+                "outboundDate": "2024-05-26",
+                "receiver": "广州批发商",
+                "operator": "仓库管理员B"
+            }
+        ]
+    }
+    ```
+
+#### 45.4 提交入库/出库申请 (Submit Inbound/Outbound Application)
+
+-   **描述**: 提交入库或出库申请，进行库存管理。
+-   **URL**: `/api/smart-warehouse/inventory-applications`
+-   **方法**: `POST`
+-   **请求体示例 (入库)**:
+    ```json
+    {
+        "type": "inbound",
+        "warehouseId": 1,
+        "productName": "武鸣沃柑B级",
+        "quantity": "10吨",
+        "supplier": "张三果园",
+        "expectedDate": "2024-05-28"
+    }
+    ```
+-   **请求体示例 (出库)**:
+    ```json
+    {
+        "type": "outbound",
+        "warehouseId": 1,
+        "productName": "武鸣沃柑A级",
+        "quantity": "5吨",
+        "receiver": "李四商贸",
+        "expectedDate": "2024-05-29"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "入库/出库申请已提交",
+        "data": { "applicationId": "INVAPP20240527001" }
+    }
+    ```
+
+---
+
+### 46. 社会服务模块 (来自 `social-service.html`)
+
+**注意**: `social-service.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般社会服务系统的功能，我可以推断出以下可能的后端接口。
+
+#### 46.1 获取社会服务项目列表 (Get Social Service Projects List)
+
+-   **描述**: 获取与农业相关的社会服务项目信息，如农业技术推广、乡村振兴帮扶等。
+-   **URL**: `/api/social-services/projects`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `type`: 服务类型 (可选，如 `技术培训`, `就业帮扶`, `爱心助农`)
+    -   `region`: 地区 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "武鸣区青年农民技术培训",
+                "type": "技术培训",
+                "organizer": "武鸣区农业局",
+                "startDate": "2024-06-01",
+                "endDate": "2024-06-10",
+                "location": "武鸣区农技中心",
+                "description": "针对青年农民的沃柑种植技能提升培训。",
+                "status": "报名中"
+            }
+        ]
+    }
+    ```
+
+#### 46.2 申请社会服务项目 (Apply for Social Service Project)
+
+-   **描述**: 用户报名或申请参与社会服务项目。
+-   **URL**: `/api/social-services/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "projectId": 1,
+        "applicantName": "小李",
+        "contactPhone": "139XXXXXXXX",
+        "remark": "希望学习最新的种植技术"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "社会服务项目申请成功",
+        "data": { "applicationId": "SSAPP20240527001" }
+    }
+    ```
+
+---
+
+### 47. 分选称重模块 (来自 `sorting-scale.html`)
+
+**注意**: `sorting-scale.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般农产品分选称重系统的功能，我可以推断出以下可能的后端接口。
+
+#### 47.1 获取分选称重记录 (Get Sorting & Weighing Records)
+
+-   **描述**: 获取农产品分选和称重的数据记录。
+-   **URL**: `/api/sorting-weighing/records`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `batchId`: 批次ID (可选)
+    -   `dateRange`: 日期范围 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "recordId": 1,
+                "batchId": "WG20240527001",
+                "productType": "沃柑",
+                "totalWeight": 5000, // kg
+                "sortingDetails": [
+                    { "grade": "特级", "weight": 1000, "count": 5000 },
+                    { "grade": "一级", "weight": 3000, "count": 15000 },
+                    { "grade": "二级", "weight": 800, "count": 4000 }
+                ],
+                "processingDate": "2024-05-27T10:30:00Z",
+                "operator": "分选员A"
+            }
+        ]
+    }
+    ```
+
+#### 47.2 提交分选称重数据 (Submit Sorting & Weighing Data)
+
+-   **描述**: 提交新的农产品分选和称重数据。
+-   **URL**: `/api/sorting-weighing/records`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "batchId": "WG20240527002",
+        "productType": "沃柑",
+        "totalWeight": 6000,
+        "sortingDetails": [
+            { "grade": "特级", "weight": 1200, "count": 6000 },
+            { "grade": "一级", "weight": 3500, "count": 17500 },
+            { "grade": "二级", "weight": 1300, "count": 6500 }
+        ],
+        "operator": "分选员B"
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "分选称重数据提交成功",
+        "data": { "recordId": 2 }
+    }
+    ```
+
+---
+
+### 48. 供应链分析模块 (来自 `supplychain-analysis.html`)
+
+**注意**: `supplychain-analysis.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般供应链分析系统的功能，我可以推断出以下可能的后端接口。
+
+#### 48.1 获取供应链数据概览 (Get Supply Chain Data Overview)
+
+-   **描述**: 获取供应链的整体运行概况，包括各环节的关键指标（如采购量、库存量、销售量、运输效率）。
+-   **URL**: `/api/supplychain/overview`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `timeframe`: 时间范围 (可选，如 `last_month`, `last_quarter`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "totalProcurement": "10000吨",
+            "currentInventory": "2000吨",
+            "totalSales": "8000吨",
+            "transportEfficiency": "95%", // 准时交付率
+            "costAnalysis": { "procurementCost": "500万元", "logisticsCost": "50万元" },
+            "bottlenecks": ["高峰期物流压力大"]
+        }
+    }
+    ```
+
+#### 48.2 获取供应链环节数据 (Get Supply Chain Segment Data)
+
+-   **描述**: 获取供应链不同环节（如采购、仓储、运输、销售）的详细数据。
+-   **URL**: `/api/supplychain/segments/{segmentType}/data`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `segmentType`: 环节类型 (必填，`procurement`, `warehousing`, `logistics`, `sales`)
+    -   `timeframe`: 时间范围 (可选)
+-   **响应体示例 (采购环节)**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "segment": "procurement",
+            "metrics": [
+                { "date": "2024-05-01", "quantity": 500, "cost": 250000 },
+                { "date": "2024-05-15", "quantity": 800, "cost": 400000 }
+            ],
+            "topSuppliers": ["供应商A", "供应商B"]
+        }
+    }
+    ```
+
+#### 48.3 获取供应链风险预警 (Get Supply Chain Risk Alerts)
+
+-   **描述**: 获取供应链潜在风险的预警信息。
+-   **URL**: `/api/supplychain/risk-alerts`
+-   **方法**: `GET`
+-   **请求参数**: 无
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "type": "物流延迟",
+                "description": "受天气影响，XX高速公路封闭，部分货物可能延迟24小时。",
+                "severity": "中", // 高, 中, 低
+                "affectedOrders": ["ORD123", "ORD456"],
+                "timestamp": "2024-05-27T18:00:00Z"
+            },
+            {
+                "id": 2,
+                "type": "库存预警",
+                "description": "沃柑A级库存低于安全阈值，建议尽快补货。",
+                "severity": "高",
+                "affectedProduct": "沃柑A级",
+                "timestamp": "2024-05-27T17:30:00Z"
+            }
+        ]
+    }
+    ```
+
+---
+
+### 49. 产品溯源模块 (来自 `trace.html`)
+
+**注意**: `trace.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。根据其文件名和一般产品溯源系统的功能，我可以推断出以下可能的后端接口。
+
+#### 49.1 查询产品溯源信息 (Query Product Traceability Info)
+
+-   **描述**: 根据溯源码或产品ID查询农产品的全链条溯源信息。
+-   **URL**: `/api/trace/products/{traceCode}` (或 `/api/trace/products?productId={productId}`)
+-   **方法**: `GET`
+-   **请求参数**: 无 (`traceCode` 作为路径参数或请求参数)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": {
+            "traceCode": "WMWG20240527001",
+            "productName": "武鸣沃柑",
+            "batchNumber": "BATCH20240520",
+            "origin": "广西南宁市武鸣区XX果园",
+            "plantingInfo": {
+                "farmerName": "李大爷",
+                "plantingDate": "2023-03-01",
+                "fertilizationRecords": ["2023-05-10 施肥记录"],
+                "pesticideRecords": ["2023-07-20 农药使用记录"]
+            },
+            "harvestInfo": {
+                "harvestDate": "2024-01-15",
+                "harvestQuantity": "5000kg",
+                "operator": "采摘团队A"
+            },
+            "processingInfo": { // 如果有加工环节
+                "processDate": "2024-01-16",
+                "processType": "清洗、分级、包装",
+                "processor": "武鸣果品加工厂"
+            },
+            "logisticsInfo": [
+                {
+                    "stage": "采摘到仓库",
+                    "transportDate": "2024-01-15",
+                    "carrier": "自有运输",
+                    "temperature": "5-8℃"
+                },
+                {
+                    "stage": "仓库到市场",
+                    "transportDate": "2024-01-18",
+                    "carrier": "顺丰冷链",
+                    "trackingNumber": "SF123456789",
+                    "temperature": "3-6℃"
+                }
+            ],
+            "qualityInspection": {
+                "testDate": "2024-01-17",
+                "sugarContent": "14.5°Brix",
+                "pesticideResidue": "合格",
+                "inspector": "第三方检测机构"
+            }
+        }
+    }
+    ```
+
+#### 49.2 获取产品批次列表 (Get Product Batches List)
+
+-   **描述**: 获取已录入溯源系统的产品批次列表。
+-   **URL**: `/api/trace/batches`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `productType`: 产品类型 (可选，如 `沃柑`)
+    -   `dateRange`: 日期范围 (可选)
+    -   `origin`: 产地 (可选)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "batchNumber": "BATCH20240520",
+                "productName": "武鸣沃柑",
+                "plantingDate": "2023-03-01",
+                "harvestDate": "2024-01-15",
+                "quantity": "5000kg",
+                "status": "已上市"
+            }
+        ]
+    }
+    ```
+
+---
+
+### 50. 供应链金融模块 (来自 `supplychain-finance.html`)
+
+**注意**: `supplychain-finance.html` 文件在用户提供的 `attached_files` 中只提供了路径，没有提供具体内容。此模块可能与 `finance.html` 功能重叠，但更侧重于供应链上下游企业之间的金融服务。
+
+#### 50.1 获取供应链金融产品 (Get Supply Chain Financial Products)
+
+-   **描述**: 获取针对农业供应链各环节（如农户、加工商、销售商）的金融产品。
+-   **URL**: `/api/supplychain-finance/products`
+-   **方法**: `GET`
+-   **请求参数**:
+    -   `targetAudience`: 目标客户 (可选，如 `农户`, `加工商`, `贸易商`)
+    -   `type`: 产品类型 (可选，如 `订单融资`, `库存质押贷款`, `应收账款保理`)
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "获取成功",
+        "data": [
+            {
+                "id": 1,
+                "name": "沃柑订单融资",
+                "type": "订单融资",
+                "targetAudience": "农户",
+                "description": "基于已确认的沃柑采购订单提供融资支持。",
+                "provider": "某金融机构",
+                "interestRate": "年化6%",
+                "maxAmount": "30万元"
+            },
+            {
+                "id": 2,
+                "name": "农产品库存质押贷款",
+                "type": "库存质押贷款",
+                "targetAudience": "加工商",
+                "description": "以符合条件的农产品库存作为质押物申请贷款。",
+                "provider": "某银行",
+                "interestRate": "年化5.5%",
+                "maxAmount": "100万元"
+            }
+        ]
+    }
+    ```
+
+#### 50.2 提交供应链金融申请 (Submit Supply Chain Financial Application)
+
+-   **描述**: 用户提交供应链金融产品申请。
+-   **URL**: `/api/supplychain-finance/applications`
+-   **方法**: `POST`
+-   **请求体示例**:
+    ```json
+    {
+        "applicantId": 1,
+        "productId": 1, // 申请的金融产品ID
+        "applicationDetails": {
+            "companyName": "武鸣合作社",
+            "contactPerson": "王先生",
+            "contactPhone": "139XXXXXXXX",
+            "requestedAmount": 200000,
+            "collateralInfo": { "type": "订单", "orderId": "ORD12345" }
+        },
+        "attachments": ["url_to_order_contract.pdf"]
+    }
+    ```
+-   **响应体示例**:
+    ```json
+    {
+        "code": 200,
+        "message": "供应链金融申请已提交",
+        "data": { "appId": "SCFAPP20240527001" }
+    }
+    ```

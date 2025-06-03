@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时物流跟踪 - 智能供应链管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://webapi.amap.com/maps?v=2.0&key=YOUR_AMAP_KEY"></script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #22c55e 0%, #4f8efc 100%);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .blinking {
+      animation: blink 1s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <!-- 页面头部 -->
+  <div class="gradient-bg text-white py-12 mb-8">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h1 class="text-4xl font-bold mb-4 flex items-center justify-center"><i class="fa fa-map-marker-alt mr-3"></i>实时物流跟踪</h1>
+      <p class="text-lg opacity-90 mb-4">车辆位置、温湿度、费用估算一站式可视化</p>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+    <!-- 地图与车辆位置 -->
+    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+      <h2 class="text-xl font-bold text-green-600 mb-4 flex items-center"><i class="fa fa-truck mr-2"></i>车辆GPS实时位置</h2>
+      <div id="map" class="w-full h-64 rounded-lg border border-gray-200 mb-2 relative"></div>
+      <div id="map-city" class="text-xs text-gray-400 text-center mt-2">车辆当前位置：广州市（模拟）</div>
+      <div class="text-xs text-gray-500">* 地图为模拟数据，可对接真实API</div>
+    </div>
+    <!-- 温湿度与报警 -->
+    <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+      <h2 class="text-xl font-bold text-blue-600 mb-4 flex items-center"><i class="fa fa-thermometer-half mr-2"></i>温湿度实时监控</h2>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="bg-gray-50 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold" id="temp-value">6.5°C</div>
+          <div class="text-xs text-gray-500">温度</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4 text-center">
+          <div class="text-2xl font-bold" id="humi-value">88%</div>
+          <div class="text-xs text-gray-500">湿度</div>
+        </div>
+      </div>
+      <div id="alarm" class="hidden bg-red-100 text-red-700 rounded-lg p-3 text-center font-bold blinking mb-2">
+        温湿度异常！请及时处理！
+      </div>
+      <div class="text-xs text-gray-500">* 实时监控，异常自动报警</div>
+    </div>
+  </div>
+
+  <!-- 费用估算 -->
+  <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-8 card-hover mb-12">
+    <h2 class="text-xl font-bold text-purple-600 mb-4 flex items-center"><i class="fa fa-calculator mr-2"></i>物流费用智能估算</h2>
+    <form id="fee-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium mb-1">起点城市</label>
+        <input type="text" id="from" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">终点城市</label>
+        <input type="text" id="to" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">重量（吨）</label>
+        <input type="number" id="weight" min="1" max="50" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+      </div>
+      <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition-colors md:col-span-3">估算费用</button>
+    </form>
+    <div id="fee-result" class="mt-4 text-lg font-bold text-primary"></div>
+    <div class="text-xs text-gray-500 mt-1">* 费用为模拟估算，实际以物流公司为准</div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h3 class="text-lg font-bold mb-2">智能供应链管理平台</h3>
+      <p class="text-gray-400 text-sm mb-2">实时物流跟踪，保障运输安全高效</p>
+      <p class="text-gray-400 text-xs">&copy; 2024 智能供应链管理. 保留所有权利.</p>
+    </div>
+  </footer>
+
+  <!-- 地图JS（模拟）和功能脚本 -->
+  <script>
+    // 高德地图初始化
+    let map, marker;
+    function renderMap() {
+      map = new AMap.Map('map', {
+        center: [113.32, 23.12], // 广州
+        zoom: 10
+      });
+      marker = new AMap.Marker({
+        position: [113.32, 23.12],
+        map: map,
+        icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_bs.png',
+        title: '运输车辆'
+      });
+    }
+    // 模拟API获取车辆位置
+    async function fetchVehicleData() {
+      // 模拟API返回
+      return {
+        lng: 113.32 + (Math.random() - 0.5) * 0.1,
+        lat: 23.12 + (Math.random() - 0.5) * 0.1,
+        city: '广州市',
+        temp: (Math.random() * 6 + 2).toFixed(1),
+        humi: (Math.random() * 10 + 85).toFixed(0)
+      };
+    }
+    async function updateVehicleOnMap() {
+      const data = await fetchVehicleData();
+      marker.setPosition([data.lng, data.lat]);
+      map.setCenter([data.lng, data.lat]);
+      document.getElementById('map-city').textContent = `车辆当前位置：${data.city}（模拟）`;
+      document.getElementById('temp-value').textContent = data.temp + '°C';
+      document.getElementById('humi-value').textContent = data.humi + '%';
+      // 报警逻辑
+      if (data.temp < 2 || data.temp > 8 || data.humi < 85 || data.humi > 95) {
+        document.getElementById('alarm').classList.remove('hidden');
+      } else {
+        document.getElementById('alarm').classList.add('hidden');
+      }
+    }
+    window.onload = function() {
+      renderMap();
+      updateVehicleOnMap();
+      setInterval(updateVehicleOnMap, 5000);
+    };
+    // 物流费用估算
+    document.getElementById('fee-form').onsubmit = function(e) {
+      e.preventDefault();
+      const from = document.getElementById('from').value.trim();
+      const to = document.getElementById('to').value.trim();
+      const weight = parseFloat(document.getElementById('weight').value);
+      if (!from || !to || isNaN(weight) || weight <= 0) return;
+      // 模拟API估算费用
+      const base = 2000, dist = 500, fee = base + dist + weight * 300;
+      document.getElementById('fee-result').textContent = `${from} → ${to} ${weight}吨 约${fee.toFixed(0)}元`;
+    };
+  </script>
+</body>
+</html> 

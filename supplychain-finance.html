@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>供应链金融 - 智能供应链管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="container mx-auto px-4 py-8">
+    <div class="bg-gradient-to-r from-orange-400 to-yellow-300 rounded-xl shadow-md p-8 mb-8 flex items-center">
+      <i class="fa fa-credit-card text-5xl text-white mr-6"></i>
+      <div>
+        <h1 class="text-3xl font-bold text-white mb-2">供应链金融</h1>
+        <p class="text-white/90">基于供应链数据的金融服务，解决资金周转问题，助力产业链高效运转</p>
+      </div>
+    </div>
+    <!-- 功能区 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <!-- 融资申请 -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-hand-holding-usd text-green-500 mr-2"></i>融资申请</h2>
+        <form id="financing-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">企业名称</label>
+            <input type="text" name="company" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-400">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">联系人</label>
+            <input type="text" name="contact" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-400">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">联系电话</label>
+            <input type="tel" name="phone" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-400">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">申请金额（元）</label>
+            <input type="number" name="amount" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-400">
+          </div>
+          <button type="submit" class="w-full bg-orange-500 text-white py-2 rounded-lg font-bold hover:bg-orange-600 transition-colors">提交申请</button>
+        </form>
+        <div id="financing-success" class="hidden mt-4 text-green-600 font-bold">申请已提交！我们会尽快与您联系。</div>
+      </div>
+      <!-- 应收账款融资 -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-file-invoice-dollar text-blue-500 mr-2"></i>应收账款融资</h2>
+        <form id="receivable-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">企业名称</label>
+            <input type="text" name="company" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">应收账款金额（元）</label>
+            <input type="number" name="receivable" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">账期（天）</label>
+            <input type="number" name="days" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+          </div>
+          <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-bold hover:bg-blue-600 transition-colors">提交申请</button>
+        </form>
+        <div id="receivable-success" class="hidden mt-4 text-green-600 font-bold">申请已提交！我们会尽快与您联系。</div>
+      </div>
+      <!-- 数据分析 -->
+      <div class="bg-white rounded-xl shadow p-6 md:col-span-2">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-chart-line text-purple-500 mr-2"></i>供应链数据分析</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-orange-500 mb-1">98%</div>
+            <div class="text-gray-600 text-sm">审批通过率</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-green-500 mb-1">3天</div>
+            <div class="text-gray-600 text-sm">平均放款时间</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-blue-500 mb-1">6.8%</div>
+            <div class="text-gray-600 text-sm">年化利率起</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-purple-500 mb-1">1000+</div>
+            <div class="text-gray-600 text-sm">服务企业</div>
+          </div>
+        </div>
+      </div>
+      <!-- 快速审批进度查询 -->
+      <div class="bg-white rounded-xl shadow p-6 md:col-span-2">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-search-dollar text-yellow-500 mr-2"></i>审批进度查询</h2>
+        <form id="progress-form" class="flex flex-col md:flex-row gap-4 items-center">
+          <input type="text" name="queryId" required placeholder="请输入申请编号/手机号" class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-400">
+          <button type="submit" class="bg-yellow-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-600 transition-colors">查询进度</button>
+        </form>
+        <div id="progress-result" class="hidden mt-4 text-blue-600 font-bold"></div>
+      </div>
+    </div>
+    <!-- 服务优势 -->
+    <div class="bg-white rounded-xl shadow-md p-8 mt-8">
+      <h2 class="text-xl font-bold mb-6 text-center">服务优势</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <i class="fa fa-bolt text-3xl text-orange-400 mb-2"></i>
+          <div class="font-semibold mb-1">审批高效</div>
+          <div class="text-gray-600 text-sm">最快当天放款</div>
+        </div>
+        <div>
+          <i class="fa fa-shield-alt text-3xl text-green-500 mb-2"></i>
+          <div class="font-semibold mb-1">安全合规</div>
+          <div class="text-gray-600 text-sm">银行/持牌机构合作</div>
+        </div>
+        <div>
+          <i class="fa fa-percent text-3xl text-blue-500 mb-2"></i>
+          <div class="font-semibold mb-1">利率优惠</div>
+          <div class="text-gray-600 text-sm">年化6.8%起</div>
+        </div>
+        <div>
+          <i class="fa fa-users text-3xl text-purple-500 mb-2"></i>
+          <div class="font-semibold mb-1">服务专业</div>
+          <div class="text-gray-600 text-sm">专属顾问全程服务</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 融资申请表单
+    document.getElementById('financing-form').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('financing-success').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('financing-success').classList.add('hidden');
+        e.target.reset();
+      }, 3000);
+    };
+    // 应收账款融资表单
+    document.getElementById('receivable-form').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('receivable-success').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('receivable-success').classList.add('hidden');
+        e.target.reset();
+      }, 3000);
+    };
+    // 审批进度查询
+    document.getElementById('progress-form').onsubmit = function(e) {
+      e.preventDefault();
+      const val = e.target.queryId.value.trim();
+      if(val) {
+        document.getElementById('progress-result').textContent = '您的申请正在审核中，预计1-2个工作日内反馈。';
+        document.getElementById('progress-result').classList.remove('hidden');
+      }
+    };
+  </script>
+</body>
+</html> 

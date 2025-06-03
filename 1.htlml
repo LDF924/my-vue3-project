@@ -1,0 +1,112 @@
+<!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="#home" class="text-dark hover:text-primary font-medium transition-colors">首页</a>
+        <a href="#dashboard" class="text-dark hover:text-primary font-medium transition-colors">数据看板</a>
+        <a href="#services" class="text-dark hover:text-primary font-medium transition-colors">服务中心</a>
+        <a href="#trace" class="text-dark hover:text-primary font-medium transition-colors">产品溯源</a>
+        <a href="#news" class="text-dark hover:text-primary font-medium transition-colors">产业资讯</a>
+        <a href="#forum" class="text-dark hover:text-secondary font-medium transition-colors">交流社区</a>
+      </nav>
+      
+      <!-- 交流社区区块（已移出导航栏，放置于主内容区域） -->
+      <section id="forum" class="section-padding bg-white">
+        <div class="container mx-auto px-4">
+          <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+            <h2 class="text-2xl md:text-3xl font-bold text-primary mb-4 md:mb-0 flex items-center"><i class="fa fa-comments mr-2 text-secondary"></i>交流社区</h2>
+            <button class="btn-primary flex items-center"><i class="fa fa-pen mr-2"></i>发帖</button>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- 热门话题 -->
+            <div class="md:col-span-1 bg-neutral rounded-lg p-6 shadow card-hover">
+              <h3 class="text-lg font-semibold mb-4 text-dark flex items-center"><i class="fa fa-fire text-secondary mr-2"></i>热门话题</h3>
+              <ul class="space-y-2">
+                <li><a href="#" class="text-primary hover:underline">沃柑种植经验交流</a></li>
+                <li><a href="#" class="text-primary hover:underline">病虫害防治</a></li>
+                <li><a href="#" class="text-primary hover:underline">市场行情分析</a></li>
+                <li><a href="#" class="text-primary hover:underline">新品种推荐</a></li>
+                <li><a href="#" class="text-primary hover:underline">农资采购分享</a></li>
+              </ul>
+            </div>
+            <!-- 帖子列表 -->
+            <div class="md:col-span-2 bg-neutral rounded-lg p-6 shadow card-hover">
+              <h3 class="text-lg font-semibold mb-4 text-dark flex items-center"><i class="fa fa-list text-secondary mr-2"></i>最新帖子</h3>
+              <ul class="divide-y divide-gray-200">
+                <li class="py-4 flex items-start">
+                  <img src="https://picsum.photos/40/40?1" alt="用户头像" class="w-10 h-10 rounded-full mr-4">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium text-dark">果农小李</span>
+                      <span class="text-xs text-gray-400">2小时前</span>
+                    </div>
+                    <a href="#" class="block text-primary font-semibold hover:underline mt-1">沃柑开花期如何科学施肥？</a>
+                    <p class="text-gray-600 text-sm mt-1">请教各位老师，沃柑开花期施肥有哪些注意事项？</p>
+                    <div class="flex items-center space-x-4 mt-2 text-gray-400 text-xs">
+                      <span><i class="fa fa-comment mr-1"></i>5</span>
+                      <span><i class="fa fa-eye mr-1"></i>120</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="py-4 flex items-start">
+                  <img src="https://picsum.photos/40/40?2" alt="用户头像" class="w-10 h-10 rounded-full mr-4">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium text-dark">种植达人</span>
+                      <span class="text-xs text-gray-400">5小时前</span>
+                    </div>
+                    <a href="#" class="block text-primary font-semibold hover:underline mt-1">沃柑叶片发黄是什么原因？</a>
+                    <p class="text-gray-600 text-sm mt-1">最近发现部分叶片发黄，有没有遇到类似情况的朋友？</p>
+                    <div class="flex items-center space-x-4 mt-2 text-gray-400 text-xs">
+                      <span><i class="fa fa-comment mr-1"></i>8</span>
+                      <span><i class="fa fa-eye mr-1"></i>200</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="py-4 flex items-start">
+                  <img src="https://picsum.photos/40/40?3" alt="用户头像" class="w-10 h-10 rounded-full mr-4">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="font-medium text-dark">沃柑新手</span>
+                      <span class="text-xs text-gray-400">1天前</span>
+                    </div>
+                    <a href="#" class="block text-primary font-semibold hover:underline mt-1">沃柑采摘后如何储存保鲜？</a>
+                    <p class="text-gray-600 text-sm mt-1">请问大家采摘后的沃柑怎么保存时间更长？</p>
+                    <div class="flex items-center space-x-4 mt-2 text-gray-400 text-xs">
+                      <span><i class="fa fa-comment mr-1"></i>3</span>
+                      <span><i class="fa fa-eye mr-1"></i>80</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <div class="flex items-center space-x-4">
+        <div class="relative hidden md:block">
+          <input type="text" placeholder="搜索..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        </div>
+        
+        <div class="relative group">
+          <button class="flex items-center space-x-2">
+            <img src="https://picsum.photos/32/32" alt="用户头像" class="w-8 h-8 rounded-full">
+            <span class="hidden md:inline">种植户</span>
+            <i class="fa fa-chevron-down text-xs"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">个人中心</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">我的地块</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">农事记录</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">产品管理</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">退出登录</a>
+          </div>
+        </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>农残检测报告</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-50">
+  <main class="pt-20">
+    <section class="bg-white section-padding">
+      <div class="container mx-auto px-4">
+        <h1 class="text-2xl font-bold text-center mb-8">农残检测报告自动上传与匹配</h1>
+        <!-- Placeholder content for pesticide report -->
+        <div class="mt-8 p-6 bg-gray-100 rounded-lg shadow">
+          <p class="text-center text-gray-700 mb-4">请上传您的农残检测报告 (支持 PDF, 图片等格式)</p>
+          <div class="flex justify-center items-center space-x-4">
+            <input type="file" id="report-upload" accept=".pdf, image/*" class="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-primary-50 file:text-primary-700
+              hover:file:bg-primary-100"/>
+            <button id="upload-button" class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              <i class="fa fa-upload mr-2"></i>上传报告
+            </button>
+          </div>
+        </div>
+        <div class="text-center mt-8">
+          <a href="index.html" class="text-primary hover:underline"><i class="fa fa-arrow-left mr-2"></i>返回首页</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html> 

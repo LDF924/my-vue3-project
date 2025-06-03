@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能仓储管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+      <div class="flex items-center mb-4">
+        <i class="fa fa-warehouse text-4xl text-purple-500 mr-4"></i>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800 mb-1">智能仓储管理</h1>
+          <p class="text-gray-600">整合产地冷库资源，支持在线预约存储服务</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-purple-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-purple-700 mb-2">冷库资源</h2>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li><i class="fa fa-check-circle text-green-500 mr-2"></i>武鸣区363座冷库资源</li>
+            <li><i class="fa fa-snowflake text-blue-400 mr-2"></i>温度区间：-18°C ~ 8°C</li>
+            <li><i class="fa fa-map-marker-alt text-red-400 mr-2"></i>分布广泛，交通便利</li>
+          </ul>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-green-700 mb-2">库存状态实时查看</h2>
+          <div id="inventory-status" class="text-gray-700 text-sm">
+            <p>当前剩余库容：<span class="font-bold" id="remain-capacity">--</span> 吨</p>
+            <p>已用库容：<span class="font-bold" id="used-capacity">--</span> 吨</p>
+            <p>库容利用率：<span class="font-bold" id="utilization">--</span></p>
+          </div>
+        </div>
+        <div class="bg-yellow-50 rounded-lg p-4">
+          <h2 class="font-semibold text-lg text-yellow-700 mb-2">费用说明</h2>
+          <ul class="text-gray-700 text-sm space-y-1">
+            <li><i class="fa fa-cny text-orange-400 mr-2"></i>存储费用：0.8元/斤/月</li>
+            <li><i class="fa fa-info-circle text-blue-400 mr-2"></i>按实际存储量计费</li>
+            <li><i class="fa fa-clock text-gray-400 mr-2"></i>支持短期/长期存储</li>
+          </ul>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 mt-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">在线预约存储</h2>
+        <form id="reserve-form" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-gray-700 mb-1">姓名</label>
+            <input type="text" name="name" required class="w-full border rounded px-3 py-2" placeholder="请输入姓名">
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">联系电话</label>
+            <input type="tel" name="phone" required class="w-full border rounded px-3 py-2" placeholder="请输入手机号">
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">预约存储量（斤）</label>
+            <input type="number" name="amount" min="1" required class="w-full border rounded px-3 py-2" placeholder="请输入数量">
+          </div>
+          <div class="md:col-span-3">
+            <label class="block text-gray-700 mb-1">备注</label>
+            <textarea name="remark" class="w-full border rounded px-3 py-2" rows="2" placeholder="可填写特殊需求"></textarea>
+          </div>
+          <div class="md:col-span-3 flex justify-end">
+            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 transition">提交预约</button>
+          </div>
+        </form>
+        <div id="reserve-success" class="hidden mt-4 text-green-600 font-semibold">预约成功！我们会尽快与您联系。</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // 模拟库存数据
+    const totalCapacity = 10000; // 吨
+    let usedCapacity = 3860; // 吨
+    function updateInventoryStatus() {
+      document.getElementById('remain-capacity').textContent = (totalCapacity - usedCapacity).toLocaleString();
+      document.getElementById('used-capacity').textContent = usedCapacity.toLocaleString();
+      document.getElementById('utilization').textContent = ((usedCapacity / totalCapacity * 100).toFixed(1)) + '%';
+    }
+    updateInventoryStatus();
+    // 预约表单提交
+    document.getElementById('reserve-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // 简单模拟预约逻辑
+      const form = e.target;
+      const amount = parseInt(form.amount.value, 10);
+      if (amount > 0 && amount <= (totalCapacity - usedCapacity) * 2000) { // 1吨=2000斤
+        usedCapacity += amount / 2000;
+        updateInventoryStatus();
+        document.getElementById('reserve-success').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('reserve-success').classList.add('hidden');
+        }, 3000);
+        form.reset();
+      } else {
+        alert('预约数量超出剩余库容，请调整后重试。');
+      }
+    });
+  </script>
+</body>
+</html> 

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能农事管理 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- 引入日历组件 -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <!-- 引入农事管理模块 -->
+  <script type="module">
+    import { initFarmManagement } from './js/farmManagement.js';
+    import { initPestIdentification } from './js/pestIdentification.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initFarmManagement();
+      initPestIdentification();
+    });
+  </script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition-property: all;
+        transition-duration: 300ms;
+        &:hover {
+          box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+          transform: translateY(-0.25rem);
+        }
+      }
+      .btn-primary {
+        background-color: theme('colors.primary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+      }
+      .btn-secondary {
+        background-color: theme('colors.secondary');
+        color: white;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition-property: all;
+        transition-duration: 300ms;
+      }
+      .section-padding {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+        @media (min-width: 768px) {
+          padding-top: 5rem;
+          padding-bottom: 5rem;
+        }
+      }
+    }
+  </style>
+  <!-- 引入甘特图库 -->
+  <link rel="stylesheet" href="public/js/oh-my-gantt.css">
+  <script src="public/js/oh-my-gantt.umd.js"></script>
+  <!-- 引入AI建议模块 -->
+  <script type="module">
+    import { initAIAssistant } from './public/js/ai-assistant.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initAIAssistant();
+    });
+  </script>
+</head>
+
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <a href="index.html" class="flex items-center space-x-2">
+          <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+          <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+        </a>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="index.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-home mr-2"></i>首页
+        </a>
+        <a href="dashboard.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-chart-bar mr-2"></i>数据看板
+        </a>
+        <a href="#" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-calendar mr-2"></i>农事管理
+        </a>
+        <a href="community.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-comments mr-2"></i>交流社区
+        </a>
+        <a href="trace.html" class="text-dark hover:text-primary font-medium transition-colors flex items-center">
+          <i class="fa fa-qrcode mr-2"></i>产品溯源
+        </a>
+      </nav>
+      
+      <!-- 移动端菜单按钮 -->
+      <button class="md:hidden text-dark" id="menuBtn">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要内容区域 -->
+  <main class="pt-20">
+    <!-- 页面标题 -->
+    <section class="bg-primary text-white py-12">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">智能农事管理</h1>
+            <p class="text-white/90">根据物候期自动生成农事建议，记录农事操作，提高种植效率</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <button onclick="showTaskModal()" class="btn-secondary">
+              <i class="fa fa-plus mr-2"></i>添加农事任务
+            </button>
+            <button onclick="showAssigneeModal()" class="btn-primary">
+              <i class="fa fa-users mr-2"></i>负责人管理
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 农事管理主体内容 -->
+    <section class="py-12">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- 左侧边栏 -->
+          <div class="md:col-span-1">
+            <div class="bg-white rounded-xl shadow-md p-6 sticky top-24">
+              <h3 class="text-lg font-semibold mb-4">农事概览</h3>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">待处理任务</span>
+                  <span class="font-semibold text-primary" id="pendingTasks">--</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">本周完成</span>
+                  <span class="font-semibold text-accent" id="weeklyCompleted">--</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-600">农事效率</span>
+                  <span class="font-semibold text-secondary" id="efficiency">--</span>
+                </div>
+              </div>
+              <hr class="my-4">
+              <h3 class="text-lg font-semibold mb-4">天气预报</h3>
+              <div id="weather" class="text-center p-4 bg-neutral rounded-lg">
+                <i class="fa fa-cloud text-4xl text-primary mb-2"></i>
+                <div class="text-sm text-gray-600">正在获取天气信息...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧主要内容 -->
+          <div class="md:col-span-2 space-y-6">
+            <!-- AI智能种植建议卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+              <h3 class="text-lg font-semibold mb-4 flex items-center"><i class="fa fa-robot text-primary mr-2"></i>AI智能种植建议</h3>
+              <div id="aiSuggestion" class="text-gray-700">正在生成智能建议...</div>
+            </div>
+
+            <!-- 病虫害识别模块 -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-semibold mb-4">病虫害智能识别</h3>
+              <div class="text-center p-8 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary transition-colors cursor-pointer" id="uploadArea">
+                <input type="file" id="imageInput" accept="image/*" class="hidden">
+                <i class="fa fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                <p class="text-gray-600">点击或拖拽图片到此处上传</p>
+                <p class="text-sm text-gray-500 mt-2">支持 jpg、png 格式</p>
+              </div>
+              <!-- 识别结果展示区域 -->
+              <div id="resultArea" class="hidden mt-6">
+                <div class="flex items-start space-x-4">
+                  <img id="previewImage" src="" alt="上传图片" class="w-1/3 rounded-lg shadow-md">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-lg mb-2">识别结果</h4>
+                    <div id="diseaseInfo" class="space-y-3">
+                      <div class="p-4 bg-neutral rounded-lg">
+                        <p class="font-medium">病虫害名称：<span id="diseaseName" class="text-primary"></span></p>
+                        <p class="mt-2 text-gray-600">可能性：<span id="probability" class="text-secondary"></span></p>
+                      </div>
+                      <div class="p-4 bg-neutral rounded-lg">
+                        <p class="font-medium mb-2">防治建议：</p>
+                        <ul id="suggestions" class="list-disc list-inside text-gray-600 space-y-1">
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button onclick="resetIdentification()" class="mt-4 text-primary hover:text-primary/80 transition-colors">
+                  <i class="fa fa-redo mr-1"></i>重新识别
+                </button>
+              </div>
+            </div>
+
+            <!-- 农事日历 -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <div id="calendar"></div>
+            </div>
+            <!-- 生产计划甘特图 -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-semibold mb-4 flex items-center"><i class="fa fa-project-diagram text-secondary mr-2"></i>生产计划排期（甘特图）</h3>
+              <div id="gantt-box" style="width:100%;height:400px;"></div>
+            </div>
+
+            <!-- 近期任务列表 -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-semibold mb-4">近期任务</h3>
+              <div class="space-y-4" id="recentTasks">
+                <!-- 任务列表将通过JavaScript动态生成 -->
+              </div>
+            </div>
+
+            <!-- 投入品使用量智能预警 -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+              <h3 class="text-lg font-semibold mb-4 flex items-center"><i class="fa fa-exclamation-triangle text-red-500 mr-2"></i>投入品使用量智能预警</h3>
+              <div id="inputWarning" class="text-gray-700">
+                正在加载投入品用量数据...
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 添加农事任务模态框 -->
+  <div id="taskModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl mx-4 overflow-hidden">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold">添加农事任务</h3>
+          <button onclick="hideTaskModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        <form id="taskForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">任务名称</label>
+            <input type="text" name="title" placeholder="请输入任务名称" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">任务类型</label>
+            <select name="type" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="fertilization">施肥</option>
+              <option value="pesticide">打药</option>
+              <option value="pruning">修剪</option>
+              <option value="irrigation">浇水</option>
+              <option value="harvest">采收</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
+              <input type="date" name="startDate" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">结束日期</label>
+              <input type="date" name="endDate" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">负责人</label>
+            <select name="assignee" id="assigneeSelect" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">任务描述</label>
+            <textarea name="description" rows="4" placeholder="请输入任务详细描述" class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">优先级</label>
+            <div class="flex space-x-4">
+              <label class="flex items-center space-x-2">
+                <input type="radio" name="priority" value="high" class="text-primary">
+                <span>高</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="radio" name="priority" value="medium" class="text-primary" checked>
+                <span>中</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="radio" name="priority" value="low" class="text-primary">
+                <span>低</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">进度（%）</label>
+            <div class="flex items-center gap-2">
+              <input type="range" name="progress" id="progressRange" min="0" max="100" value="0" class="w-full">
+              <span id="progressValue">0%</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">投入品消耗</label>
+            <div id="inputRows" class="space-y-2"></div>
+            <button type="button" onclick="addInputRow()" class="mt-2 btn-secondary">添加投入品</button>
+          </div>
+        </form>
+        <div class="flex justify-end space-x-4 mt-6">
+          <button onclick="hideTaskModal()" class="px-6 py-2 rounded-lg border border-gray-200 hover:bg-gray-50">取消</button>
+          <button onclick="submitTask()" class="btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 负责人管理弹窗 -->
+  <div id="assigneeModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold">负责人管理</h3>
+          <button onclick="hideAssigneeModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        <div id="assigneeList" class="space-y-2 mb-4"></div>
+        <div class="flex gap-2">
+          <input id="newAssigneeInput" type="text" placeholder="输入新负责人姓名" class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50">
+          <button onclick="addAssignee()" class="btn-primary">添加</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('shadow-md');
+      } else {
+        navbar.classList.remove('shadow-md');
+      }
+    });
+
+    // 任务模态框控制
+    function showTaskModal() {
+      const taskModal = document.getElementById('taskModal');
+      taskModal.classList.remove('hidden');
+      taskModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function hideTaskModal() {
+      const taskModal = document.getElementById('taskModal');
+      taskModal.classList.add('hidden');
+      taskModal.classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+
+    function submitTask() {
+      // 获取表单数据并提交
+      const form = document.getElementById('taskForm');
+      const formData = new FormData(form);
+      // TODO: 实现任务提交逻辑
+      hideTaskModal();
+    }
+
+    // 甘特图初始化示例
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.OhMyGantt) {
+        const data = [
+          { name: '春季施肥', timebar: [{ from: '2024-03-01', to: '2024-03-10', desc: '有机肥施用' }] },
+          { name: '病虫害防治', timebar: [{ from: '2024-03-15', to: '2024-03-20', desc: '喷药防治' }] },
+          { name: '修剪', timebar: [{ from: '2024-03-21', to: '2024-03-25', desc: '春季修剪' }] },
+          { name: '采收', timebar: [{ from: '2024-04-01', to: '2024-04-10', desc: '果实采收' }] }
+        ];
+        new window.OhMyGantt('#gantt-box', {
+          from: '2024-03-01',
+          to: '2024-04-15',
+          timeInterval: 'day',
+          columns: [
+            { name: 'name', label: '任务名称', width: 140 }
+          ],
+          data
+        });
+      }
+      // AI建议自动生成（调用AI助手接口）
+      if (window.handleUserQuestion) {
+        window.handleUserQuestion('请根据当前季节和农事任务，推荐沃柑种植生产计划。').then(ans => {
+          document.getElementById('aiSuggestion').innerText = ans;
+        });
+      }
+      // 投入品用量智能预警模拟
+      const inputData = [
+        { name: '化肥', used: 1200, limit: 1000, unit: 'kg' },
+        { name: '农药', used: 80, limit: 100, unit: 'L' },
+        { name: '有机肥', used: 900, limit: 1200, unit: 'kg' }
+      ];
+      let warningHtml = '';
+      inputData.forEach(item => {
+        if (item.used > item.limit) {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-red-600'>${item.name}：</span>本月已用 <span class='font-bold'>${item.used}${item.unit}</span>，超出安全阈值 <span class='font-bold'>${item.limit}${item.unit}</span>，请及时调整！</div>`;
+        } else if (item.limit - item.used < item.limit * 0.1) {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-yellow-600'>${item.name}：</span>本月已用 <span class='font-bold'>${item.used}${item.unit}</span>，接近安全阈值 <span class='font-bold'>${item.limit}${item.unit}</span>，请注意控制。</div>`;
+        } else {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-green-600'>${item.name}：</span>本月已用 <span class='font-bold'>${item.used}${item.unit}</span>，安全范围内。</div>`;
+        }
+      });
+      document.getElementById('inputWarning').innerHTML = warningHtml;
+    });
+
+    // 负责人管理逻辑
+    function getAssignees() {
+      return JSON.parse(localStorage.getItem('assignees') || '[]');
+    }
+    function setAssignees(list) {
+      localStorage.setItem('assignees', JSON.stringify(list));
+    }
+    function renderAssigneeList() {
+      const list = getAssignees();
+      const el = document.getElementById('assigneeList');
+      el.innerHTML = list.map((a, idx) => `<div class='flex items-center justify-between bg-neutral rounded px-3 py-2'>
+        <div class='flex items-center gap-2'>
+          <img src='${a.avatar||''}' class='w-8 h-8 rounded-full border' alt='头像'>
+          <span>${a.name}</span>
+          <span class='text-xs text-gray-500 ml-2'>${a.phone}</span>
+          <span class='text-xs text-blue-500 ml-2'>${a.wechat}</span>
+        </div>
+        <button onclick='removeAssignee(${idx})' class='text-red-500 hover:text-red-700'><i class='fa fa-trash'></i></button>
+      </div>`).join('');
+    }
+    function showAssigneeModal() {
+      renderAssigneeList();
+      document.getElementById('assigneeModal').classList.remove('hidden');
+      document.getElementById('assigneeModal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+    function hideAssigneeModal() {
+      document.getElementById('assigneeModal').classList.add('hidden');
+      document.getElementById('assigneeModal').classList.remove('flex');
+      document.body.style.overflow = 'auto';
+    }
+    function addAssignee() {
+      const input = document.getElementById('newAssigneeInput');
+      const name = input.value.trim();
+      if (!name) return;
+      const list = getAssignees();
+      if (!list.includes(name)) {
+        list.push(name);
+        setAssignees(list);
+        renderAssigneeList();
+        renderAssigneeSelect();
+      }
+      input.value = '';
+    }
+    function removeAssignee(idx) {
+      let list = getAssignees();
+      list.splice(idx, 1);
+      setAssignees(list);
+      renderAssigneeList();
+      renderAssigneeSelect();
+    }
+    function renderAssigneeSelect() {
+      const select = document.getElementById('assigneeSelect');
+      const list = getAssignees();
+      select.innerHTML = list.map(a => `<option value='${a.name}'>${a.name}</option>`).join('');
+    }
+    // 投入品消耗动态行
+    function addInputRow(data = {}) {
+      const id = 'input_' + Date.now() + Math.random().toString(36).slice(2, 6);
+      const row = document.createElement('div');
+      row.className = 'flex gap-2 items-center';
+      row.id = id;
+      row.innerHTML = `
+        <input type='text' placeholder='品类' value='${data.type||''}' class='px-2 py-1 border rounded w-24'>
+        <input type='number' min='0' placeholder='数量' value='${data.amount||''}' class='px-2 py-1 border rounded w-20'>
+        <input type='text' placeholder='单位' value='${data.unit||''}' class='px-2 py-1 border rounded w-16'>
+        <button type='button' onclick='this.parentNode.remove()' class='text-red-500 hover:text-red-700'><i class='fa fa-trash'></i></button>
+      `;
+      document.getElementById('inputRows').appendChild(row);
+    }
+    function getInputRows() {
+      return Array.from(document.querySelectorAll('#inputRows > div')).map(row => {
+        const [type, amount, unit] = Array.from(row.querySelectorAll('input')).map(i => i.value);
+        return { type, amount: Number(amount), unit };
+      }).filter(i => i.type && i.amount && i.unit);
+    }
+    // 进度滑块联动
+    document.getElementById('progressRange').addEventListener('input', function() {
+      document.getElementById('progressValue').innerText = this.value + '%';
+    });
+    // 任务存储与渲染
+    function getTasks() {
+      return JSON.parse(localStorage.getItem('tasks') || '[]');
+    }
+    function setTasks(list) {
+      localStorage.setItem('tasks', JSON.stringify(list));
+    }
+    function submitTask() {
+      const form = document.getElementById('taskForm');
+      const formData = new FormData(form);
+      const task = {
+        id: 'task_' + Date.now(),
+        title: formData.get('title'),
+        type: formData.get('type'),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate'),
+        assignee: formData.get('assignee'),
+        description: formData.get('description'),
+        priority: formData.get('priority'),
+        progress: Number(document.getElementById('progressRange').value),
+        inputs: getInputRows()
+      };
+      let tasks = getTasks();
+      tasks.push(task);
+      setTasks(tasks);
+      hideTaskModal();
+      renderTaskList();
+      renderInputWarning();
+    }
+    function renderTaskList() {
+      const tasks = getTasks();
+      const assignees = getAssignees();
+      const el = document.getElementById('recentTasks');
+      el.innerHTML = tasks.slice(-5).reverse().map(task => {
+        const a = assignees.find(x=>x.name===task.assignee) || { name: task.assignee };
+        return `<div class='flex flex-col md:flex-row md:items-center justify-between p-4 bg-neutral rounded-lg mb-2 cursor-pointer hover:bg-gray-100' onclick='showTaskDetail("${task.id}")'>
+          <div class='flex-1'>
+            <div class='flex items-center gap-2 mb-1'>
+              <img src='${a.avatar||''}' class='w-7 h-7 rounded-full border' alt='头像'>
+              <span class='font-bold'>${task.title}</span>
+              <span class='text-xs px-2 py-1 bg-gray-200 rounded'>${task.type}</span>
+              <span class='text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded'>${a.name}</span>
+              <span class='text-xs px-2 py-1 ${getPriorityBadgeClass(task.priority)}'>${task.priority}</span>
+            </div>
+            <div class='text-xs text-gray-500 mb-1'>${task.startDate||''} ~ ${task.endDate||''}</div>
+            <div class='flex items-center gap-2 mb-1'>
+              <div class='w-32 bg-gray-200 rounded h-2 overflow-hidden'><div class='h-2 bg-green-500' style='width:${task.progress}%;'></div></div>
+              <span class='text-xs'>${task.progress}%</span>
+              <button onclick='event.stopPropagation();editTaskProgress("${task.id}")' class='text-primary hover:underline text-xs'>编辑进度</button>
+            </div>
+            <div class='text-xs text-gray-600'>投入品：${(task.inputs||[]).map(i=>`${i.type}${i.amount}${i.unit}`).join('，')||'无'}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    function editTaskProgress(id) {
+      const tasks = getTasks();
+      const idx = tasks.findIndex(t => t.id === id);
+      if (idx === -1) return;
+      const val = prompt('请输入新的进度（0-100）', tasks[idx].progress);
+      if (val !== null && !isNaN(val) && val >= 0 && val <= 100) {
+        tasks[idx].progress = Number(val);
+        setTasks(tasks);
+        renderTaskList();
+      }
+    }
+    // 投入品智能预警与推送
+    function renderInputWarning() {
+      const tasks = getTasks();
+      const inputMap = {};
+      tasks.forEach(task => (task.inputs||[]).forEach(i => {
+        if (!inputMap[i.type]) inputMap[i.type] = { used: 0, unit: i.unit };
+        inputMap[i.type].used += i.amount;
+      }));
+      // 阈值模拟
+      const limits = { '化肥': 1000, '农药': 100, '有机肥': 1200 };
+      let warningHtml = '';
+      let hasWarning = false;
+      Object.keys(inputMap).forEach(type => {
+        const used = inputMap[type].used;
+        const unit = inputMap[type].unit;
+        const limit = limits[type] || 1000;
+        if (used > limit) {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-red-600'>${type}：</span>本月已用 <span class='font-bold'>${used}${unit}</span>，超出安全阈值 <span class='font-bold'>${limit}${unit}</span>，请及时调整！</div>`;
+          hasWarning = true;
+          showPush(`【投入品预警】${type}本月用量已超标！`);
+        } else if (limit - used < limit * 0.1) {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-yellow-600'>${type}：</span>本月已用 <span class='font-bold'>${used}${unit}</span>，接近安全阈值 <span class='font-bold'>${limit}${unit}</span>，请注意控制。</div>`;
+        } else {
+          warningHtml += `<div class='mb-2'><span class='font-bold text-green-600'>${type}：</span>本月已用 <span class='font-bold'>${used}${unit}</span>，安全范围内。</div>`;
+        }
+      });
+      document.getElementById('inputWarning').innerHTML = warningHtml || '暂无投入品消耗数据。';
+    }
+    // 推送弹窗
+    function showPush(msg) {
+      const id = 'push_' + Date.now();
+      const div = document.createElement('div');
+      div.id = id;
+      div.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg z-[9999] animate-bounce-in';
+      div.innerHTML = `<i class='fa fa-bell mr-2'></i>${msg}<br><span class='text-xs'>已通过短信/微信推送</span>`;
+      document.body.appendChild(div);
+      setTimeout(() => { div.classList.add('opacity-0'); setTimeout(()=>div.remove(), 1000); }, 4000);
+    }
+    // 任务详情弹窗
+    function showTaskDetail(id) {
+      const tasks = getTasks();
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+      const assignee = getAssignees().find(a => a.name === task.assignee) || { name: task.assignee };
+      let html = `<div class='fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]' id='taskDetailModal'>
+        <div class='bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 overflow-hidden'>
+          <div class='p-6'>
+            <div class='flex items-center gap-4 mb-4'>
+              <img src='${assignee.avatar||''}' class='w-12 h-12 rounded-full border' alt='头像'>
+              <div>
+                <div class='font-bold text-lg'>${task.title}</div>
+                <div class='text-xs text-gray-500'>负责人：${assignee.name} ${assignee.phone?`<span class="ml-2">${assignee.phone}</span>`:''} ${assignee.wechat?`<span class="ml-2 text-blue-500">${assignee.wechat}</span>`:''}</div>
+              </div>
+            </div>
+            <div class='mb-2'><b>类型：</b>${task.type}</div>
+            <div class='mb-2'><b>时间：</b>${task.startDate||''} ~ ${task.endDate||''}</div>
+            <div class='mb-2'><b>优先级：</b>${task.priority}</div>
+            <div class='mb-2'><b>进度：</b>${task.progress}%</div>
+            <div class='mb-2'><b>描述：</b>${task.description||''}</div>
+            <div class='mb-2'><b>投入品：</b>${(task.inputs||[]).map(i=>`${i.type}${i.amount}${i.unit}`).join('，')||'无'}</div>
+            <div class='flex justify-end mt-6'><button onclick='closeTaskDetail()' class='btn-primary'>关闭</button></div>
+          </div>
+        </div>
+      </div>`;
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    function closeTaskDetail() {
+      const modal = document.getElementById('taskDetailModal');
+      if (modal) modal.remove();
+    }
+    // 投入品消耗趋势图（ECharts）
+    function renderInputTrend() {
+      if (!window.echarts) return;
+      const tasks = getTasks();
+      // 统计每月各投入品用量
+      const monthMap = {};
+      tasks.forEach(task => {
+        (task.inputs||[]).forEach(i => {
+          const m = (task.startDate||'').slice(0,7);
+          if (!m) return;
+          if (!monthMap[m]) monthMap[m] = {};
+          if (!monthMap[m][i.type]) monthMap[m][i.type] = 0;
+          monthMap[m][i.type] += i.amount;
+        });
+      });
+      const months = Object.keys(monthMap).sort();
+      const types = Array.from(new Set([].concat(...Object.values(monthMap).map(x=>Object.keys(x)))));
+      const series = types.map(type => ({
+        name: type,
+        type: 'line',
+        data: months.map(m => monthMap[m][type]||0)
+      }));
+      const chart = window.echarts.init(document.getElementById('inputTrend'));
+      chart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: types },
+        xAxis: { type: 'category', data: months },
+        yAxis: { type: 'value' },
+        series
+      });
+    }
+    // 页面初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      renderAssigneeSelect();
+      renderTaskList();
+      renderInputWarning();
+      renderGanttChart();
+      renderOverview();
+      if (window.echarts) renderInputTrend();
+    });
+  </script>
+</body>
+</html>

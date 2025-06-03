@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>前期规划与设计 - 武鸣沃柑产业数字化平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/auth.js"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F5132',    // 深绿色 - 代表农业、自然
+            secondary: '#FF8C00',  // 橙色 - 代表沃柑
+            accent: '#22C55E',     // 浅绿色 - 代表生长、活力
+            neutral: '#F8F9FA',    // 浅灰色 - 代表界面背景
+            dark: '#1E293B',       // 深灰色 - 代表文本
+          },
+          fontFamily: {
+            inter: ['Inter', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .btn-primary {
+        background-color: #0F5132;
+        color: #ffffff;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        transition: all 300ms;
+      }
+      .btn-primary:hover {
+        background-color: #0B4226;
+      }
+      .section-padding {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+      }
+    }
+  </style>
+</head>
+<body class="font-inter bg-neutral text-dark">
+  <!-- 导航栏 -->
+  <header class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-1 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <img src="https://picsum.photos/40/40" alt="武鸣沃柑" class="w-10 h-10 rounded-full" loading="lazy">
+        <span class="text-xl font-bold text-primary">武鸣沃柑产业平台</span>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex items-center space-x-2">
+        <a href="index.html" class="text-dark hover:text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-home mr-2"></i>首页
+        </a>
+        <a href="dashboard.html" class="text-dark hover:text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-chart-bar mr-2"></i>数据看板
+        </a>
+        <a href="farm-management.html" class="text-dark hover:text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-calendar mr-2"></i>农事管理
+        </a>
+        <a href="trace.html" class="text-dark hover:text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-qrcode mr-2"></i>产品溯源
+        </a>
+        <a href="./finance.html" class="text-dark hover:text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-money-bill mr-2"></i>金融服务
+        </a>
+        <a href="index.html#tech-service" class="text-primary font-medium text-sm transition-colors flex items-center">
+          <i class="fa fa-cogs mr-2"></i>技术服务
+        </a>
+      </nav>
+      
+      <!-- 移动端菜单按钮 -->
+      <button class="md:hidden text-dark ml-2" id="menuBtn">
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主要内容 -->
+  <main class="pt-24 pb-12">
+    <div class="container mx-auto px-4">
+      <!-- 页面标题 -->
+      <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold text-primary mb-4">
+          <i class="fa fa-map-marked-alt text-secondary mr-3"></i>前期规划与设计
+        </h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">专业的沃柑种植园规划设计服务，为您的沃柑种植提供科学基础</p>
+      </div>
+
+      <!-- 服务介绍 -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden mb-12">
+        <div class="md:flex">
+          <div class="md:w-1/2">
+            <img src="https://picsum.photos/id/1080/800/600" alt="前期规划与设计" class="w-full h-full object-cover">
+          </div>
+          <div class="md:w-1/2 p-8">
+            <h2 class="text-2xl font-bold mb-4">服务内容</h2>
+            <p class="text-gray-600 mb-6">我们提供全方位的沃柑种植园前期规划与设计服务，帮助您科学选址、合理规划，为高产优质沃柑奠定坚实基础。</p>
+            
+            <div class="space-y-4 mb-6">
+              <div class="flex items-start">
+                <div class="bg-green-100 rounded-full p-2 mr-4">
+                  <i class="fa fa-map-marker-alt text-green-600"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-1">园地选址</h3>
+                  <p class="text-sm text-gray-600">根据地形、光照、水源等条件，选择最适合沃柑种植的地块</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-orange-100 rounded-full p-2 mr-4">
+                  <i class="fa fa-flask text-orange-600"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-1">土壤检测</h3>
+                  <p class="text-sm text-gray-600">专业检测土壤pH值、有机质含量、养分状况，提供改良方案</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-blue-100 rounded-full p-2 mr-4">
+                  <i class="fa fa-cloud-sun text-blue-600"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-1">气候分析</h3>
+                  <p class="text-sm text-gray-600">分析当地气候条件，评估适宜性，制定应对极端天气的预案</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-purple-100 rounded-full p-2 mr-4">
+                  <i class="fa fa-seedling text-purple-600"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-1">品种选择</h3>
+                  <p class="text-sm text-gray-600">根据土壤、气候条件，推荐最适合的沃柑品种和砧木搭配</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="bg-red-100 rounded-full p-2 mr-4">
+                  <i class="fa fa-drafting-compass text-red-600"></i>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-1">果园规划设计</h3>
+                  <p class="text-sm text-gray-600">科学规划果园布局、道路、水利、防护林等基础设施</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-green-50 p-4 rounded-lg mb-6">
+              <p class="text-sm text-green-800"><i class="fa fa-info-circle mr-2"></i>我们的服务由具有20年以上经验的沃柑种植专家提供，确保规划科学合理，为您的沃柑种植提供坚实基础。</p>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-2xl font-bold text-primary">¥2,800</span>
+                <span class="text-gray-500">/亩</span>
+              </div>
+              <button class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">
+                立即咨询
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 服务流程 -->
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-8 text-center">服务流程</h2>
+        <div class="max-w-4xl mx-auto">
+          <div class="relative">
+            <!-- 连接线 -->
+            <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-primary/20 -translate-x-1/2 hidden md:block"></div>
+            
+            <!-- 流程步骤 -->
+            <div class="space-y-12">
+              <!-- 步骤1 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                  <h3 class="text-xl font-bold mb-2">需求沟通</h3>
+                  <p class="text-gray-600">了解您的种植规模、目标和特殊需求</p>
+                </div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">1</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+              </div>
+              
+              <!-- 步骤2 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">2</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                  <h3 class="text-xl font-bold mb-2">现场勘察</h3>
+                  <p class="text-gray-600">专家团队实地考察，收集土壤样本和环境数据</p>
+                </div>
+              </div>
+              
+              <!-- 步骤3 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                  <h3 class="text-xl font-bold mb-2">数据分析</h3>
+                  <p class="text-gray-600">分析土壤、气候等数据，评估种植适宜性</p>
+                </div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">3</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+              </div>
+              
+              <!-- 步骤4 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">4</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 mb-4 md:mb-0">
+                  <h3 class="text-xl font-bold mb-2">方案设计</h3>
+                  <p class="text-gray-600">制定详细的规划设计方案，包括布局图和实施建议</p>
+                </div>
+              </div>
+              
+              <!-- 步骤5 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                  <h3 class="text-xl font-bold mb-2">方案交付</h3>
+                  <p class="text-gray-600">提交完整规划设计方案，并进行详细解读</p>
+                </div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">5</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+              </div>
+              
+              <!-- 步骤6 -->
+              <div class="md:flex items-center">
+                <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                <div class="relative md:w-0 flex justify-center">
+                  <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                    <span class="font-bold">6</span>
+                  </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                  <h3 class="text-xl font-bold mb-2">实施指导</h3>
+                  <p class="text-gray-600">提供实施过程中的技术指导和咨询服务</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 咨询预约表单 -->
+      <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="p-8">
+          <h2 class="text-2xl font-bold mb-6 text-center">预约咨询</h2>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的姓名">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">联系电话</label>
+                <input type="tel" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的联系电话">
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">种植地址</label>
+              <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入种植地址">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">种植面积（亩）</label>
+              <input type="number" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入种植面积">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">咨询内容</label>
+              <textarea rows="4" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请详细描述您的需求和问题"></textarea>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">期望服务时间</label>
+              <input type="date" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50">
+            </div>
+            
+            <div class="flex items-center">
+              <input type="checkbox" id="agreement" class="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary/50">
+              <label for="agreement" class="ml-2 text-sm text-gray-600">我已阅读并同意<a href="#" class="text-primary">服务条款</a>和<a href="#" class="text-primary">隐私政策</a></label>
+            </div>
+            
+            <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg hover:bg-primary/90 transition-colors font-medium">
+              提交预约
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-bold mb-4">关于我们</h3>
+          <p class="text-gray-400 text-sm">武鸣沃柑产业数字化平台致力于为沃柑种植户提供全方位的数字化服务，促进产业高质量发展。</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">联系方式</h3>
+          <ul class="text-gray-400 text-sm space-y-2">
+            <li><i class="fa fa-map-marker-alt mr-2"></i>广西南宁市武鸣区</li>
+            <li><i class="fa fa-phone mr-2"></i>400-123-4567</li>
+            <li><i class="fa fa-envelope mr-2"></i>contact@wumingwogan.com</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">快速链接</h3>
+          <ul class="text-gray-400 text-sm space-y-2">
+            <li><a href="index.html" class="hover:text-white">首页</a></li>
+            <li><a href="index.html#tech-service" class="hover:text-white">技术服务</a></li>
+            <li><a href="#" class="hover:text-white">关于我们</a></li>
+            <li><a href="#" class="hover:text-white">联系我们</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mb-4">关注我们</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-weixin text-2xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-weibo text-2xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok text-2xl"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>© 2024 武鸣沃柑产业数字化平台. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('shadow-md');
+      } else {
+        navbar.classList.remove('shadow-md');
+      }
+    });
+  </script>
+</body>
+</html>

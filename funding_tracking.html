@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政府项目资金使用追踪</title>
+    <style>
+        /* Basic styling for readability */
+        body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .container { max-width: 900px; margin: auto; }
+        .search-filter { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>政府项目资金使用追踪</h1>
+
+        <!-- New section for Summary Statistics -->
+        <div class="summary-statistics" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <h2>资金使用概况 (统计)</h2>
+            <p><strong>总分配资金:</strong> <span id="total-allocated">加载中...</span></p>
+            <p><strong>总已用资金:</strong> <span id="total-spent">加载中...</span></p>
+            <p><strong>总剩余资金:</strong> <span id="total-remaining">加载中...</span></p>
+            <!-- Add more summary stats as needed (e.g., number of projects, projects by status) -->
+        </div>
+
+        <!-- New section for Data Entry Forms -->
+        <div class="data-entry" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <h2>数据录入</h2>
+
+            <h3>添加新项目</h3>
+            <form id="add-project-form">
+                <label for="new-project-name">项目名称:</label>
+                <input type="text" id="new-project-name" name="new-project-name" required><br><br>
+                
+                <label for="new-project-description">项目描述:</label>
+                <textarea id="new-project-description" name="new-project-description"></textarea><br><br>
+                
+                <label for="new-allocated-funds">分配资金:</label>
+                <input type="number" id="new-allocated-funds" name="new-allocated-funds" required><br><br>
+
+                <label for="new-project-status">状态:</label>
+                <select id="new-project-status" name="new-project-status">
+                    <option value="planning">计划中</option>
+                    <option value="in-progress">进行中</option>
+                    <option value="completed">已完成</option>
+                </select><br><br>
+                
+                <button type="submit">添加项目</button>
+            </form>
+
+            <hr style="margin: 20px 0;">
+
+            <h3>记录资金支出</h3>
+            <form id="add-expenditure-form">
+                <label for="select-project">选择项目:</label>
+                <!-- In a real application, this would be dynamically populated -->
+                <select id="select-project" name="select-project" required>
+                    <option value="">-- 选择项目 --</option>
+                    <option value="project-a">项目A (示例)</option>
+                    <!-- Add more project options here -->
+                </select><br><br>
+
+                <label for="expenditure-date">支出日期:</label>
+                <input type="date" id="expenditure-date" name="expenditure-date" required><br><br>
+
+                <label for="expenditure-description">支出描述:</label>
+                <input type="text" id="expenditure-description" name="expenditure-description" required><br><br>
+
+                <label for="expenditure-amount">金额:</label>
+                <input type="number" id="expenditure-amount" name="expenditure-amount" required><br><br>
+
+                <label for="expenditure-category">类别:</label>
+                <input type="text" id="expenditure-category" name="expenditure-category"><br><br>
+                
+                <button type="submit">记录支出</button>
+            </form>
+        </div>
+
+        <div class="search-filter">
+            <h2>搜索与筛选</h2>
+            <!-- Placeholder for search/filter form elements -->
+            <form>
+                <label for="project-name">项目名称:</label>
+                <input type="text" id="project-name" name="project-name">
+                <label for="status">状态:</label>
+                <select id="status" name="status">
+                    <option value="">所有状态</option>
+                    <option value="planning">计划中</option>
+                    <option value="in-progress">进行中</option>
+                    <option value="completed">已完成</option>
+                </select>
+                <button type="submit">搜索</button>
+            </form>
+            <!-- Add more filter options as needed (e.g., date range, funding source) -->
+        </div>
+
+        <h2>项目列表</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>项目名称</th>
+                    <th>项目描述</th>
+                    <th>分配资金</th>
+                    <th>已用资金</th>
+                    <th>剩余资金</th>
+                    <th>状态</th>
+                    <th>操作</th> <!-- e.g., 查看详情 -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example Row - Replace with dynamic data -->
+                <tr>
+                    <td>项目A</td>
+                    <td>这是一个示例政府项目A</td>
+                    <td>1,000,000 元</td>
+                    <td>750,000 元</td>
+                    <td>250,000 元</td>
+                    <td>进行中</td>
+                    <td><a href="#project-details">查看详情</a></td>
+                </tr>
+                <!-- Add more rows for other projects -->
+            </tbody>
+        </table>
+
+        <!-- Placeholder for detailed expenditure tracking section -->
+        <div id="project-details" style="display: none; margin-top: 30px; padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <h2>项目详细信息: <span id="detail-project-name"></span></h2>
+            <!-- Add detailed information here -->
+            <p><strong>项目描述:</strong> <span id="detail-project-description"></span></p>
+            <p><strong>分配资金:</strong> <span id="detail-allocated-funds"></span></p>
+            <p><strong>已用资金:</strong> <span id="detail-spent-funds"></span></p>
+            <p><strong>剩余资金:</strong> <span id="detail-remaining-funds"></span></p>
+            <p><strong>状态:</strong> <span id="detail-status"></span></p>
+            
+            <h3>资金支出明细</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>支出日期</th>
+                        <th>支出描述</th>
+                        <th>金额</th>
+                        <th>类别</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Detailed expenditure rows would go here -->
+                    <tr>
+                        <td>2023-01-15</td>
+                        <td>设备采购</td>
+                        <td>150,000 元</td>
+                        <td>硬件</td>
+                    </tr>
+                    <!-- Add more expenditure details -->
+                </tbody>
+            </table>
+            
+            <!-- Add more sections as needed (e.g., Milestones, Documents) -->
+        </div>
+
+        <!-- Placeholder for charts or visualizations -->
+        <div class="charts-section" style="margin-top: 30px; padding: 20px; border: 1px solid #ddd; background-color: #f9f9f9;">
+            <h2>资金使用概览 (图表)</h2>
+            <!-- Add chart elements here. You would typically use a JavaScript charting library (like Chart.js, D3.js, ECharts) -->
+            <!-- Examples of useful charts: -->
+            <!-- 1. Pie chart for expenditure breakdown by category -->
+            <!-- 2. Bar chart comparing allocated vs. spent funds per project -->
+            <!-- 3. Line chart showing expenditure over time -->
+            
+            <!-- Placeholder div for charts -->
+            <div id="funding-overview-chart" style="height: 400px;"></div>
+            <!-- Add more divs for other charts as needed -->
+            
+        </div>
+
+    </div>
+
+    <!-- Placeholder for JavaScript for interactivity (e.g., filtering, data loading) -->
+    <!-- <script> -->
+    <!-- // Add JavaScript code here -->
+    <!-- </script> -->
+
+</body>
+</html> 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能设备管理</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="container mx-auto px-4 py-8">
+    <div class="bg-gradient-to-r from-blue-500 to-green-400 rounded-xl shadow-md p-8 mb-8 flex items-center">
+      <i class="fa fa-microchip text-5xl text-white mr-6"></i>
+      <div>
+        <h1 class="text-3xl font-bold text-white mb-2">智能设备管理</h1>
+        <p class="text-white/90">一站式监控与远程控制农业物联网设备，助力智慧农业高效运营</p>
+      </div>
+    </div>
+    <!-- 功能区 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <!-- 环境监测设备控制界面 -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-thermometer-half text-blue-500 mr-2"></i>环境监测设备</h2>
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <h3 class="font-semibold mb-2">温湿度传感器</h3>
+            <p class="text-gray-600 mb-2">实时温度：<span class="font-bold text-blue-500" id="env-temp">25.3°C</span></p>
+            <p class="text-gray-600 mb-2">实时湿度：<span class="font-bold text-blue-500" id="env-humidity">68%</span></p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-600 transition-colors mt-2" id="refresh-env"><i class="fa fa-sync-alt mr-1"></i>刷新数据</button>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">土壤传感器</h3>
+            <p class="text-gray-600 mb-2">土壤温度：<span class="font-bold text-green-500" id="soil-temp">22.1°C</span></p>
+            <p class="text-gray-600 mb-2">土壤湿度：<span class="font-bold text-green-500" id="soil-humidity">54%</span></p>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-600 transition-colors mt-2" id="refresh-soil"><i class="fa fa-sync-alt mr-1"></i>刷新数据</button>
+          </div>
+        </div>
+      </div>
+      <!-- 水肥一体化设备远程操作面板 -->
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-tint text-green-500 mr-2"></i>水肥一体化设备</h2>
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <h3 class="font-semibold mb-2">灌溉控制</h3>
+            <p class="text-gray-600 mb-2">当前状态：<span class="font-bold text-blue-500" id="irrigation-status">关闭</span></p>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-600 transition-colors mt-2 mr-2" id="open-irrigation"><i class="fa fa-play mr-1"></i>开启灌溉</button>
+            <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-bold hover:bg-gray-400 transition-colors mt-2" id="close-irrigation"><i class="fa fa-stop mr-1"></i>停止灌溉</button>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">施肥控制</h3>
+            <p class="text-gray-600 mb-2">当前状态：<span class="font-bold text-green-500" id="fertilization-status">关闭</span></p>
+            <button class="bg-green-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-green-600 transition-colors mt-2 mr-2" id="open-fertilization"><i class="fa fa-play mr-1"></i>开启施肥</button>
+            <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-bold hover:bg-gray-400 transition-colors mt-2" id="close-fertilization"><i class="fa fa-stop mr-1"></i>停止施肥</button>
+          </div>
+        </div>
+      </div>
+      <!-- 视频监控实时画面接入 -->
+      <div class="bg-white rounded-xl shadow p-6 md:col-span-2">
+        <h2 class="text-xl font-bold mb-4 flex items-center"><i class="fa fa-video text-purple-500 mr-2"></i>视频监控</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-semibold mb-2">田间监控</h3>
+            <div class="relative w-full pb-[56.25%] bg-black rounded-lg mb-2 flex items-center justify-center">
+              <span class="absolute inset-0 flex items-center justify-center text-white">[实时视频流占位]</span>
+            </div>
+            <button class="bg-purple-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-600 transition-colors" id="fullscreen-field"><i class="fa fa-expand mr-1"></i>全屏查看</button>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-2">仓库监控</h3>
+            <div class="relative w-full pb-[56.25%] bg-black rounded-lg mb-2 flex items-center justify-center">
+              <span class="absolute inset-0 flex items-center justify-center text-white">[实时视频流占位]</span>
+            </div>
+            <button class="bg-purple-500 text-white px-4 py-2 rounded-lg font-bold hover:bg-purple-600 transition-colors" id="fullscreen-warehouse"><i class="fa fa-expand mr-1"></i>全屏查看</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 其他设备/功能可扩展 -->
+    <div class="bg-white rounded-xl shadow-md p-8 mt-8">
+      <h2 class="text-xl font-bold mb-6 text-center">更多设备与功能，敬请期待…</h2>
+    </div>
+  </div>
+  <script src="js/iot-device.js"></script>
+</body>
+</html> 

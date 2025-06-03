@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>挂牌交易平台 - 农产品流通交易</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans">
+  <main class="pt-24 pb-12">
+    <!-- 挂牌交易平台卡片 -->
+    <div class="max-w-3xl mx-auto px-4 mb-10">
+      <div class="bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl shadow-lg p-8 text-white card-hover">
+        <div class="flex items-center mb-6">
+          <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mr-6">
+            <i class="fa fa-clipboard-list text-4xl"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold mb-2">挂牌交易平台</h1>
+            <p class="text-white/90">农户发布供应信息，采购商一键询盘，透明化交易</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>供应信息发布
+          </div>
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>一键询盘功能
+          </div>
+          <div class="flex items-center text-sm">
+            <i class="fa fa-check-circle text-green-200 mr-2"></i>品质信息展示
+          </div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 mb-4">
+          <div class="text-xs mb-1">示例信息：</div>
+          <div class="text-lg font-bold">武鸣沃柑，糖度14°Brix，5万斤</div>
+        </div>
+        <div class="flex items-center">
+          <span class="text-2xl font-bold">免费</span>
+          <span class="ml-2 text-base">发布</span>
+        </div>
+      </div>
+    </div>
+    <!-- 发布挂牌表单 -->
+    <div class="max-w-3xl mx-auto px-4 mb-10">
+      <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+        <h2 class="text-2xl font-bold text-teal-600 mb-6 flex items-center"><i class="fa fa-plus-circle mr-3"></i>发布供应信息</h2>
+        <form id="listingForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="product" required placeholder="产品名称（如：沃柑）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+            <input type="number" name="quantity" required min="1" placeholder="供应数量（斤）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="quality" required placeholder="品质信息（如：糖度14°Brix）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+            <input type="text" name="contact" required placeholder="联系方式（手机/微信）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+          </div>
+          <div>
+            <textarea name="remark" rows="3" placeholder="补充说明（可选）" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-colors font-bold text-lg">
+            发布供应信息
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- 挂牌信息展示区 -->
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="bg-white rounded-xl shadow-lg p-8 card-hover">
+        <h2 class="text-xl font-bold text-primary mb-6 flex items-center"><i class="fa fa-list mr-3"></i>最新挂牌信息</h2>
+        <div id="listingList" class="space-y-4">
+          <!-- 挂牌信息将通过JS动态插入 -->
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- 页脚 -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h3 class="text-lg font-bold mb-2">智能供应链管理平台</h3>
+      <p class="text-gray-400 text-sm mb-2">专业鲜果流通，助力农产品高效对接市场</p>
+      <p class="text-gray-400 text-xs">&copy; 2024 智能供应链管理. 保留所有权利.</p>
+    </div>
+  </footer>
+  <script>
+    // 挂牌信息本地存储与展示
+    let listings = JSON.parse(localStorage.getItem('listings') || '[]');
+    function renderListings() {
+      const list = document.getElementById('listingList');
+      list.innerHTML = '';
+      if (listings.length === 0) {
+        list.innerHTML = '<div class="text-gray-400 text-center">暂无挂牌信息</div>';
+        return;
+      }
+      listings.slice().reverse().forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'border rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between bg-gray-50';
+        div.innerHTML = `
+          <div class="mb-2 md:mb-0">
+            <div class="font-bold text-lg text-teal-700">${item.product} <span class="text-sm text-gray-500 font-normal">${item.quality}</span></div>
+            <div class="text-gray-600 text-sm">供应量：${item.quantity} 斤</div>
+            <div class="text-gray-500 text-xs">${item.remark ? '备注：' + item.remark : ''}</div>
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <button class="bg-cyan-500 text-white px-4 py-2 rounded hover:bg-cyan-600 text-sm inquire-btn">一键询盘</button>
+            <div class="text-xs text-gray-400">联系方式：${item.contact}</div>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+      // 绑定一键询盘事件
+      document.querySelectorAll('.inquire-btn').forEach((btn, idx) => {
+        btn.onclick = function() {
+          alert('已向供应商发送询盘意向！\n联系方式：' + listings[listings.length-1-idx].contact);
+        };
+      });
+    }
+    renderListings();
+    document.getElementById('listingForm').onsubmit = function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        product: form.product.value,
+        quantity: form.quantity.value,
+        quality: form.quality.value,
+        contact: form.contact.value,
+        remark: form.remark.value
+      };
+      listings.push(data);
+      localStorage.setItem('listings', JSON.stringify(listings));
+      renderListings();
+      form.reset();
+      alert('挂牌信息发布成功！');
+    };
+  </script>
+</body>
+</html> 
