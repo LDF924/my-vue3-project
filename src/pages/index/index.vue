@@ -125,7 +125,20 @@
 </template>
 
 <script>
-import { initHomeData } from '../../js/homeData.js'; // Adjust path if necessary
+import { initHomeData } from '../../js/homeData.js';
+import { initAuthModal } from '../../js/auth.js';
+import { initStoreService } from '../../js/storeService.js';
+import { initTraceability } from '../../js/traceability.js';
+import { initKnowledge } from '../../js/knowledge.js';
+import { initMarketCard } from '../../js/marketCard.js';
+import { initMarketData } from '../../js/marketData.js';
+import { initCommunity } from '../../js/community.js';
+import { initCommunityData } from '../../js/communityData.js';
+import { initCommunitySearch } from '../../js/communitySearch.js';
+import { initDashboard } from '../../js/dashboard.js';
+import { initFarmManagement } from '../../js/farmManagement.js';
+import { initFinanceService } from '../../js/financeService.js';
+import { initPestIdentification } from '../../js/pestIdentification.js';
 
 export default {
   data() {
@@ -135,6 +148,19 @@ export default {
   },
   onLoad() {
     initHomeData(); // Initialize home data fetching and updates
+    initAuthModal();
+    initStoreService();
+    initTraceability();
+    initKnowledge();
+    initMarketCard();
+    initMarketData();
+    initCommunity();
+    initCommunityData();
+    initCommunitySearch();
+    initDashboard();
+    initFarmManagement();
+    initFinanceService();
+    initPestIdentification();
   },
   methods: {},
 }
